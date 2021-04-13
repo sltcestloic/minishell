@@ -6,7 +6,7 @@
 #    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/01 15:07:28 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/04/13 14:23:14 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,7 @@ CFLAGS	= -Wall -Wextra -Werror
 $(NAME): ${OBJS}
 	${LIBC} ${NAME} ${OBJS}
 
-bonus: ${OBJS_BONUS}
+bonus: ${OBJS_BONUS} all
 	${LIBC} ${NAME} ${OBJS} ${OBJS_BONUS}
 
 
