@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 16:19:44 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/14 16:22:55 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/14 16:44:56 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,20 @@ static char	*copy_value(char *str)
 	return (ptr);
 }
 
-void	new_elem(char *str, t_envlst *lst)
+void	new_env_elem(char *str, t_envlst *lst)
 {
+	t_envlst *ptr;
+
 	while (lst->next)
 		lst = lst->next;
-	malloc()
+	ptr = malloc(sizeof(t_envlst));
+	lst->next = ptr;
+	if (ptr)
+	{
+		ptr->name = copy_name(str);
+		ptr->value = copy_value(str);
+		ptr->next = 0;
+	}
 }
 
 void	set_env(char **envp, t_envlst *lst)
@@ -71,7 +80,7 @@ void	set_env(char **envp, t_envlst *lst)
 	i = 0;
 	while (envp[i])
 	{
-		
+		new_env_elem(envp[i], lst);
 		i++;
 	}
 }
