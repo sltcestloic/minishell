@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:56:53 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/14 16:12:11 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/14 16:14:23 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	*compute_args(t_command *cmd, int has_n)
 		ret = ft_strdup(cmd->args[++i]);
 	while (cmd->args[++i])
 	{
-		printf("%s\n", cmd->args[i]);
 		swap = ft_strjoin(ret, " ");
 		free(ret);
 		ret = swap;
