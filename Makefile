@@ -3,15 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/13 14:22:05 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/04/14 15:03:33 by lubourre         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		= minishell.c \
-			parsing/parser.c
+			parsing/parser.c \
+			execution/function.c
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
 INCS	= includes

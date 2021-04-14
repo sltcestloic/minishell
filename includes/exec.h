@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 14:15:04 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/14 14:52:20 by lubourre         ###   ########lyon.fr   */
+/*   Created: 2021/04/14 14:42:19 by lubourre          #+#    #+#             */
+/*   Updated: 2021/04/14 15:55:13 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef EXEC_H
+# define EXEC_H
 
-# include <stdio.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
-# include "parsing.h"
-# include "exec.h"
+void	echo(char *str, int option);
+void	env(char **envp);
+
+typedef struct s_envlst
+{
+	char	*name;
+	char	*value;
+	char	*next;
+}	t_envlst;
 
 #endif
