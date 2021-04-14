@@ -6,12 +6,13 @@
 #    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/13 14:22:05 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/04/14 10:26:59 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		= minishell.c \
-			parsing/parser.c
+			parsing/parser.c \
+			util/prompt.c
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
 INCS	= includes
