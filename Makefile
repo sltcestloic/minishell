@@ -3,14 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/15 14:17:00 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/04/15 14:27:27 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		= 	minishell.c \
+			execution/function.c \
+			execution/set_env.c \
 			parsing/commands/echo_parsing.c \
 			parsing/parser.c \
 			util/ft_splitlen.c \
