@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:21:25 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/14 16:12:54 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 15:05:42 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,20 @@ char	*get_command_name(char *input)
 	int		i;
 
 	i = 0;
-	split = ft_split(input, ' ');
-	ret = malloc(sizeof(char) * (ft_strlen(split[0]) + 1));
-	while (split[0][i])
+	if (*input)
 	{
-		ret[i] = split[0][i];
-		i++;
+		split = ft_split(input, ' ');	
+		ret = malloc(sizeof(char) * (ft_strlen(split[0]) + 1));
+		while (split[0][i])
+		{
+			ret[i] = split[0][i];
+			i++;
+		}
+		ret[i] = '\0';
+		free_split(split);
 	}
-	ret[i] = '\0';
-	free_split(split);
+	else
+		return (input);
 	return (ret);
 }
 
@@ -38,6 +43,8 @@ char	**get_command_args(char	*input)
 	int		i;
 
 	i = 1;
+	if (!*input)
+		return (NULL);
 	split = ft_split(input, ' ');
 	ret = malloc(sizeof(char *) * ft_splitlen(split));
 	while (split[i])
@@ -69,5 +76,6 @@ void	parse_input(char *input)
 	else if (ft_strcmp("echo", cmd.name) == 0)
 		parse_echo(&cmd);
 	free(cmd.name);
-	free_split(cmd.args);
+	if (cmd.args)
+		free_split(cmd.args);
 }

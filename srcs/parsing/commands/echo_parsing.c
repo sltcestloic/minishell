@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:56:53 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/14 16:14:23 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 14:54:17 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,5 @@ void	parse_echo(t_command *cmd)
 	else
 		has_n = FALSE;
 	args = compute_args(cmd, has_n);
-	printf("-------Echo parsing-------\n");
-	printf("has_n: %d\n", has_n);
-	printf("args: %s\n", args);
+	echo(args, has_n);
 }

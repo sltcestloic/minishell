@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:18:47 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 14:08:14 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 14:56:40 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	set_env(envp, shell);
-	env(shell->env_var);
+	display_prompt();
 	while (ft_get_next_line(0, &input) > 0)
 	{
 		parse_input(input);
