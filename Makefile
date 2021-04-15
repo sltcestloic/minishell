@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/15 15:15:01 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/04/15 15:18:22 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
