@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/13 14:23:14 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/04/15 13:48:19 by lubourre         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS		= char/ft_isalnum.c \
 				memory/ft_memcpy.c \
 				memory/ft_memmove.c \
 				memory/ft_memset.c \
+				memory/ft_malloc.c \
 				print/ft_putchar_fd.c \
 				print/ft_putendl_fd.c \
 				print/ft_putnbr_fd.c \
