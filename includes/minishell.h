@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:15:04 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/14 16:34:26 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 13:22:11 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <stdlib.h>
 # include "../libft/libft.h"
 # include "parsing.h"
+# include "exec.h"
 
 typedef struct s_shell
 {
