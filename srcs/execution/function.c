@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:44:53 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/14 16:47:07 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 13:39:12 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,22 @@ void	echo(char *str, int option)
 		write(1, "\n", 1);
 }
 
-// a refaire
-void	env(char **envp)
+void	env(t_envlst *lst)
 {
-	register int i;
-	
-	i = 0;
-	while (envp[i])
+	while (lst->next)
 	{
-		printf("%s\n", envp[i]);
-		i++;
+		if (lst->value)
+		{
+			ft_putstr_fd(lst->name, 1);
+			ft_putstr_fd(lst->value, 1);
+		}
+		lst = lst->next;
 	}
 }
 
-void	ft_exit(void)
+void	ft_exit(t_free *to_free)
 {
+	ft_free(to_free);
 	write(1, "exit\n", 5);
 	exit(0);
 }
