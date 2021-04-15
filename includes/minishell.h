@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:15:04 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 14:16:40 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 14:27:34 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 # include "../libft/libft.h"
 # include "parsing.h"
 # include "exec.h"
+
+typedef struct s_shell
+{
+				t_free	*to_free;
+}				t_shell;
 
 void	display_prompt(void);
 
