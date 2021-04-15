@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:16:13 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/14 15:16:40 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 15:28:48 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
+
+typedef struct	s_shell t_shell;
 
 typedef struct s_command
 {
@@ -19,7 +21,7 @@ typedef struct s_command
 				char	**args;
 }				t_command;
 
-void	parse_input(char *input);
+void	parse_input(char *input, t_shell *shell);
 
 /*
 ** Commands parsing

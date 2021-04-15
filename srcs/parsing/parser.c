@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:21:25 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 15:05:42 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 15:43:58 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,17 @@ t_command	parse_command(char *input)
 	return (cmd);
 }
 
-void	parse_input(char *input)
+void	parse_input(char *input, t_shell *shell)
 {
 	t_command	cmd;
 
 	cmd = parse_command(input);
 	if (ft_strcmp("exit", cmd.name) == 0)
-		exit(0);
+		ft_exit(shell->to_free);
 	else if (ft_strcmp("echo", cmd.name) == 0)
 		parse_echo(&cmd);
+	else if (ft_strcmp("env", cmd.name) == 0)
+		env(shell->env_var);
 	free(cmd.name);
 	if (cmd.args)
 		free_split(cmd.args);
