@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:44:53 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/15 13:39:12 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 14:52:38 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	env(t_envlst *lst)
 		{
 			ft_putstr_fd(lst->name, 1);
 			ft_putstr_fd(lst->value, 1);
+			write(1, "\n", 1);
 		}
 		lst = lst->next;
 	}
