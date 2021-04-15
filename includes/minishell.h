@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:15:04 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/14 15:09:00 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/14 16:34:26 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 # include <stdio.h>
 # include "../libft/libft.h"
 # include "parsing.h"
+
+typedef struct s_shell
+{
+				t_free	*to_free;
+}				t_shell;
 
 void	display_prompt(void);
 
