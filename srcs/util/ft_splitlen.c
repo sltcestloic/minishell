@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_splitlen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 14:15:04 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 14:16:40 by lubourre         ###   ########lyon.fr   */
+/*   Created: 2021/04/14 15:08:34 by lbertran          #+#    #+#             */
+/*   Updated: 2021/04/14 16:01:14 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
-# include "parsing.h"
-# include "exec.h"
+int	ft_splitlen(char **split)
+{
+	int	i;
 
-void	display_prompt(void);
-
-/*
-** Utils
-*/
-
-int		ft_splitlen(char **split);
-
-#endif
+	i = 0;
+	if (!split)
+		return (0);
+	while (split[i])
+		i++;
+	return (i);
+}

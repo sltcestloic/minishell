@@ -6,14 +6,16 @@
 #    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/15 14:08:44 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/04/15 14:17:00 by lubourre         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		= 	minishell.c \
+			parsing/commands/echo_parsing.c \
 			parsing/parser.c \
-			execution/function.c \
-			execution/set_env.c
+			util/ft_splitlen.c \
+			util/prompt.c \
+			execution/function.c
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
 INCS	= includes
@@ -28,7 +30,7 @@ srcs/%.o: srcs/%.c ${INCS}
 
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
-	${CC} -o ${NAME} ${OBJS} libft/libft.a
+	${CC} -o ${NAME} ${OBJS} libft/libft.a -g3
 all: ${NAME}
 
 bonus: all
