@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 16:19:44 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/15 14:05:45 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 15:08:52 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ inline static char	*copy_name(char *str)
 	i = 0;
 	while (str[i] != '=' && str[i])
 		i++;
-	ptr = malloc(i);
+	ptr = malloc(i + 1);
 	if (!ptr)
 		return (ptr);
 	i = -1;
@@ -44,7 +44,7 @@ inline static char	*copy_value(char *str)
 		j++;
 	if (j == 0)
 		return (0);
-	ptr = malloc(j);
+	ptr = malloc(j + 1);
 	if (ptr)
 	{
 		j = 0;
@@ -60,14 +60,16 @@ inline static char	*copy_value(char *str)
 
 void	new_env_elem(char *str, t_shell *shell)
 {
-	t_envlst *ptr;
+	t_envlst	*ptr;
+	t_envlst	*save;
 
-	if (shell->env_var)
+	save = shell->env_var;
+	if (save)
 	{
-		while (shell->env_var->next)
-			shell->env_var = shell->env_var->next;
+		while (save->next)
+			save = save->next;
 	ptr = malloc(sizeof(t_envlst));
-	shell->env_var->next = ptr;
+	save->next = ptr;
 	}
 	else
 	{
@@ -80,7 +82,7 @@ void	new_env_elem(char *str, t_shell *shell)
 		ptr->value = copy_value(str);
 		ptr->next = 0;
 	}
-	else
+	if (!ptr || !ptr->name)
 		ft_exit(shell->to_free);
 }
 
