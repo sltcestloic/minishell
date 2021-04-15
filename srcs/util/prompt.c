@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 14:21:25 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/14 11:01:36 by lbertran         ###   ########lyon.fr   */
+/*   Created: 2021/04/14 10:24:50 by lbertran          #+#    #+#             */
+/*   Updated: 2021/04/14 10:29:12 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parse_input(char *input)
+void	display_prompt(void)
 {
-	if (ft_strcmp("exit", input) == 0)
-		exit(0);
-	printf("input: %s\n", input);
-	printf("uwehfuwhf");
+	dprintf(1, "%suser@minishell%s: $ ", GREEN, RESET);
 }
