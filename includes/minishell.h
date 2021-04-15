@@ -14,8 +14,10 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <stdlib.h>
 # include "../libft/libft.h"
 # include "parsing.h"
+# include "exec.h"
 
 void	display_prompt(void);
 
