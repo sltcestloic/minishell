@@ -6,7 +6,7 @@
 #    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/15 14:17:00 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/04/15 14:30:28 by lubourre         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,9 @@ SRC		= 	minishell.c \
 			parsing/parser.c \
 			util/ft_splitlen.c \
 			util/prompt.c \
-			execution/function.c
+			execution/function.c \
+			execution/set_env.c
+			
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
 INCS	= includes
