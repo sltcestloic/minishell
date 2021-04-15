@@ -6,27 +6,30 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:42:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/14 16:46:09 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 13:44:48 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
 
-void	echo(char *str, int option);
-void	env(char **envp);
-
 typedef struct s_envlst
 {
-	char	*name;
-	char	*value;
-	char	*next;
+	char			*name;
+	char			*value;
+	struct s_envlst	*next;
 }	t_envlst;
 
-void	ft_exit(void);
+typedef struct	s_shell
+{
+	t_free		*to_free;
+	t_envlst 	*env_var;
+}	t_shell;
+
+void	ft_exit(t_free *to_free);
 void	echo(char *str, int option);
-void	env(char **envp);
-void	set_env(char **envp, t_envlst *lst);
-void	new_env_elem(char *str, t_envlst *lst);
+void	env(t_envlst *env_lst);
+void	set_env(char **envp, t_shell *shell);
+void	new_env_elem(char *str, t_shell *shell);
 
 #endif
