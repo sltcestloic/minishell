@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:44:53 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/15 14:52:38 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/16 13:37:04 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,37 @@ void	echo(char *str, int option)
 
 void	env(t_envlst *lst)
 {
-	while (lst->next)
+	if (lst)
 	{
-		if (lst->value)
+		while (lst->next)
 		{
-			ft_putstr_fd(lst->name, 1);
-			ft_putstr_fd(lst->value, 1);
+			if (lst->name)
+				ft_putstr_fd(lst->name, 1);
+			if (lst->value)
+				ft_putstr_fd(lst->value, 1);
 			write(1, "\n", 1);
+			lst = lst->next;
 		}
-		lst = lst->next;
+	}
+}
+
+void	export(t_envlst *lst)
+{
+	t_envlst *sorted;
+
+	if (lst)
+	{
+		sorted = copy_sorted_list(lst);
+		while (sorted->next)
+		{
+			if (sorted->value)
+			{
+				ft_putstr_fd(sorted->name, 1);
+				ft_putstr_fd(sorted->value, 1);
+				write(1, "\n", 1);
+			}
+			sorted = sorted->next;
+		}
 	}
 }
 

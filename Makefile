@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/16 13:15:23 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/04/16 13:31:52 by lubourre         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		= 	minishell.c \
 			execution/function.c \
 			execution/set_env.c \
+			execution/copy_sort_lst.c \
 			parsing/commands/echo_parsing.c \
 			parsing/ft_splitcmds.c \
 			parsing/parser.c \

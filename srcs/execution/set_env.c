@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 16:19:44 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/15 15:08:52 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/15 15:55:52 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ void	new_env_elem(char *str, t_shell *shell)
 	{
 		while (save->next)
 			save = save->next;
-	ptr = malloc(sizeof(t_envlst));
+	ptr = (t_envlst*)ft_malloc(sizeof(t_envlst), &(shell->to_free));
 	save->next = ptr;
 	}
 	else
 	{
-		ptr = malloc(sizeof(t_envlst));
+		ptr = (t_envlst*)ft_malloc(sizeof(t_envlst), &(shell->to_free));
 		shell->env_var = ptr;
 	}
 	if (ptr)
