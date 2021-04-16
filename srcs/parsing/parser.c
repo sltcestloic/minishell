@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:21:25 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 15:43:58 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/16 13:30:53 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	parse_input(char *input, t_shell *shell)
 		parse_echo(&cmd);
 	else if (ft_strcmp("env", cmd.name) == 0)
 		env(shell->env_var);
+	else if (ft_strcmp("export", cmd.name) == 0)
+		export(shell->env_var);
 	free(cmd.name);
 	if (cmd.args)
 		free_split(cmd.args);
