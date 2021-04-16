@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:21:25 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 15:05:42 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/16 14:04:47 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ t_command	parse_command(char *input)
 }
 
 void	parse_input(char *input)
+{
+	
+}
+
+void	handle_cmd(char *input)
 {
 	t_command	cmd;
 
