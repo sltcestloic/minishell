@@ -39,3 +39,11 @@ int	main(int ac, char **av, char **envp)
 		display_prompt();
 	}
 }
+
+/* int main()
+{
+	char **test = ft_splitcmds("echo \"test; bonjour\"; echo test; ls -a; grep ';'; test", ';');
+	for (int i = 0; test[i]; i++)
+		printf("%s\n", test[i]);
+	free_split(test);
+} */

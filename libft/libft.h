@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 19:59:28 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 13:49:15 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/16 13:17:27 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ char			*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 char			*ft_strndup(const char *s, size_t n);
 int				ft_strichr(const char *s, int c);
 void			free_split(char **ret);
+char			*ft_strrdup(const char *str, int start, int end);
 
 /*
 ** Text colors

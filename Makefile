@@ -15,6 +15,7 @@ SRC		= 	minishell.c \
 			execution/set_env.c \
 			execution/copy_sort_lst.c \
 			parsing/commands/echo_parsing.c \
+			parsing/ft_splitcmds.c \
 			parsing/parser.c \
 			util/ft_splitlen.c \
 			util/prompt.c 

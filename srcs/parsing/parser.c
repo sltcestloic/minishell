@@ -68,6 +68,11 @@ t_command	parse_command(char *input)
 
 void	parse_input(char *input, t_shell *shell)
 {
+	
+}
+
+void	handle_cmd(char *input)
+{
 	t_command	cmd;
 
 	cmd = parse_command(input);
