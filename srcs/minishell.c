@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:18:47 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 14:56:40 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/16 14:14:27 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,11 @@ int	main(int ac, char **av, char **envp)
 		display_prompt();
 	}
 }
+
+/* int main()
+{
+	char **test = ft_splitcmds("echo \"test; bonjour\"; echo test; ls -a; grep ';'; test", ';');
+	for (int i = 0; test[i]; i++)
+		printf("%s\n", test[i]);
+	free_split(test);
+} */
