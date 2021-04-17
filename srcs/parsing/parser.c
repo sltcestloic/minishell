@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 14:21:25 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/17 14:32:07 by lbertran         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 char	*get_command_name(char *input)
@@ -57,12 +45,13 @@ char	**get_command_args(char	*input)
 	return (ret);
 }
 
-t_command	parse_command(char *input)
+t_command	parse_command(char *input, t_shell *shell)
 {
 	t_command	cmd;
 
 	cmd.name = get_command_name(input);
 	cmd.args = get_command_args(input);
+	cmd.shell = shell;
 	return (cmd);
 }
 
@@ -70,7 +59,7 @@ void	handle_cmd(char *input, t_shell *shell)
 {
 	t_command	cmd;
 
- 	cmd = parse_command(input);
+ 	cmd = parse_command(input, shell);
  	if (ft_strcmp("exit", cmd.name) == 0)
  		ft_exit(shell->to_free);
  	else if (ft_strcmp("echo", cmd.name) == 0)
@@ -78,7 +67,12 @@ void	handle_cmd(char *input, t_shell *shell)
  	else if (ft_strcmp("env", cmd.name) == 0)
  		env(shell->env_var);
  	else if (ft_strcmp("export", cmd.name) == 0)
- 		export(shell->env_var);
+	{
+		if (!cmd.args[0])
+ 			export(shell->env_var);
+		else
+			new_env_elem(cmd.args[0], shell);
+	}
  	free(cmd.name);
  	if (cmd.args)
  		free_split(cmd.args);
