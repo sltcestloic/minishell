@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:21:25 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/16 14:33:36 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 14:32:07 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,25 +66,34 @@ t_command	parse_command(char *input)
 	return (cmd);
 }
 
-// void	parse_input(char *input, t_shell *shell)
-// {
-	
-// }
+void	handle_cmd(char *input, t_shell *shell)
+{
+	t_command	cmd;
 
-// void	handle_cmd(char *input)
-// {
-// 	t_command	cmd;
+ 	cmd = parse_command(input);
+ 	if (ft_strcmp("exit", cmd.name) == 0)
+ 		ft_exit(shell->to_free);
+ 	else if (ft_strcmp("echo", cmd.name) == 0)
+ 		parse_echo(&cmd);
+ 	else if (ft_strcmp("env", cmd.name) == 0)
+ 		env(shell->env_var);
+ 	else if (ft_strcmp("export", cmd.name) == 0)
+ 		export(shell->env_var);
+ 	free(cmd.name);
+ 	if (cmd.args)
+ 		free_split(cmd.args);
+}
 
-// 	cmd = parse_command(input);
-// 	if (ft_strcmp("exit", cmd.name) == 0)
-// 		ft_exit(shell->to_free);
-// 	else if (ft_strcmp("echo", cmd.name) == 0)
-// 		parse_echo(&cmd);
-// 	else if (ft_strcmp("env", cmd.name) == 0)
-// 		env(shell->env_var);
-// 	else if (ft_strcmp("export", cmd.name) == 0)
-// 		export(shell->env_var);
-// 	free(cmd.name);
-// 	if (cmd.args)
-// 		free_split(cmd.args);
-// }
+void	parse_input(char *input, t_shell *shell)
+{
+	char	**split;
+	int		i;
+
+	i = 0;
+	split = ft_splitcmds(input, ';');
+	while (split[i])
+	{
+		handle_cmd(split[i], shell);
+		i++;
+	}
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:16:13 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/15 15:28:48 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 14:31:25 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_split
 			int	quote2;
 }				t_split;
 
-void	parse_input(char *input);
+void	parse_input(char *input, t_shell *shell);
 
 /*
 ** Commands parsing
