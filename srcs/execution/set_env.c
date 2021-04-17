@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 16:19:44 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/15 15:55:52 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/16 15:52:29 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,19 @@ void	new_env_elem(char *str, t_shell *shell)
 	}
 	if (!ptr || !ptr->name)
 		ft_exit(shell->to_free);
+}
+
+void	remove_env_elem(char *name, t_shell *shell)
+{
+	t_envlst	*ptr;
+
+	ptr = shell->env_var;
+	while (ptr->next && ft_strcmp(ptr->next->name, name))
+	{
+		ptr = ptr->next;
+	}
+	if (ptr->next)
+		ptr->next = ptr->next->next;
 }
 
 void	set_env(char **envp, t_shell *shell)

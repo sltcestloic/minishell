@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:42:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/16 13:32:37 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 13:07:09 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct	s_shell
 {
 	t_free		*to_free;
 	t_envlst 	*env_var;
+	char		*pwd;
 }	t_shell;
 
 void		ft_exit(t_free *to_free);
@@ -32,6 +33,10 @@ void		env(t_envlst *env_lst);
 void		export(t_envlst *env_lst);
 void		set_env(char **envp, t_shell *shell);
 void		new_env_elem(char *str, t_shell *shell);
+void		remove_env_elem(char *name, t_shell *shell);
 t_envlst	*copy_sorted_list(t_envlst *lst);
+void		set_pwd(t_shell *shell);
+void		change_pwd(t_shell *shell, char *str);
+void		pwd(t_shell *shell);
 
 #endif
