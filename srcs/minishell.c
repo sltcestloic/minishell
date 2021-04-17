@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 14:18:47 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/16 16:01:29 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 13:11:30 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ inline static int	init_shell(t_shell **shell)
 
 int	main(int ac, char **av, char **envp)
 {
-	char	*input;
+	// char	*input;
 	t_shell *shell;
 
 	if (init_shell(&shell) == -1)
@@ -32,12 +32,14 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	set_env(envp, shell);
-	display_prompt();
-	while (ft_get_next_line(0, &input) > 0)
-	{
-		parse_input(input, shell);
-		display_prompt();
-	}
+	set_pwd(shell);
+	export(shell->env_var);
+	display_prompt(shell);
+	// while (ft_get_next_line(0, &input) > 0)
+	// {
+	// 	parse_input(input, shell);
+	// 	display_prompt(shell);
+	// }
 }
 
 /* int main()
