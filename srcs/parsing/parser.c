@@ -73,6 +73,15 @@ void	handle_cmd(char *input, t_shell *shell)
 		else
 			new_env_elem(cmd.args[0], shell);
 	}
+	else if (ft_strcmp("cd", cmd.name) == 0)
+	{
+		if (!cmd.args[0])
+			change_pwd(shell, "todo cd vers ~");
+		else if (ft_splitlen(cmd.args) > 1)
+			write(1, "cd: too many arguments\n", 24);
+		else
+			change_pwd(shell, cmd.args[0]);
+	}
  	free(cmd.name);
  	if (cmd.args)
  		free_split(cmd.args);
