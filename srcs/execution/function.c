@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:44:53 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/16 13:37:04 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 14:42:11 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	env(t_envlst *lst)
 			if (lst->name)
 				ft_putstr_fd(lst->name, 1);
 			if (lst->value)
+			{
+				write(1, "=", 1);
 				ft_putstr_fd(lst->value, 1);
+			}
 			write(1, "\n", 1);
 			lst = lst->next;
 		}
