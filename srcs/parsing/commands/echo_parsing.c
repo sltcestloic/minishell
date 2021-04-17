@@ -2,7 +2,7 @@
 
 void	parse_env_var(t_command *cmd, int i)
 {
-	char	*var = get_env(cmd->shell, cmd->args[i]);
+	char	*var = get_env_var(cmd->shell, cmd->args[i]);
 
 	if (var)
 		cmd->args[i] = var;
