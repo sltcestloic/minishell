@@ -24,23 +24,46 @@ char	*get_command_name(char *input)
 	return (ret);
 }
 
-char	**get_command_args(char	*input)
+char	*get_env_var(t_shell *shell, char *str)
+{
+	(void)shell;
+	char *ret = malloc(4);
+	ft_strlcpy(ret, "test", 5);
+	if (ft_strcmp(str, "$TEST") == 0)
+		return (ret);
+	else return NULL;
+}
+
+char	**get_command_args(char	*input, t_shell *shell)
 {
 	char	**ret;
 	char	**split;
+	char	*var;
 	int		i;
+	int		j;
 
 	i = 1;
+	j = 0;
 	if (!*input)
 		return (NULL);
 	split = ft_split(input, ' ');
 	ret = malloc(sizeof(char *) * ft_splitlen(split));
 	while (split[i])
 	{
-		ret[i - 1] = ft_strdup(split[i]);
+		if (split[i][0] == '$')
+		{
+			var = get_env_var(shell, split[i]);
+			if (var != NULL)
+				ret[j++] = var;				
+			else
+				free(var);
+			i++;
+			continue ;			
+		}
+		ret[j++] = ft_strdup(split[i]);
 		i++;
 	}
-	ret[i - 1] = 0;
+	ret[j] = 0;
 	free_split(split);
 	return (ret);
 }
@@ -50,7 +73,7 @@ t_command	parse_command(char *input, t_shell *shell)
 	t_command	cmd;
 
 	cmd.name = get_command_name(input);
-	cmd.args = get_command_args(input);
+	cmd.args = get_command_args(input, shell);
 	cmd.shell = shell;
 	return (cmd);
 }
