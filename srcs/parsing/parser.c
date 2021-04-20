@@ -82,6 +82,8 @@ void	handle_cmd(char *input, t_shell *shell)
 		else
 			change_pwd(shell, cmd.args[0]);
 	}
+	else if (ft_strcmp("pwd", cmd.name) == 0)
+		pwd(shell);
  	free(cmd.name);
  	if (cmd.args)
  		free_split(cmd.args);
