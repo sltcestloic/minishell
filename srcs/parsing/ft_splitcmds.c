@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+int	quote_open(t_split *split, const char *str, int i)
+{
+	if (str[i])
+	{
+		if (!str[i + 1])
+			return (FALSE);
+		return (split->quote1 || split->quote2);
+	}
+	else
+		return (FALSE);
+}
+
 t_split	init_split(void)
 {
 	t_split ret;
@@ -28,7 +40,7 @@ int	get_cmd_start(const char *str, char c, int index)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 			update_quote_status(&split, str[i]);
-		if (str[i] == c && !split.quote1 && !split.quote2)
+		if (str[i] == c && !quote_open(&split, str, i))
 		{
 			i += 1;
 			break ;
@@ -57,7 +69,7 @@ int	count_cmds(const char *str, char c)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 			update_quote_status(&split, str[i]);
-		if (!split.quote1 && !split.quote2 && str[i] != c && (str[i + 1] == c || !str[i + 1]))
+		if (!quote_open(&split, str, i) && str[i] != c && (str[i + 1] == c || !str[i + 1]))
 			count++;
 		i++;
 	}
@@ -83,7 +95,7 @@ char	**ft_splitcmds(const char *str, char c)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 			update_quote_status(&split, str[i]);
-		if (!split.quote1 && !split.quote2 && str[i] != c && (str[i + 1] == c || !str[i + 1]))
+		if (!quote_open(&split, str, i) && str[i] != c && (str[i + 1] == c || !str[i + 1]))
 		{
 			ret[wc] = ft_strrdup(str, get_cmd_start(str, c, i), i);
 			if (!ret[wc++])

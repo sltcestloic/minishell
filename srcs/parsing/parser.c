@@ -64,6 +64,8 @@ char	**get_command_args(char	*input, t_shell *shell)
 		i++;
 	}
 	ret[j] = 0;
+	/* for (int d = 0; ret[d]; d++)
+		printf("%s\n", ret[d]); */
 	free_split(split);
 	return (ret);
 }
