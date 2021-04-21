@@ -14,7 +14,7 @@ int	quote_open(t_split *split, const char *str, int i)
 
 t_split	init_split(void)
 {
-	t_split ret;
+	t_split		ret;
 
 	ret.quote1 = 0;
 	ret.quote2 = 0;
@@ -29,12 +29,10 @@ void	update_quote_status(t_split *split, char c)
 		split->quote2 = !split->quote2;
 }
 
-int	get_cmd_start(const char *str, char c, int index)
+int	get_cmd_start(const char *str, char c, int i)
 {
-	int	i;
 	t_split	split;
 
-	i = index;
 	split = init_split();
 	while (str[i])
 	{
@@ -69,7 +67,8 @@ int	count_cmds(const char *str, char c)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 			update_quote_status(&split, str[i]);
-		if (!quote_open(&split, str, i) && str[i] != c && (str[i + 1] == c || !str[i + 1]))
+		if (!quote_open(&split, str, i) && str[i] != c
+			&& (str[i + 1] == c || !str[i + 1]))
 			count++;
 		i++;
 	}
@@ -95,7 +94,8 @@ char	**ft_splitcmds(const char *str, char c)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 			update_quote_status(&split, str[i]);
-		if (!quote_open(&split, str, i) && str[i] != c && (str[i + 1] == c || !str[i + 1]))
+		if (!quote_open(&split, str, i) && str[i] != c
+			&& (str[i + 1] == c || !str[i + 1]))
 		{
 			ret[wc] = ft_strrdup(str, get_cmd_start(str, c, i), i);
 			if (!ret[wc++])
