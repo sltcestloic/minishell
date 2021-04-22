@@ -73,8 +73,8 @@ void	handle_cmd(char *input, t_shell *shell)
 	}
 	else if (ft_strcmp("cd", cmd.args[0]) == 0)
 	{
-		if (!cmd.args[1])
-			change_pwd(shell, NULL);
+		if (!cmd.args[0])
+			change_pwd(shell, 0);
 		else if (ft_splitlen(cmd.args) > 1)
 			write(1, "cd: too many arguments\n", 24);
 		else

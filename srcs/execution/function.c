@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   function.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/14 14:44:53 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/16 13:37:04 by lubourre         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	echo(char *str, int option)
@@ -29,7 +17,10 @@ void	env(t_envlst *lst)
 			if (lst->name)
 				ft_putstr_fd(lst->name, 1);
 			if (lst->value)
+			{
+				write(1, "=", 1);
 				ft_putstr_fd(lst->value, 1);
+			}
 			write(1, "\n", 1);
 			lst = lst->next;
 		}
@@ -47,8 +38,11 @@ void	export(t_envlst *lst)
 		{
 			if (sorted->value)
 			{
+				write(1, "declare -x ", 11);
 				ft_putstr_fd(sorted->name, 1);
+				write(1, "=\"", 2);
 				ft_putstr_fd(sorted->value, 1);
+				write(1, "\"", 1);
 				write(1, "\n", 1);
 			}
 			sorted = sorted->next;

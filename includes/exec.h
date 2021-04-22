@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/14 14:42:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/17 13:07:09 by lubourre         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef EXEC_H
 # define EXEC_H
 
@@ -34,6 +22,7 @@ void		export(t_envlst *env_lst);
 void		set_env(char **envp, t_shell *shell);
 void		new_env_elem(char *str, t_shell *shell);
 void		remove_env_elem(char *name, t_shell *shell);
+t_envlst	*find_in_list(char *str, t_envlst *ptr);
 t_envlst	*copy_sorted_list(t_envlst *lst);
 void		set_pwd(t_shell *shell);
 void		change_pwd(t_shell *shell, char *str);

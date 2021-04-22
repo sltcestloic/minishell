@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   set_env.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/14 16:19:44 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/16 15:52:29 by lubourre         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 inline static char	*copy_name(char *str)
@@ -44,6 +32,7 @@ inline static char	*copy_value(char *str)
 		j++;
 	if (j == 0)
 		return (0);
+	i++;
 	ptr = malloc(j + 1);
 	if (ptr)
 	{
@@ -58,6 +47,13 @@ inline static char	*copy_value(char *str)
 	return (ptr);
 }
 
+t_envlst	*find_in_list(char *str, t_envlst *ptr)
+{
+	while (ptr && ft_strcmp(ptr->name, str))
+		ptr = ptr->next;
+	return (ptr);
+}
+
 void	new_env_elem(char *str, t_shell *shell)
 {
 	t_envlst	*ptr;
@@ -66,10 +62,10 @@ void	new_env_elem(char *str, t_shell *shell)
 	save = shell->env_var;
 	if (save)
 	{
-		while (save->next)
-			save = save->next;
-	ptr = (t_envlst*)ft_malloc(sizeof(t_envlst), &(shell->to_free));
-	save->next = ptr;
+			while (save->next)
+				save = save->next;
+		ptr = (t_envlst*)ft_malloc(sizeof(t_envlst), &(shell->to_free));
+		save->next = ptr;
 	}
 	else
 	{
