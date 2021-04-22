@@ -21,7 +21,6 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	set_env(envp, shell);
 	set_pwd(shell);
-	export(shell->env_var);
 	display_prompt(shell);
 	while (ft_get_next_line(0, &input) > 0)
 	{
