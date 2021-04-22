@@ -6,11 +6,18 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 12:57:08 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/16 13:34:57 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/22 10:17:52 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_envlst	*find_in_list(char *str, t_envlst *ptr)
+{
+	while (ptr && ft_strcmp(ptr->name, str))
+		ptr = ptr->next;
+	return (ptr);
+}
 
 static inline void	swap_elem(t_envlst *elem1, t_envlst *elem2)
 {
