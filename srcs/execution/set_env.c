@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   set_env.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/14 16:19:44 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/17 14:47:42 by lubourre         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 inline static char	*copy_name(char *str)
@@ -56,6 +44,13 @@ inline static char	*copy_value(char *str)
 		}
 		ptr[j] = 0;
 	}
+	return (ptr);
+}
+
+t_envlst	*find_in_list(char *str, t_envlst *ptr)
+{
+	while (ptr && ft_strcmp(ptr->name, str))
+		ptr = ptr->next;
 	return (ptr);
 }
 

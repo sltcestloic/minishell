@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   set_pwd.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/16 16:03:06 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/22 10:30:03 by lubourre         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	go_home(t_shell *shell)
@@ -17,7 +5,6 @@ void	go_home(t_shell *shell)
 	t_envlst *ptr;
 
 	ptr = find_in_list("HOME", shell->env_var);
-	printf("%s - %s\n", ptr->name, ptr->value);
 	if (ptr)
 		chdir(ptr->value);
 	else
