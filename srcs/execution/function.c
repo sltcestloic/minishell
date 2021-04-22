@@ -38,8 +38,11 @@ void	export(t_envlst *lst)
 		{
 			if (sorted->value)
 			{
+				write(1, "declare -x ", 11);
 				ft_putstr_fd(sorted->name, 1);
+				write(1, "=\"", 2);
 				ft_putstr_fd(sorted->value, 1);
+				write(1, "\"", 1);
 				write(1, "\n", 1);
 			}
 			sorted = sorted->next;
