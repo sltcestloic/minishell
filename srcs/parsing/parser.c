@@ -82,6 +82,7 @@ void	handle_cmd(char *input, t_shell *shell)
 	}
 	else if (ft_strcmp("pwd", cmd.args[0]) == 0)
 		pwd(shell);
+	free(cmd.args);
 }
 
 void	parse_input(char *input, t_shell *shell)
@@ -96,4 +97,5 @@ void	parse_input(char *input, t_shell *shell)
 		handle_cmd(split[i], shell);
 		i++;
 	}
+	free_split(split);
 }
