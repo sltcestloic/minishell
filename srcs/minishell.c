@@ -26,7 +26,9 @@ int	main(int ac, char **av, char **envp)
 	{
 		parse_input(input, shell);
 		display_prompt(shell);
+		free(input);
 	}
+	free(input);
 }
 
 /* int main()
