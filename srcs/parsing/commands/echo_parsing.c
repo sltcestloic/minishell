@@ -6,7 +6,7 @@ char	*compute_args(t_command *cmd, int has_n)
 	char	*swap;
 	int		i;
 
-	i = -1;
+	i = 0;
 	if (ft_splitlen(cmd->args) == 0)
 		return (NULL);
 	ret = malloc(1);
@@ -31,7 +31,7 @@ void	parse_echo(t_command *cmd)
 	int		has_n;
 
 	if (ft_splitlen(cmd->args))
-		has_n = ft_strcmp(cmd->args[0], "-n") == 0;
+		has_n = ft_strcmp(cmd->args[1], "-n") == 0;
 	else
 		has_n = FALSE;
 	args = compute_args(cmd, has_n);

@@ -39,10 +39,7 @@ int	get_cmd_start(const char *str, char c, int i)
 		if (str[i] == '"' || str[i] == '\'')
 			update_quote_status(&split, str[i]);
 		if (str[i] == c && !quote_open(&split, str, i))
-		{
-			i += 1;
 			break ;
-		}
 		if (i == 0)
 		{
 			i = -1;
@@ -52,6 +49,30 @@ int	get_cmd_start(const char *str, char c, int i)
 	}
 	i += 1;
 	return (i);
+}
+
+char	*ft_argdup(const char *str, int start, int end, int q)
+{
+	char	*ret;
+	int		i;
+
+	i = 0;
+	ret = malloc(sizeof(char) * (end - start + 2));
+	if (!ret)
+		return (NULL);
+	while (start <= end)
+	{
+		if (q && (str[start] == '"' || str[start] == '\''))
+		{
+			start++;
+			continue ;
+		}
+		ret[i] = str[start];
+		i++;
+		start++;
+	}
+	ret[i] = '\0';
+	return (ret);
 }
 
 int	count_cmds(const char *str, char c)
@@ -75,7 +96,7 @@ int	count_cmds(const char *str, char c)
 	return (count);
 }
 
-char	**ft_splitcmds(const char *str, char c)
+char	**ft_splitcmds(const char *str, char c, int q)
 {
 	char	**ret;
 	int		i;
@@ -97,7 +118,7 @@ char	**ft_splitcmds(const char *str, char c)
 		if (!quote_open(&split, str, i) && str[i] != c
 			&& (str[i + 1] == c || !str[i + 1]))
 		{
-			ret[wc] = ft_strrdup(str, get_cmd_start(str, c, i), i);
+			ret[wc] = ft_argdup(str, get_cmd_start(str, c, i), i, q);
 			if (!ret[wc++])
 			{
 				free_split(ret);
