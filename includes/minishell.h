@@ -7,6 +7,7 @@
 # include "../libft/libft.h"
 # include "parsing.h"
 # include "exec.h"
+# include <dirent.h>
 
 void	display_prompt(t_shell *shell);
 
