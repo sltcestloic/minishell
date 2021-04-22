@@ -46,4 +46,5 @@ void	change_pwd(t_shell *shell, char *str)
 void	pwd(t_shell *shell)
 {
 	ft_putstr_fd(shell->pwd, 1);
+	write(1, "\n", 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 10:24:50 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/17 13:09:32 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/22 13:05:54 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	display_prompt(t_shell *shell)
 	write(1, RESET, ft_strlen(RESET));
 	write(1, " - ", 3);
 	write(1, BLUE, ft_strlen(BLUE));
-	pwd(shell);
+	write(1, shell->pwd, ft_strlen(shell->pwd));
 	write(1, RESET, ft_strlen(RESET));
 	write(1, "$ ", 2);
 }
