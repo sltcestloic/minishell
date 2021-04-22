@@ -6,11 +6,23 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 16:03:06 by lubourre          #+#    #+#             */
-/*   Updated: 2021/04/17 13:02:58 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/04/22 10:30:03 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	go_home(t_shell *shell)
+{
+	t_envlst *ptr;
+
+	ptr = find_in_list("HOME", shell->env_var);
+	printf("%s - %s\n", ptr->name, ptr->value);
+	if (ptr)
+		chdir(ptr->value);
+	else
+		write(2, "Minishell: cd: HOME not set\n", 23);
+}
 
 void	set_pwd(t_shell *shell)
 {
@@ -30,7 +42,10 @@ void	change_pwd(t_shell *shell, char *str)
 {
 	t_envlst	*ptr;
 
-	chdir(str);
+	if (str)
+		chdir(str);
+	else
+		go_home(shell);
 	ptr = shell->env_var;
 	while(ptr && ft_strcmp(ptr->name, "PWD"))
 	{
