@@ -11,24 +11,27 @@ char **find_path(t_shell *shell)
 }
 void	to_exec(t_shell *shell, char **function)
 {
-	DIR				*current_dir;
-	struct dirent	*dir;
 	int				i;
 	char			**path;
-	
+	char			*test;
+	struct stat 	*buf;
+	char			*slash;
+
+	buf = malloc(sizeof(struct stat));
 	i = 0;
 	path = find_path(shell);
 	while (path[i])
 	{
-		current_dir = opendir(path[i]);
-		dir = readdir(current_dir);
-		while (current_dir && dir)
-		{
-			if (ft_strcmp(dir->d_name, function[0]) == 0)
-				break;
-			dir = readdir(current_dir);
-		}
+
+		slash = ft_strjoin(path[i], "/");
+		test = ft_strjoin(slash, function[0]);
+		if (!lstat(test, buf))
+			break ;
+		free(test);
+		free(slash);
+		test = 0;
 		i++;
 	}
-	execve(ft_strjoin(path[i], function[0]), &function[1], shell->envp);
+	if (test)
+		execve(test, &function[0], shell->envp);
 }

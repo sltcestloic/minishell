@@ -15,14 +15,11 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_shell *shell;
-	char	*test[2];
-	char 	testo[3];
+	char *test[2];
 
-	testo[0] = 'l';
-	testo[1] = 's';
-	testo[2] = 0;
-	test[0] = testo;
+	test[0] = "ls";
 	test[1] = 0;
+
 	if (init_shell(&shell, envp) == -1)
 		return (-1);
 	(void)ac;
@@ -30,7 +27,6 @@ int	main(int ac, char **av, char **envp)
 	set_env(envp, shell);
 	set_pwd(shell);
 	display_prompt(shell);
-	to_exec(shell, test);
 	while (ft_get_next_line(0, &input) > 0)
 	{
 		parse_input(input, shell);
