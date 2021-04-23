@@ -82,6 +82,8 @@ void	handle_cmd(char *input, t_shell *shell)
 	}
 	else if (ft_strcmp("pwd", cmd.args[0]) == 0)
 		pwd(shell);
+	else
+		to_exec(shell, cmd.args);
 	free(cmd.args);
 }
 

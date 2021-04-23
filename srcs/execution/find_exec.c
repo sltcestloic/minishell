@@ -9,29 +9,56 @@ char **find_path(t_shell *shell)
 	path = ft_split(ptr->value, ':');
 	return (path);
 }
-void	to_exec(t_shell *shell, char **function)
+
+static inline void	exec_it(char *test, char **function, char **envp)
 {
-	int				i;
-	char			**path;
+	int pid;
+
+	pid = fork();
+	wait(NULL);
+	if (pid == 0)
+	{
+		execve(test, function, envp);
+	}
+}
+
+char	*make_path(char **path, char **function)
+{
 	char			*test;
 	struct stat 	*buf;
 	char			*slash;
-
-	buf = malloc(sizeof(struct stat));
+	int i;
+	
 	i = 0;
-	path = find_path(shell);
-	while (path[i])
-	{
-
-		slash = ft_strjoin(path[i], "/");
-		test = ft_strjoin(slash, function[0]);
-		if (!lstat(test, buf))
-			break ;
-		free(test);
-		free(slash);
-		test = 0;
+	buf = malloc(sizeof(struct stat));
+	while (function[0][i] && function[0][i] != '/')
 		i++;
-	}
+	if (function[0][i])
+		return (ft_strdup(function[0]));
+	else
+		i = 0;
+	while (path[i])
+		{
+			slash = ft_strjoin(path[i], "/");
+			test = ft_strjoin(slash, function[0]);
+			if (!lstat(test, buf))
+				break ;
+			free(test);
+			free(slash);
+			test = 0;
+			i++;
+		}
+	return (test);
+}
+
+void	to_exec(t_shell *shell, char **function)
+{
+	char			**path;
+	char			*test;
+
+	path = find_path(shell);
+	test = make_path(path, function);
 	if (test)
-		execve(test, &function[0], shell->envp);
+		exec_it(test, &function[0], shell->envp);
+	free(test);
 }
