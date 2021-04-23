@@ -18,7 +18,12 @@ static inline void	exec_it(char *test, char **function, char **envp)
 	wait(NULL);
 	if (pid == 0)
 	{
-		execve(test, function, envp);
+		if (execve(test, function, envp))
+		{
+			write(2, "Minishell: ", 11);
+			ft_putstr_fd(test, 2);
+			write(2, ": No such file or directory\n", 28);
+		}
 	}
 }
 
