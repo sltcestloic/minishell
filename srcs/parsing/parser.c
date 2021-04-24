@@ -2,12 +2,23 @@
 
 char	*get_env_var(t_shell *shell, char *str)
 {
-	(void)shell;
-	char *ret = malloc(4);
-	ft_strlcpy(ret, "test", 5);
-	if (ft_strcmp(str, "$TEST") == 0)
-		return (ret);
-	else return NULL;
+	t_envlst	*lst;
+	char		*ret;
+
+	lst = shell->env_var;
+	ret = malloc(1);
+	*ret = 0;
+	while (lst)
+	{
+		if (ft_strcmp(lst->name, &str[1]) == 0)
+		{
+			free(ret);
+			ret = ft_strdup(lst->value);
+			break ;
+		}
+		lst = lst->next;
+	}
+	return (ret);
 }
 
 char	**get_command_args(char	*input, t_shell *shell)
@@ -30,11 +41,11 @@ char	**get_command_args(char	*input, t_shell *shell)
 		{
 			var = get_env_var(shell, split[i]);
 			if (var != NULL)
-				ret[j++] = var;				
+				ret[j++] = var;
 			else
 				free(var);
 			i++;
-			continue ;			
+			continue ;
 		}
 		ret[j++] = ft_strdup(split[i]);
 		i++;

@@ -14,11 +14,7 @@ inline static int	init_shell(t_shell **shell, char **envp)
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
-	t_shell *shell;
-	char *test[2];
-
-	test[0] = "ls";
-	test[1] = 0;
+	t_shell	*shell;
 
 	if (init_shell(&shell, envp) == -1)
 		return (-1);
