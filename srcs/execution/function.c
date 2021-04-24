@@ -29,7 +29,7 @@ void	env(t_envlst *lst)
 
 void	export(t_envlst *lst)
 {
-	t_envlst *sorted;
+	t_envlst	*sorted;
 
 	if (lst)
 	{
