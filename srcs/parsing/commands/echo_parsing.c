@@ -34,6 +34,8 @@ void	parse_echo(t_command *cmd)
 		has_n = ft_strcmp(cmd->args[1], "-n") == 0;
 	else
 		has_n = FALSE;
+	for (int i = 0; cmd->args[i]; i++)
+		printf("%d: %s\n", i, cmd->args[i]);
 	args = compute_args(cmd, has_n);
 	echo(args, has_n);
 }
