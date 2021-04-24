@@ -13,6 +13,7 @@ typedef struct	s_shell
 	t_free		*to_free;
 	t_envlst 	*env_var;
 	char		*pwd;
+	char		**envp;
 }	t_shell;
 
 void		ft_exit(t_free *to_free);
@@ -27,5 +28,6 @@ t_envlst	*copy_sorted_list(t_envlst *lst);
 void		set_pwd(t_shell *shell);
 void		change_pwd(t_shell *shell, char *str);
 void		pwd(t_shell *shell);
+void		to_exec(t_shell *shell, char **function);
 
 #endif
