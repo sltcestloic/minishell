@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/22 15:46:27 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/04/27 13:02:47 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC		= 	minishell.c \
 			parsing/ft_splitcmds.c \
 			parsing/parser.c \
 			util/ft_splitlen.c \
+			util/init.c \
 			util/prompt.c 
 			
 SRCS 	= $(addprefix srcs/, ${SRC})
