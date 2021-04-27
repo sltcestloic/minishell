@@ -105,10 +105,10 @@ void	cat_var(t_parser *parser, char *var, char *input, t_index *indx)
 	free(parser->parsed_input);
 	parser->parsed_input = swap;
 	printf("parsed input before return: %s\n", parser->parsed_input);
-	indx->k = ft_strlen(parser->parsed_input) + 1;
-	parser->parsed_input[indx->k - 1] = ' ';
+	indx->k = ft_strlen(parser->parsed_input);
 	while (input[indx->i] && input[indx->i] != ' ')
 		indx->i++;
+	indx->i--;
 }
 
 void	treat_input(t_shell *shell, char *input, t_parser *parser)
