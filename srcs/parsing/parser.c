@@ -4,13 +4,15 @@ char	*get_env_var(t_shell *shell, char *str)
 {
 	t_envlst	*lst;
 	char		*ret;
+	char		**split;
 
+	split = ft_split(str, ' ');
 	lst = shell->env_var;
 	ret = malloc(1);
 	*ret = 0;
 	while (lst)
 	{
-		if (ft_strcmp(lst->name, &str[1]) == 0)
+		if (ft_strcmp(lst->name, &split[0][1]) == 0)
 		{
 			free(ret);
 			ret = ft_strdup(lst->value);
@@ -18,14 +20,14 @@ char	*get_env_var(t_shell *shell, char *str)
 		}
 		lst = lst->next;
 	}
+	free_split(split);
 	return (ret);
 }
 
-char	**get_command_args(char	*input, t_shell *shell)
+char	**get_command_args(char	*input)
 {
 	char	**ret;
 	char	**split;
-	char	*var;
 	int		i;
 	int		j;
 
@@ -37,16 +39,6 @@ char	**get_command_args(char	*input, t_shell *shell)
 	ret = malloc(sizeof(char *) * (ft_splitlen(split) + 1));
 	while (split[i])
 	{
-		if (split[i][0] == '$')
-		{
-			var = get_env_var(shell, split[i]);
-			if (var != NULL)
-				ret[j++] = var;
-			else
-				free(var);
-			i++;
-			continue ;
-		}
 		ret[j++] = ft_strdup(split[i]);
 		i++;
 	}
@@ -59,7 +51,7 @@ t_command	parse_command(char *input, t_shell *shell)
 {
 	t_command	cmd;
 
-	cmd.args = get_command_args(input, shell);
+	cmd.args = get_command_args(input);
 	cmd.shell = shell;
 	return (cmd);
 }
@@ -103,9 +95,26 @@ static int	is_quote(char c)
 	return (c == '\'' || c == '"');
 }
 
-void	treat_input(char *input, t_parser *parser)
+void	cat_var(t_parser *parser, char *var, char *input, t_index *indx)
+{
+	char	*swap;
+
+	swap = malloc(ft_strlen(input) + ft_strlen(var));
+	ft_strcpy(swap, parser->parsed_input);
+	ft_strcat(swap, var);
+	free(parser->parsed_input);
+	parser->parsed_input = swap;
+	printf("parsed input before return: %s\n", parser->parsed_input);
+	indx->k = ft_strlen(parser->parsed_input) + 1;
+	parser->parsed_input[indx->k - 1] = ' ';
+	while (input[indx->i] && input[indx->i] != ' ')
+		indx->i++;
+}
+
+void	treat_input(t_shell *shell, char *input, t_parser *parser)
 {
 	t_index	i;
+	char	*var;
 
 	i = init_index();
 	while (input[i.i])
@@ -124,6 +133,18 @@ void	treat_input(char *input, t_parser *parser)
 			else
 				parser->parsed_input[i.k++] = input[i.i];
 			parser->backslash = 0;
+		}
+		else if (input[i.i] == '$')
+		{
+			var = get_env_var(shell, &input[i.i]);
+			if (ft_strlen(var))
+				cat_var(parser, var, input, &i);
+			else
+			{
+				free(var);
+				while (input[i.i] != ' ' && input[i.i])
+					i.i++;
+			}
 		}
 		else if (input[i.i] == '\\')
 		{
@@ -153,7 +174,7 @@ void	parse_input(char *input, t_shell *shell)
 	t_parser	parser;
 
 	parser = init_parser(input);
-	treat_input(input, &parser);
+	treat_input(shell, input, &parser);
 	i = 0;
 	split = ft_splitcmds(parser.parsed_input, ';', 0);
 	free(parser.parsed_input);

@@ -24,6 +24,7 @@ t_parser	init_parser(char *input)
 	ret.d_quote = 0;
 	ret.s_quote = 0;
 	ret.parsed_input = malloc(ft_strlen(input) + 1);
+	ft_bzero(ret.parsed_input, ft_strlen(input) + 1);
 	return (ret);
 }
 
