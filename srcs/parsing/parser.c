@@ -98,13 +98,65 @@ void	handle_cmd(char *input, t_shell *shell)
 	free(cmd.args);
 }
 
+static int	is_quote(char c)
+{
+	return (c == '\'' || c == '"');
+}
+
+void	treat_input(char *input, t_parser *parser)
+{
+	t_index	i;
+
+	i = init_index();
+	while (input[i.i])
+	{
+		if (input[i.i] == '\'')
+		{
+			if (!parser->d_quote)
+				parser->s_quote = !parser->s_quote;
+			else
+				parser->parsed_input[i.k++] = input[i.i];
+		}
+		else if (input[i.i] == '"')
+		{
+			if (!parser->s_quote && !parser->backslash)
+				parser->d_quote = !parser->d_quote;
+			else
+				parser->parsed_input[i.k++] = input[i.i];
+			parser->backslash = 0;
+		}
+		else if (input[i.i] == '\\')
+		{
+			if (parser->s_quote || parser->backslash || !is_quote(input[i.i]))
+				parser->parsed_input[i.k++] = input[i.i];
+			if (!parser->s_quote)
+				parser->backslash = !parser->backslash;
+		}
+		else
+		{
+			parser->backslash = 0;
+			printf("%c\n", input[i.i]);
+			parser->parsed_input[i.k++] = input[i.i];
+		}
+		i.i++;
+	}
+	parser->parsed_input[i.k] = 0;
+	printf("Treated input: %s\n", parser->parsed_input);
+	if (parser->s_quote || parser->d_quote)
+		printf("%sError\n", HRED);
+}
+
 void	parse_input(char *input, t_shell *shell)
 {
-	char	**split;
-	int		i;
+	char		**split;
+	int			i;
+	t_parser	parser;
 
+	parser = init_parser(input);
+	treat_input(input, &parser);
 	i = 0;
-	split = ft_splitcmds(input, ';', 0);
+	split = ft_splitcmds(parser.parsed_input, ';', 0);
+	free(parser.parsed_input);
 	while (split[i])
 	{
 		handle_cmd(split[i], shell);

@@ -133,12 +133,10 @@ char	**ft_splitcmds(const char *str, char c, int q)
 	{
 		if (is_quote(str[i]))
 			update_quote_status(&split, str, i);
-		printf("char: %c quote status: %d\n", str[i], quote_open(&split, str, i));
 		if (!quote_open(&split, str, i) && str[i] != c
 			&& (str[i + 1] == c || !str[i + 1]))
 		{
 			ret[wc] = ft_argdup(str, get_cmd_start(str, c, i), i, q);
-			printf("i = %d ret[%d] = %s\n", i, wc, ret[wc]);
 			if (!ret[wc++])
 			{
 				free_split(ret);
