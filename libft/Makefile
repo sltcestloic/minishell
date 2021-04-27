@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/15 13:48:19 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/04/27 13:36:16 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRCS		= char/ft_isalnum.c \
 				string/ft_split.c \
 				string/ft_strchr.c \
 				string/ft_strcmp.c \
+				string/ft_strcpy.c \
 				string/ft_strdup.c \
 				string/ft_strichr.c \
 				string/ft_strjoin.c \
