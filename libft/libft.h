@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 19:59:28 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/27 13:36:03 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/04/27 14:28:46 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void			ft_putnbr_fd(int n, int fd);
 ** String
 */
 
+char			*ft_strcat(char *s1, const char *s2);
 size_t			ft_strcpy(char *dest, const char *src);
 size_t			ft_strlen(const char *str);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
