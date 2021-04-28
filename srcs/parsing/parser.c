@@ -86,7 +86,10 @@ void	handle_cmd(char *input, t_shell *shell)
 	else if (ft_strcmp("pwd", cmd.args[0]) == 0)
 		pwd(shell);
 	else
+	{
+		printf("to exec %s\n", cmd.args[0]);
 		to_exec(shell, cmd.args);
+	}
 	free(cmd.args);
 }
 
@@ -110,7 +113,19 @@ void	cat_var(t_parser *parser, char *var, char *input, t_index *indx)
 	indx->i--;
 }
 
-void	treat_input(t_shell *shell, char *input, t_parser *parser)
+void	add_separator(t_parser *parser, int indx)
+{
+	int	i;
+
+	i = 0;
+	while (parser->separators[i])
+		i++;
+	parser->separators[i] = indx;
+	parser->separators[i + 1] = 0;
+	parser->has_cmd = 0;
+}
+
+int	treat_input(t_shell *shell, char *input, t_parser *parser)
 {
 	t_index	i;
 	char	*var;
@@ -145,9 +160,23 @@ void	treat_input(t_shell *shell, char *input, t_parser *parser)
 					i.i++;
 			}
 		}
+		else if (input[i.i] == ';')
+		{
+			if (!parser->s_quote && !parser->d_quote && !parser->backslash)
+			{
+				if (parser->has_cmd)
+					add_separator(parser, i.i);
+				else
+				{
+					ft_putstr_fd("syntax error near unexpected token `;'\n", 1);
+					return (0);
+				}
+			}
+			parser->parsed_input[i.k++] = input[i.i];
+		}
 		else if (input[i.i] == '\\')
 		{
-			if (parser->s_quote || parser->backslash || !is_quote(input[i.i + 1]))
+			if (parser->s_quote || parser->backslash || (!is_quote(input[i.i + 1]) && input[i.i + 1] != ';'))
 				parser->parsed_input[i.k++] = input[i.i];
 			if (!parser->s_quote)
 				parser->backslash = !parser->backslash;
@@ -156,15 +185,17 @@ void	treat_input(t_shell *shell, char *input, t_parser *parser)
 		{
 			parser->backslash = 0;
 			parser->parsed_input[i.k++] = input[i.i];
+			parser->has_cmd = 1;
 		}
 		i.i++;
 	}
 	parser->parsed_input[i.k] = 0;
 	if (parser->s_quote || parser->d_quote)
 	{
-		printf("Error: quote not closed\n");
+		ft_putstr_fd("Error: quote not closed\n", 1);
 		*parser->parsed_input = 0;
 	}
+	return (1);
 }
 
 void	parse_input(char *input, t_shell *shell)
@@ -174,10 +205,16 @@ void	parse_input(char *input, t_shell *shell)
 	t_parser	parser;
 
 	parser = init_parser(input);
-	treat_input(shell, input, &parser);
+	if (!treat_input(shell, input, &parser))
+	{
+		free(parser.parsed_input);
+		free(parser.separators);
+		return ;
+	}
 	i = 0;
 	split = ft_splitcmds(parser.parsed_input, &parser);
 	free(parser.parsed_input);
+	free(parser.separators);
 	while (split[i])
 	{
 		handle_cmd(split[i], shell);

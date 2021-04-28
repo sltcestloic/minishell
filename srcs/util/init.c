@@ -27,6 +27,7 @@ t_parser	init_parser(char *input)
 	ft_bzero(ret.parsed_input, ft_strlen(input) + 1);
 	ret.separators = malloc(sizeof(int) * (count_separators(input) + 1));
 	ft_bzero(ret.parsed_input, count_separators(input) + 1);
+	ret.has_cmd = 0;
 	return (ret);
 }
 
