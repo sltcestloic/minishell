@@ -5,14 +5,16 @@ char	*get_env_var(t_shell *shell, char *str)
 	t_envlst	*lst;
 	char		*ret;
 	char		**split;
+	char		*name;
 
 	split = ft_split(str, ' ');
+	name = ft_strtrim(&split[0][1], " \"'");
 	lst = shell->env_var;
 	ret = malloc(1);
 	*ret = 0;
 	while (lst)
 	{
-		if (ft_strcmp(lst->name, &split[0][1]) == 0)
+		if (ft_strcmp(lst->name, name) == 0)
 		{
 			free(ret);
 			ret = ft_strdup(lst->value);
@@ -86,10 +88,7 @@ void	handle_cmd(char *input, t_shell *shell)
 	else if (ft_strcmp("pwd", cmd.args[0]) == 0)
 		pwd(shell);
 	else
-	{
-		printf("to exec %s\n", cmd.args[0]);
 		to_exec(shell, cmd.args);
-	}
 	free(cmd.args);
 }
 
@@ -110,7 +109,7 @@ void	cat_var(t_parser *parser, char *var, char *input, t_index *indx)
 	indx->k = ft_strlen(parser->parsed_input);
 	while (input[indx->i] && input[indx->i] != ' ')
 		indx->i++;
-	indx->i--;
+	indx->i -= 2;
 }
 
 void	add_separator(t_parser *parser, int indx)
@@ -156,7 +155,7 @@ int	treat_input(t_shell *shell, char *input, t_parser *parser)
 			else
 			{
 				free(var);
-				while (ft_isalnum(input[i.i + 1]) && input[i.i + 1])
+				while (input[i.i + 1] && ft_isalnum(input[i.i + 1]))
 					i.i++;
 			}
 		}
@@ -165,7 +164,7 @@ int	treat_input(t_shell *shell, char *input, t_parser *parser)
 			if (!parser->s_quote && !parser->d_quote && !parser->backslash)
 			{
 				if (parser->has_cmd)
-					add_separator(parser, i.i);
+					add_separator(parser, i.k);
 				else
 				{
 					ft_putstr_fd("syntax error near unexpected token `;'\n", 1);
