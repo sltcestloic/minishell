@@ -86,10 +86,7 @@ void	handle_cmd(char *input, t_shell *shell)
 	else if (ft_strcmp("pwd", cmd.args[0]) == 0)
 		pwd(shell);
 	else
-	{
-		printf("to exec %s\n", cmd.args[0]);
 		to_exec(shell, cmd.args);
-	}
 	free(cmd.args);
 }
 
@@ -165,7 +162,7 @@ int	treat_input(t_shell *shell, char *input, t_parser *parser)
 			if (!parser->s_quote && !parser->d_quote && !parser->backslash)
 			{
 				if (parser->has_cmd)
-					add_separator(parser, i.i);
+					add_separator(parser, i.k);
 				else
 				{
 					ft_putstr_fd("syntax error near unexpected token `;'\n", 1);
