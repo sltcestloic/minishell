@@ -6,7 +6,7 @@
 #    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/27 13:02:47 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/04/28 15:25:03 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,10 @@ SRC		= 	minishell.c \
 			execution/set_pwd.c \
 			execution/find_exec.c \
 			parsing/commands/echo_parsing.c \
+			parsing/env_var.c \
 			parsing/ft_splitcmds.c \
 			parsing/parser.c \
+			parsing/treatment.c \
 			util/ft_splitlen.c \
 			util/init.c \
 			util/prompt.c 

@@ -1,36 +1,5 @@
 #include "minishell.h"
 
-int	is_separator(int indx, t_parser *parser)
-{
-	int	i;
-
-	i = 0;
-	while (parser->separators[i])
-	{
-		if (parser->separators[i] == indx)
-			return (TRUE);
-		i++;
-	}
-	return (FALSE);
-}
-
-int	get_cmd_start(const char *str, t_parser *parser, int i)
-{
-	while (str[i])
-	{
-		if (is_separator(i, parser))
-			break ;
-		if (i == 0)
-		{
-			i = -1;
-			break ;
-		}
-		i--;
-	}
-	i += 1;
-	return (i);
-}
-
 char	*ft_argdup(const char *str, int start, int end)
 {
 	char	*ret;
@@ -67,63 +36,26 @@ int	count_cmds(t_parser *parser)
 char	**ft_splitcmds(const char *str, t_parser *parser)
 {
 	char	**ret;
-	int		i;
-	int		start;
-	int		wc;
+	t_index	i;
 
-	i = -1;
-	start = 0;
-	wc = 0;
+	i = init_index();
+	i.i = -1;
 	if (!str)
 		return (NULL);
 	ret = malloc(sizeof(char *) * (count_cmds(parser) + 2));
 	if (!ret)
 		return (NULL);
-	while (parser->separators[++i])
+	while (parser->separators[++i.i])
 	{
-		ret[wc] = ft_argdup(str, start, parser->separators[i] - 1);
-		start = parser->separators[i] + 1;
-		if (!ret[wc++])
+		ret[i.k] = ft_argdup(str, i.j, parser->separators[i.i] - 1);
+		i.j = parser->separators[i.i] + 1;
+		if (!ret[i.k++])
 		{
 			free_split(ret);
 			return (NULL);
 		}
 	}
-	ret[wc] = ft_argdup(str, start, ft_strlen(str));
-	ret[wc + 1] = NULL;
+	ret[i.k] = ft_argdup(str, i.j, ft_strlen(str));
+	ret[i.k + 1] = NULL;
 	return (ret);
 }
-
-/* char	**oldft_splitcmds(const char *str, t_parser *parser)
-{
-	char	**ret;
-	int		i;
-	int		wc;
-
-	i = -1;
-	wc = 0;
-	if (!str)
-		return (NULL);
-	ret = malloc(sizeof(char *) * (count_cmds(parser) + 1));
-	if (!ret)
-		return (NULL);
-	while (str[++i])
-	{
-		printf("%d %d\n", i, is_separator(i, parser));
-		if (!is_separator(i, parser) && (is_separator(i + 1, parser) || !str[i + 1]))
-		{
-			ret[wc] = ft_argdup(str, get_cmd_start(str, parser, i), i);
-			printf("%s\n", ret[wc]);
-			if (!ret[wc++])
-			{
-				free_split(ret);
-				return (NULL);
-			}
-		}
-	}
-	ret[wc] = 0;
-	for  (int i = 0; ret[i]; ret++)
-		printf("%s\n", ret[i]);
-	return (ret);
-}
- */
