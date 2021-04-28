@@ -33,6 +33,19 @@ typedef struct s_index
 }				t_index;
 
 void		parse_input(char *input, t_shell *shell);
+int			treat_input(t_shell *shell, char *input, t_parser *parser);
+
+/*
+** Environment variables
+*/
+
+void		cat_var(t_parser *parser, char *var, char *input, t_index *indx);
+char		*get_env_var(t_shell *shell, char *str);
+
+/*
+** Init
+*/
+
 t_parser	init_parser(char *input);
 t_index		init_index(void);
 
@@ -42,7 +55,6 @@ t_index		init_index(void);
 
 void		parse_echo(t_command *cmd);
 
-int			count_cmds(t_parser *parser);
 char		**ft_splitcmds(const char *str, t_parser *parser);
 
 #endif
