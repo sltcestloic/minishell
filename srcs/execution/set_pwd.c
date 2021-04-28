@@ -2,13 +2,13 @@
 
 void	go_home(t_shell *shell)
 {
-	t_envlst *ptr;
+	t_envlst	*ptr;
 
 	ptr = find_in_list("HOME", shell->env_var);
 	if (ptr)
 		chdir(ptr->value);
 	else
-		write(2, "Minishell: cd: HOME not set\n", 23);
+		write(2, "Minishell: cd: HOME not set\n", 28);
 }
 
 void	set_pwd(t_shell *shell)
@@ -16,7 +16,7 @@ void	set_pwd(t_shell *shell)
 	t_envlst	*ptr;
 
 	ptr = shell->env_var;
-	while(ptr && ft_strcmp(ptr->name, "PWD"))
+	while (ptr && ft_strcmp(ptr->name, "PWD"))
 	{
 		ptr = ptr->next;
 	}
@@ -34,7 +34,7 @@ void	change_pwd(t_shell *shell, char *str)
 	else
 		go_home(shell);
 	ptr = shell->env_var;
-	while(ptr && ft_strcmp(ptr->name, "PWD"))
+	while (ptr && ft_strcmp(ptr->name, "PWD"))
 	{
 		ptr = ptr->next;
 	}

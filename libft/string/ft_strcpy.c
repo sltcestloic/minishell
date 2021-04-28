@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_splitlen.c                                      :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/14 15:08:34 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/24 08:28:35 by lbertran         ###   ########lyon.fr   */
+/*   Created: 2021/04/27 13:34:49 by lbertran          #+#    #+#             */
+/*   Updated: 2021/04/27 13:35:50 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	ft_splitlen(char **split)
+size_t	ft_strcpy(char *dest, const char *src)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	if (!split)
+	if (!src)
 		return (0);
-	while (split[i])
+	while (src[i])
+	{
+		dest[i] = src[i];
 		i++;
-	return (i);
+	}
+	dest[i] = '\0';
+	return (ft_strlen(src));
 }

@@ -1,59 +1,9 @@
 #include "minishell.h"
 
-int	quote_open(t_split *split, const char *str, int i)
-{
-	if (str[i])
-	{
-		if (!str[i + 1])
-			return (FALSE);
-		return (split->quote1 || split->quote2);
-	}
-	else
-		return (FALSE);
-}
-
-t_split	init_split(void)
-{
-	t_split		ret;
-
-	ret.quote1 = 0;
-	ret.quote2 = 0;
-	return (ret);
-}
-
-void	update_quote_status(t_split *split, char c)
-{
-	if (c == '\'')
-		split->quote1 = !split->quote1;
-	else if (c == '"')
-		split->quote2 = !split->quote2;
-}
-
-int	get_cmd_start(const char *str, char c, int i)
-{
-	t_split	split;
-
-	split = init_split();
-	while (str[i])
-	{
-		if (str[i] == '"' || str[i] == '\'')
-			update_quote_status(&split, str[i]);
-		if (str[i] == c && !quote_open(&split, str, i))
-			break ;
-		if (i == 0)
-		{
-			i = -1;
-			break ;
-		}
-		i--;
-	}
-	i += 1;
-	return (i);
-}
-
-char	*ft_argdup(const char *str, int start, int end, int q)
+char	*ft_argdup(const char *str, int start, int end)
 {
 	char	*ret;
+	char	*swap;
 	int		i;
 
 	i = 0;
@@ -62,70 +12,50 @@ char	*ft_argdup(const char *str, int start, int end, int q)
 		return (NULL);
 	while (start <= end)
 	{
-		if (q && (str[start] == '"' || str[start] == '\''))
-		{
-			start++;
-			continue ;
-		}
 		ret[i] = str[start];
 		i++;
 		start++;
 	}
 	ret[i] = '\0';
+	swap = ft_strtrim(ret, " ");
+	free(ret);
+	ret = swap;
 	return (ret);
 }
 
-int	count_cmds(const char *str, char c)
+int	count_cmds(t_parser *parser)
 {
 	int		i;
-	int		count;
-	t_split	split;
 
-	i = 0;
-	count = 0;
-	split = init_split();
-	while (str[i])
-	{
-		if (str[i] == '"' || str[i] == '\'')
-			update_quote_status(&split, str[i]);
-		if (!quote_open(&split, str, i) && str[i] != c
-			&& (str[i + 1] == c || !str[i + 1]))
-			count++;
+	i = 1;
+	while (parser->separators[i])
 		i++;
-	}
-	return (count);
+	return (i);
 }
 
-char	**ft_splitcmds(const char *str, char c, int q)
+char	**ft_splitcmds(const char *str, t_parser *parser)
 {
 	char	**ret;
-	int		i;
-	int		wc;
-	t_split	split;
+	t_index	i;
 
-	i = -1;
-	wc = 0;
-	split = init_split();
+	i = init_index();
+	i.i = -1;
 	if (!str)
 		return (NULL);
-	ret = malloc(sizeof(char *) * (count_cmds(str, c) + 1));
+	ret = malloc(sizeof(char *) * (count_cmds(parser) + 2));
 	if (!ret)
 		return (NULL);
-	while (str[++i])
+	while (parser->separators[++i.i])
 	{
-		if (str[i] == '"' || str[i] == '\'')
-			update_quote_status(&split, str[i]);
-		if (!quote_open(&split, str, i) && str[i] != c
-			&& (str[i + 1] == c || !str[i + 1]))
+		ret[i.k] = ft_argdup(str, i.j, parser->separators[i.i] - 1);
+		i.j = parser->separators[i.i] + 1;
+		if (!ret[i.k++])
 		{
-			ret[wc] = ft_argdup(str, get_cmd_start(str, c, i), i, q);
-			if (!ret[wc++])
-			{
-				free_split(ret);
-				return (NULL);
-			}
+			free_split(ret);
+			return (NULL);
 		}
 	}
-	ret[wc] = 0;
+	ret[i.k] = ft_argdup(str, i.j, ft_strlen(str));
+	ret[i.k + 1] = NULL;
 	return (ret);
 }

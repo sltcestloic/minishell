@@ -11,8 +11,8 @@ inline static t_free	*last_elem(t_free *lst)
 
 char	*ft_malloc(int size, t_free **to_free)
 {
-	char *ptr;
-	t_free *elem;
+	char	*ptr;
+	t_free	*elem;
 
 	ptr = malloc(size);
 	elem = malloc(sizeof(t_free));
@@ -36,7 +36,7 @@ char	*ft_malloc(int size, t_free **to_free)
 
 void	ft_free(t_free *to_free)
 {
-	t_free *ptr;
+	t_free	*ptr;
 
 	ptr = to_free;
 	while (to_free)
@@ -50,8 +50,8 @@ void	ft_free(t_free *to_free)
 
 void	ft_free_one(t_free **to_free)
 {	
-	t_free *ptr;
-	t_free *save;
+	t_free	*ptr;
+	t_free	*save;
 
 	ptr = *to_free;
 	save = 0;

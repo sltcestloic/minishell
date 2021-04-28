@@ -1,20 +1,9 @@
 #include "minishell.h"
 
-char	*get_env_var(t_shell *shell, char *str)
-{
-	(void)shell;
-	char *ret = malloc(4);
-	ft_strlcpy(ret, "test", 5);
-	if (ft_strcmp(str, "$TEST") == 0)
-		return (ret);
-	else return NULL;
-}
-
-char	**get_command_args(char	*input, t_shell *shell)
+char	**get_command_args(char	*input)
 {
 	char	**ret;
 	char	**split;
-	char	*var;
 	int		i;
 	int		j;
 
@@ -22,20 +11,10 @@ char	**get_command_args(char	*input, t_shell *shell)
 	j = 0;
 	if (!*input)
 		return (NULL);
-	split = ft_splitcmds(input, ' ', 1);
+	split = ft_split(input, ' ');
 	ret = malloc(sizeof(char *) * (ft_splitlen(split) + 1));
 	while (split[i])
 	{
-		if (split[i][0] == '$')
-		{
-			var = get_env_var(shell, split[i]);
-			if (var != NULL)
-				ret[j++] = var;				
-			else
-				free(var);
-			i++;
-			continue ;			
-		}
 		ret[j++] = ft_strdup(split[i]);
 		i++;
 	}
@@ -48,7 +27,7 @@ t_command	parse_command(char *input, t_shell *shell)
 {
 	t_command	cmd;
 
-	cmd.args = get_command_args(input, shell);
+	cmd.args = get_command_args(input);
 	cmd.shell = shell;
 	return (cmd);
 }
@@ -89,11 +68,21 @@ void	handle_cmd(char *input, t_shell *shell)
 
 void	parse_input(char *input, t_shell *shell)
 {
-	char	**split;
-	int		i;
+	char		**split;
+	int			i;
+	t_parser	parser;
 
+	parser = init_parser(input);
+	if (!treat_input(shell, input, &parser))
+	{
+		free(parser.parsed_input);
+		free(parser.separators);
+		return ;
+	}
 	i = 0;
-	split = ft_splitcmds(input, ';', 0);
+	split = ft_splitcmds(parser.parsed_input, &parser);
+	free(parser.parsed_input);
+	free(parser.separators);
 	while (split[i])
 	{
 		handle_cmd(split[i], shell);

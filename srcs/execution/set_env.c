@@ -2,8 +2,8 @@
 
 inline static char	*copy_name(char *str)
 {
-	register int i;
-	char *ptr;
+	register int	i;
+	char			*ptr;
 
 	i = 0;
 	while (str[i] != '=' && str[i])
@@ -22,7 +22,7 @@ inline static char	*copy_value(char *str)
 {
 	register int	i;
 	register int	j;
-	char 			*ptr;
+	char			*ptr;
 
 	i = 0;
 	j = 0;
@@ -62,14 +62,14 @@ void	new_env_elem(char *str, t_shell *shell)
 	save = shell->env_var;
 	if (save)
 	{
-			while (save->next)
-				save = save->next;
-		ptr = (t_envlst*)ft_malloc(sizeof(t_envlst), &(shell->to_free));
+		while (save->next)
+			save = save->next;
+		ptr = (t_envlst *)ft_malloc(sizeof(t_envlst), &(shell->to_free));
 		save->next = ptr;
 	}
 	else
 	{
-		ptr = (t_envlst*)ft_malloc(sizeof(t_envlst), &(shell->to_free));
+		ptr = (t_envlst *)ft_malloc(sizeof(t_envlst), &(shell->to_free));
 		shell->env_var = ptr;
 	}
 	if (ptr)
