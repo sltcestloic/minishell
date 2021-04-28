@@ -6,7 +6,7 @@
 #    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/22 15:46:27 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/04/28 13:17:13 by lubourre         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC		= 	minishell.c \
 			execution/copy_sort_lst.c \
 			execution/set_pwd.c \
 			execution/find_exec.c \
+			execution/redirect.c \
 			parsing/commands/echo_parsing.c \
 			parsing/ft_splitcmds.c \
 			parsing/parser.c \
@@ -29,14 +30,14 @@ NAME	= minishell
 LIBC	= ar rcs
 CC		= gcc
 RM		= rm -f
-CFLAGS	= -Wall -Wextra -Werror -g3
+CFLAGS	= -Wall -Wextra -Werror
 
 srcs/%.o: srcs/%.c ${INCS}
 	${CC} ${CFLAGS} -c $< -o $@ -I${INCS}
 
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
-	${CC} -o ${NAME} ${OBJS} libft/libft.a -g3
+	${CC} -o ${NAME} ${OBJS} libft/libft.a
 all: ${NAME}
 
 bonus: all
