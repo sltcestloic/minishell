@@ -161,7 +161,10 @@ void	treat_input(t_shell *shell, char *input, t_parser *parser)
 	}
 	parser->parsed_input[i.k] = 0;
 	if (parser->s_quote || parser->d_quote)
-		printf("%sError: quote not closed\n", HRED);
+	{
+		printf("Error: quote not closed\n");
+		*parser->parsed_input = 0;
+	}
 }
 
 void	parse_input(char *input, t_shell *shell)
