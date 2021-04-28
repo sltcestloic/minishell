@@ -34,6 +34,7 @@ int	get_cmd_start(const char *str, t_parser *parser, int i)
 char	*ft_argdup(const char *str, int start, int end)
 {
 	char	*ret;
+	char	*swap;
 	int		i;
 
 	i = 0;
@@ -47,6 +48,9 @@ char	*ft_argdup(const char *str, int start, int end)
 		start++;
 	}
 	ret[i] = '\0';
+	swap = ft_strtrim(ret, " ");
+	free(ret);
+	ret = swap;
 	return (ret);
 }
 
@@ -64,6 +68,36 @@ char	**ft_splitcmds(const char *str, t_parser *parser)
 {
 	char	**ret;
 	int		i;
+	int		start;
+	int		wc;
+
+	i = -1;
+	start = 0;
+	wc = 0;
+	if (!str)
+		return (NULL);
+	ret = malloc(sizeof(char *) * (count_cmds(parser) + 2));
+	if (!ret)
+		return (NULL);
+	while (parser->separators[++i])
+	{
+		ret[wc] = ft_argdup(str, start, parser->separators[i] - 1);
+		start = parser->separators[i] + 1;
+		if (!ret[wc++])
+		{
+			free_split(ret);
+			return (NULL);
+		}
+	}
+	ret[wc] = ft_argdup(str, start, ft_strlen(str));
+	ret[wc + 1] = NULL;
+	return (ret);
+}
+
+/* char	**oldft_splitcmds(const char *str, t_parser *parser)
+{
+	char	**ret;
+	int		i;
 	int		wc;
 
 	i = -1;
@@ -75,9 +109,11 @@ char	**ft_splitcmds(const char *str, t_parser *parser)
 		return (NULL);
 	while (str[++i])
 	{
+		printf("%d %d\n", i, is_separator(i, parser));
 		if (!is_separator(i, parser) && (is_separator(i + 1, parser) || !str[i + 1]))
 		{
 			ret[wc] = ft_argdup(str, get_cmd_start(str, parser, i), i);
+			printf("%s\n", ret[wc]);
 			if (!ret[wc++])
 			{
 				free_split(ret);
@@ -86,5 +122,8 @@ char	**ft_splitcmds(const char *str, t_parser *parser)
 		}
 	}
 	ret[wc] = 0;
+	for  (int i = 0; ret[i]; ret++)
+		printf("%s\n", ret[i]);
 	return (ret);
 }
+ */

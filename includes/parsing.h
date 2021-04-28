@@ -19,6 +19,7 @@ typedef struct s_parser
 {
 	int		s_quote;
 	int		d_quote;
+	int		has_cmd;
 	int		backslash;
 	char	*parsed_input;
 	int		*separators;
