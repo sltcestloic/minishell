@@ -10,6 +10,9 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <string.h>
 
 void	display_prompt(t_shell *shell);
 

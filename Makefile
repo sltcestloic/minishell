@@ -1,21 +1,10 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/28 15:25:03 by lbertran         ###   ########lyon.fr    #
-#                                                                              #
-# **************************************************************************** #
-
 SRC		= 	minishell.c \
 			execution/function.c \
 			execution/set_env.c \
 			execution/copy_sort_lst.c \
 			execution/set_pwd.c \
 			execution/find_exec.c \
+			execution/redirect.c \
 			parsing/commands/echo_parsing.c \
 			parsing/env_var.c \
 			parsing/ft_splitcmds.c \
@@ -32,14 +21,14 @@ NAME	= minishell
 LIBC	= ar rcs
 CC		= gcc
 RM		= rm -f
-CFLAGS	= -Wall -Wextra -Werror -g3
+CFLAGS	= -Wall -Wextra -Werror
 
 srcs/%.o: srcs/%.c ${INCS}
 	${CC} ${CFLAGS} -c $< -o $@ -I${INCS}
 
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
-	${CC} -o ${NAME} ${OBJS} libft/libft.a -g3
+	${CC} -o ${NAME} ${OBJS} libft/libft.a
 all: ${NAME}
 
 bonus: all
