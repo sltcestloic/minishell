@@ -21,6 +21,7 @@ typedef struct s_parser
 	int		d_quote;
 	int		backslash;
 	char	*parsed_input;
+	int		*separators;
 }				t_parser;
 
 typedef struct s_index
@@ -40,7 +41,7 @@ t_index		init_index(void);
 
 void		parse_echo(t_command *cmd);
 
-int			count_cmds(const char *str, char c);
-char		**ft_splitcmds(const char *str, char c, int q);
+int			count_cmds(t_parser *parser);
+char		**ft_splitcmds(const char *str, t_parser *parser);
 
 #endif

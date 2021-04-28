@@ -35,7 +35,7 @@ char	**get_command_args(char	*input)
 	j = 0;
 	if (!*input)
 		return (NULL);
-	split = ft_splitcmds(input, ' ', 1);
+	split = ft_split(input, ' ');
 	ret = malloc(sizeof(char *) * (ft_splitlen(split) + 1));
 	while (split[i])
 	{
@@ -104,7 +104,6 @@ void	cat_var(t_parser *parser, char *var, char *input, t_index *indx)
 	ft_strcat(swap, var);
 	free(parser->parsed_input);
 	parser->parsed_input = swap;
-	printf("parsed input before return: %s\n", parser->parsed_input);
 	indx->k = ft_strlen(parser->parsed_input);
 	while (input[indx->i] && input[indx->i] != ' ')
 		indx->i++;
@@ -121,7 +120,7 @@ void	treat_input(t_shell *shell, char *input, t_parser *parser)
 	{
 		if (input[i.i] == '\'')
 		{
-			if (!parser->d_quote)
+			if (!parser->d_quote && !parser->backslash)
 				parser->s_quote = !parser->s_quote;
 			else
 				parser->parsed_input[i.k++] = input[i.i];
@@ -134,7 +133,7 @@ void	treat_input(t_shell *shell, char *input, t_parser *parser)
 				parser->parsed_input[i.k++] = input[i.i];
 			parser->backslash = 0;
 		}
-		else if (input[i.i] == '$')
+		else if (input[i.i] == '$' && !parser->backslash && !parser->s_quote)
 		{
 			var = get_env_var(shell, &input[i.i]);
 			if (ft_strlen(var))
@@ -142,13 +141,13 @@ void	treat_input(t_shell *shell, char *input, t_parser *parser)
 			else
 			{
 				free(var);
-				while (input[i.i] != ' ' && input[i.i])
+				while (ft_isalnum(input[i.i + 1]) && input[i.i + 1])
 					i.i++;
 			}
 		}
 		else if (input[i.i] == '\\')
 		{
-			if (parser->s_quote || parser->backslash || !is_quote(input[i.i]))
+			if (parser->s_quote || parser->backslash || !is_quote(input[i.i + 1]))
 				parser->parsed_input[i.k++] = input[i.i];
 			if (!parser->s_quote)
 				parser->backslash = !parser->backslash;
@@ -156,15 +155,13 @@ void	treat_input(t_shell *shell, char *input, t_parser *parser)
 		else
 		{
 			parser->backslash = 0;
-			printf("%c\n", input[i.i]);
 			parser->parsed_input[i.k++] = input[i.i];
 		}
 		i.i++;
 	}
 	parser->parsed_input[i.k] = 0;
-	printf("Treated input: %s\n", parser->parsed_input);
 	if (parser->s_quote || parser->d_quote)
-		printf("%sError\n", HRED);
+		printf("%sError: quote not closed\n", HRED);
 }
 
 void	parse_input(char *input, t_shell *shell)
@@ -176,7 +173,7 @@ void	parse_input(char *input, t_shell *shell)
 	parser = init_parser(input);
 	treat_input(shell, input, &parser);
 	i = 0;
-	split = ft_splitcmds(parser.parsed_input, ';', 0);
+	split = ft_splitcmds(parser.parsed_input, &parser);
 	free(parser.parsed_input);
 	while (split[i])
 	{
