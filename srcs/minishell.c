@@ -25,7 +25,7 @@ t_cmd	*cmd_init(void)
 	out2->next = 0;
 	cmd->type = 1;
 	in->type = 2;
-	out->type = 3;
+	out->type = 4;
 	out2->type = 3;
 	cmd->value = cat;
 	in->value = malloc(sizeof(char*) * 2);
@@ -40,7 +40,7 @@ t_cmd	*cmd_init(void)
 	return (cmd);
 }
 
-void	test_redirect(t_shell *shell)
+void	test_redirect_append(t_shell *shell)
 {
 	t_cmd *cmd;
 
@@ -75,7 +75,7 @@ int	main(int ac, char **av, char **envp)
 	set_env(envp, shell);
 	set_pwd(shell);
 	display_prompt(shell);
-	// test_redirect(shell);
+	// test_redirect_append(shell);
 	while (ft_get_next_line(0, &input) > 0)
 	{
 		parse_input(input, shell);
