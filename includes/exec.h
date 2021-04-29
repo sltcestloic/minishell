@@ -44,7 +44,7 @@ void		change_pwd(t_shell *shell, char *str);
 void		pwd(t_shell *shell);
 void		to_exec(t_shell *shell, char **function);
 int			redirect(t_cmd *cmd);
-int			open_dup_redirect(char *file_path, int fd_stream);
+int			open_dup_redirect(t_cmd *cmd, int fd_stream);
 int			open_creat(char *file_path);
 
 #endif
