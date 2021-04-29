@@ -24,7 +24,7 @@ RM		= rm -f
 CFLAGS	= -Wall -Wextra -Werror
 
 srcs/%.o: srcs/%.c ${INCS}
-	${CC} ${CFLAGS} -c $< -o $@ -I${INCS}
+	${CC} ${CFLAGS} -c $< -o $@ -I${INCS} -g
 
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
