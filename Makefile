@@ -5,6 +5,7 @@ SRC		= 	minishell.c \
 			execution/set_pwd.c \
 			execution/find_exec.c \
 			execution/redirect.c \
+			execution/pipe.c \
 			parsing/commands/echo_parsing.c \
 			parsing/env_var.c \
 			parsing/ft_splitcmds.c \

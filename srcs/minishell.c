@@ -1,5 +1,49 @@
 #include "minishell.h"
 
+t_cmd	*cmd_init_pipe(void)
+{
+	t_cmd *in;
+	t_cmd *pipe;
+	t_cmd *cmd;
+	t_cmd *cmd2;
+	char **cat;
+
+	cat = malloc(sizeof(char*) * 2);
+	cat[0] = malloc(4);
+	cat[1] = 0;
+	cat[0][0] = 'c';
+	cat[0][1] = 'a';
+	cat[0][2] = 't';
+	cat[0][3] = 0;
+	in = malloc(sizeof(t_cmd));
+	pipe = malloc(sizeof(t_cmd));
+	cmd = malloc(sizeof(t_cmd));
+	cmd2 = malloc(sizeof(t_cmd));
+	cmd->next = in;
+	in->next = pipe;
+	cmd2->next = 0;
+	pipe->next = cmd2;
+	cmd->type = 1;
+	cmd2->type = 1;
+	in->type = 2;
+	pipe->type = 5;
+	cmd->value = cat;
+	cmd2->value = cat;
+	in->value = malloc(sizeof(char*) * 2);
+	pipe->value = 0;
+	in->value[0] = ft_strdup("Makefile");
+	in->value[1] = ft_strdup("");
+	return (cmd);
+}
+
+void	test_pipe(t_shell *shell)
+{
+	t_cmd *cmd;
+
+	cmd = cmd_init_pipe();
+	cmd_parse(cmd, shell);
+}
+
 t_cmd	*cmd_init(void)
 {
 	t_cmd *in;
@@ -76,6 +120,7 @@ int	main(int ac, char **av, char **envp)
 	set_pwd(shell);
 	display_prompt(shell);
 	// test_redirect_append(shell);
+	test_pipe(shell);
 	while (ft_get_next_line(0, &input) > 0)
 	{
 		parse_input(input, shell);
