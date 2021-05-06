@@ -18,7 +18,7 @@ int	open_dup_redirect(t_cmd *cmd, int fd_stream)
 	int fd;
 
 	if (fd_stream == 0)
-		fd = open(cmd->value[0], O_RDWR | O_CREAT, 0644);
+		fd = open(cmd->value[0], O_RDWR, 0644);
 	else if (cmd->type == 4)
 		fd = open(cmd->value[0], O_RDWR | O_CREAT | O_APPEND, 0644);
 	else

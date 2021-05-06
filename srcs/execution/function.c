@@ -12,7 +12,7 @@ void	env(t_envlst *lst)
 {
 	if (lst)
 	{
-		while (lst->next)
+		while (lst)
 		{
 			if (lst->name)
 				ft_putstr_fd(lst->name, 1);
@@ -34,7 +34,7 @@ void	export(t_envlst *lst)
 	if (lst)
 	{
 		sorted = copy_sorted_list(lst);
-		while (sorted->next)
+		while (sorted)
 		{
 			if (sorted->value)
 			{

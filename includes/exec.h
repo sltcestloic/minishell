@@ -46,5 +46,7 @@ void		to_exec(t_shell *shell, char **function);
 int			redirect(t_cmd *cmd);
 int			open_dup_redirect(t_cmd *cmd, int fd_stream);
 int			open_creat(char *file_path);
+void		cmd_parse(t_cmd *cmd, t_shell *shell);
+int			init_fd(t_shell *shell);
 
 #endif
