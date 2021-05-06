@@ -6,7 +6,9 @@ char	**find_path(t_shell *shell)
 	char		**path;
 
 	ptr = find_in_list("PATH", shell->env_var);
-	path = ft_split(ptr->value, ':');
+	path = 0;
+	if (ptr)
+		path = ft_split(ptr->value, ':');
 	return (path);
 }
 
@@ -62,8 +64,12 @@ void	to_exec(t_shell *shell, char **function)
 	char			*test;
 
 	path = find_path(shell);
-	test = make_path(path, function);
+	test = 0;
+	if (path)
+		test = make_path(path, function);
 	if (test)
 		exec_it(test, &function[0], shell->envp);
+	else
+		ft_putstr_fd("minishell: command not found\n", 2);
 	free(test);
 }

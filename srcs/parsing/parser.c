@@ -35,7 +35,9 @@ t_command	parse_command(char *input, t_shell *shell)
 void	handle_cmd(char *input, t_shell *shell)
 {
 	t_command	cmd;
+	int i;
 
+	i = 1;
 	cmd = parse_command(input, shell);
 	if (ft_strcmp("exit", cmd.args[0]) == 0)
 		ft_exit(shell->to_free);
@@ -43,12 +45,26 @@ void	handle_cmd(char *input, t_shell *shell)
 		parse_echo(&cmd);
 	else if (ft_strcmp("env", cmd.args[0]) == 0)
 		env(shell->env_var);
+	else if (ft_strcmp("unset", cmd.args[0]) == 0)
+	{
+			while(cmd.args[i])
+			{
+				remove_env_elem(cmd.args[i], shell);
+				i++;
+			}
+	}
 	else if (ft_strcmp("export", cmd.args[0]) == 0)
 	{
-		if (!cmd.args[0])
+		if (!cmd.args[1])
 			export(shell->env_var);
 		else
-			new_env_elem(cmd.args[1], shell);
+		{
+			while(cmd.args[i])
+			{
+				new_env_elem(cmd.args[i], shell);
+				i++;
+			}
+		}
 	}
 	else if (ft_strcmp("cd", cmd.args[0]) == 0)
 	{
