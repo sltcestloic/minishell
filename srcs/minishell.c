@@ -1,5 +1,67 @@
 #include "minishell.h"
 
+t_cmd	*cmd_init_pipe(void)
+{
+	t_cmd *in;
+	t_cmd *pipe;
+	t_cmd *pipe2;
+	t_cmd *cmd;
+	t_cmd *cmd2;
+	t_cmd *cmd3;
+	char **cat;
+
+	cat = malloc(sizeof(char*) * 3);
+	cat[0] = ft_strdup("cat");
+	cat[1] = ft_strdup("Makefile");
+	cat[2] = 0;
+	cmd = malloc(sizeof(t_cmd));
+	cmd->value = cat;
+	cmd->type = 1;
+	in = malloc(sizeof(t_cmd));
+	in->type = 2;
+	in->value = malloc(sizeof(char*) * 2);
+	in->value[0] = ft_strdup("Makefile");
+	in->value[1] = NULL;
+	pipe = malloc(sizeof(t_cmd));
+	pipe->value = 0;
+	pipe->type = 5;
+	pipe2 = malloc(sizeof(t_cmd));
+	pipe2->value = 0;
+	pipe2->type = 5;
+	cmd2 = malloc(sizeof(t_cmd));
+	cmd2->value = cat;
+	cmd2->next = 0;
+	cmd2->type = 1;
+	cmd3 = malloc(sizeof(t_cmd));
+	cmd3->value = cat;
+	cmd3->next = 0;
+	cmd3->type = 1;
+	pipe->next = cmd2;
+	cmd2->next = pipe2;
+	pipe2->next = cmd3;
+	in->next = pipe;
+	cmd->next = pipe;
+	in = cmd;
+	while (in)
+	{
+		if (in->value)
+			printf("%s->", in->value[1]);
+		else
+			printf("pipe->");
+		in = in->next;
+	}
+	printf("\n");
+	return (cmd);
+}
+
+void	test_pipe(t_shell *shell)
+{
+	t_cmd *cmd;
+
+	cmd = cmd_init_pipe();
+	cmd_parse(cmd, shell);
+}
+
 t_cmd	*cmd_init(void)
 {
 	t_cmd *in;
@@ -32,11 +94,11 @@ t_cmd	*cmd_init(void)
 	out->value = malloc(sizeof(char*) * 2);
 	out2->value = malloc(sizeof(char*) * 2);
 	in->value[0] = ft_strdup("Makefile");
-	in->value[1] = ft_strdup("");
+	in->value[1] = NULL;
 	out->value[0] = ft_strdup("Test");
-	out->value[1] = ft_strdup("");
+	out->value[1] = NULL;
 	out2->value[0] = ft_strdup("Testo");
-	out2->value[1] = ft_strdup("");
+	out2->value[1] = NULL;
 	return (cmd);
 }
 
@@ -74,8 +136,10 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	set_env(envp, shell);
 	set_pwd(shell);
+	init_fd(shell);
 	display_prompt(shell);
 	// test_redirect_append(shell);
+	// test_pipe(shell);
 	while (ft_get_next_line(0, &input) > 0)
 	{
 		parse_input(input, shell);
