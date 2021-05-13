@@ -11,6 +11,7 @@ SRC		= 	minishell.c \
 			parsing/ft_splitcmds.c \
 			parsing/parser.c \
 			parsing/treatment.c \
+			util/cmd.c \
 			util/ft_splitlen.c \
 			util/init.c \
 			util/prompt.c 

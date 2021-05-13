@@ -15,10 +15,6 @@ static int	get_type(char c)
 		return (-1);
 }
 
-/*
-**	TODO: return une t_cmd avec le contenu et en next le type du
-** 	separateur si il y en a un
-*/
 t_cmd	*ft_argdup(const char *str, int start, int end)
 {
 	t_cmd	*cmd;
@@ -48,6 +44,7 @@ t_cmd	*ft_argdup(const char *str, int start, int end)
 		cmd->next = malloc(sizeof(t_cmd));
 		cmd->next->type = get_type(str[end + 1]);
 	}
+	free(ret);
 	return (cmd);
 }
 
@@ -61,32 +58,34 @@ int	count_cmds(t_parser *parser)
 	return (i);
 }
 
-char	**ft_splitcmds(const char *str, t_parser *parser)
+t_cmd	*ft_splitcmds(const char *str, t_parser *parser)
 {
-	t_cmd	*cmd; //ret
-	char	**ret;
+	t_cmd	*cmd;
 	t_index	i;
 
 	cmd = malloc(sizeof(t_cmd));
+	cmd->type = -1;
 	i = init_index();
 	i.i = -1;
 	if (!str)
 		return (NULL);
-	ret = malloc(sizeof(char *) * (count_cmds(parser) + 2));
-	if (!ret)
-		return (NULL);
 	while (parser->separators[++i.i])
 	{
-		//add back ft_argdup a cmd
-		ret[i.k] = ft_argdup(str, i.j, parser->separators[i.i] - 1);
+		cmd_addback(cmd, ft_argdup(str, i.j, parser->separators[i.i] - 1));
 		i.j = parser->separators[i.i] + 1;
-		if (!ret[i.k++])
-		{
-			free_split(ret);
-			return (NULL);
-		}
 	}
-	ret[i.k] = ft_argdup(str, i.j, ft_strlen(str));
-	ret[i.k + 1] = NULL;
-	return (ret);
+	cmd_addback(cmd, ft_argdup(str, i.j, ft_strlen(str)));
+	/* t_cmd *current = cmd; //DEBUG
+	while (current)
+	{
+		printf("type: %d\n", current->type);
+		if (current->value)
+		{
+			printf("value:\n");
+			for (int k = 0; current->value[k]; k++)
+				printf("%s\n", current->value[k]);
+		}
+		current = current->next;
+	} */
+	return (cmd);
 }
