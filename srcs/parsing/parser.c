@@ -67,9 +67,15 @@ void	parse_input(char *input, t_shell *shell)
 	free(parser.separators);
 	while (cmd)
 	{
-		printf("handle type %d\n", cmd->type);
-		if (cmd->type == 1)
-			handle_cmd(cmd->value, shell);
+		if (cmd->type != -1)
+		{
+			printf("handle type %d\n", cmd->type);
+			if (cmd->type == 1)
+				printf("cmd: %s\n", cmd->value[0]);
+			cmd_parse(cmd, shell);
+		/* 	if (cmd->type == 1)
+			handle_cmd(cmd->value, shell); */
+		}
 		cmd = cmd->next;
 	}
 	cmd_free(cmd);
