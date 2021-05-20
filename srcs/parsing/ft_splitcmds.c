@@ -130,6 +130,6 @@ t_cmd	*ft_splitcmds(const char *str, t_parser *parser)
 		cmd_last(cmd)->value = get_content(str, i.j, ft_strlen(str));
 	else
 		cmd_addback(cmd, ft_argdup(str, i.j, ft_strlen(str)));
-	print_cmd(cmd);
+	//print_cmd(cmd);
 	return (cmd);
 }

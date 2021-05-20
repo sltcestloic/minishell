@@ -93,8 +93,9 @@ int	redirect(t_cmd *cmd)
 				return (-1);
 			save = save->next;
 		}
-		if (open_dup_redirect(save->next, 1) == -1)
-			return (-1);
+		if (save->next)
+			if (open_dup_redirect(save->next, 1) == -1)
+				return (-1);
 	}
 	else if (redirect_out(cmd) == -1)
 		return (-1);

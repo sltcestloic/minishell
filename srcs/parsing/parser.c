@@ -69,9 +69,9 @@ void	parse_input(char *input, t_shell *shell)
 	{
 		if (cmd->type != -1)
 		{
-			printf("handle type %d\n", cmd->type);
+			/* printf("handle type %d\n", cmd->type);
 			if (cmd->type == 1)
-				printf("cmd: %s\n", cmd->value[0]);
+				printf("cmd: %s\n", cmd->value[0]); */
 			cmd_parse(cmd, shell);
 		/* 	if (cmd->type == 1)
 			handle_cmd(cmd->value, shell); */
