@@ -60,6 +60,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 			ptr = ptr->next;
 		}
 	}
+	redirect(cmd);
 	to_exec(shell, cmd->value);
 	if (fd_restore(shell))
 		ft_exit(shell->to_free);

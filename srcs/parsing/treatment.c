@@ -1,8 +1,17 @@
 #include "minishell.h"
 
-static int	is_quote(char c)
+/*
+** TODO: trouver comment faire pour >> 
+*/
+static int	is_interpretable(char c)
 {
-	return (c == '\'' || c == '"');
+	return (c == '\'' || c == '"' || c == '$' || c == ';'
+		|| c == '>' || c == '<' || c == '|');
+}
+
+static int	is_separator(char c)
+{
+	return (c == ';' || c == '>' || c == '<' || c == '|');
 }
 
 void	add_separator(t_parser *parser, int indx)
@@ -17,6 +26,10 @@ void	add_separator(t_parser *parser, int indx)
 	parser->has_cmd = 0;
 }
 
+/*
+** TODO: ajouter > >> < | aux separateurs, puis au moment du split 
+** regarder le type du separateur et le mettre dans la structure en fonction 
+*/
 int	treat_input(t_shell *shell, char *input, t_parser *parser)
 {
 	t_index	i;
@@ -52,7 +65,7 @@ int	treat_input(t_shell *shell, char *input, t_parser *parser)
 					i.i++;
 			}
 		}
-		else if (input[i.i] == ';')
+		else if (is_separator(input[i.i]))
 		{
 			if (!parser->s_quote && !parser->d_quote && !parser->backslash)
 			{
@@ -60,7 +73,7 @@ int	treat_input(t_shell *shell, char *input, t_parser *parser)
 					add_separator(parser, i.k);
 				else
 				{
-					ft_putstr_fd("syntax error near unexpected token `;'\n", 1);
+					ft_putstr_fd("syntax error\n", 1);
 					return (0);
 				}
 			}
@@ -68,7 +81,7 @@ int	treat_input(t_shell *shell, char *input, t_parser *parser)
 		}
 		else if (input[i.i] == '\\')
 		{
-			if (parser->s_quote || parser->backslash || (!is_quote(input[i.i + 1]) && input[i.i + 1] != ';'))
+			if (parser->s_quote || parser->backslash || !is_interpretable(input[i.i + 1]))
 				parser->parsed_input[i.k++] = input[i.i];
 			if (!parser->s_quote)
 				parser->backslash = !parser->backslash;

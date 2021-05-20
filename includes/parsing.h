@@ -53,8 +53,8 @@ t_index		init_index(void);
 ** Commands parsing
 */
 
-void		parse_echo(t_command *cmd);
+void		parse_echo(char **args);
 
-char		**ft_splitcmds(const char *str, t_parser *parser);
+t_cmd		*ft_splitcmds(const char *str, t_parser *parser);
 
 #endif

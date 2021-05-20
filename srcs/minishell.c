@@ -134,16 +134,16 @@ int	main(int ac, char **av, char **envp)
 		return (-1);
 	(void)ac;
 	(void)av;
-	set_env(envp, shell);
-	set_pwd(shell);
+	//set_env(envp, shell);
+	//set_pwd(shell);
 	init_fd(shell);
-	display_prompt(shell);
+	//display_prompt(shell);
 	// test_redirect_append(shell);
 	// test_pipe(shell);
 	while (ft_get_next_line(0, &input) > 0)
 	{
 		parse_input(input, shell);
-		display_prompt(shell);
+		//display_prompt(shell);
 		free(input);
 	}
 	free(input);
