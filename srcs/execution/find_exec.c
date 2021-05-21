@@ -25,6 +25,7 @@ static inline void	exec_it(char *test, char **function, char **envp)
 			write(2, "Minishell: ", 11);
 			ft_putstr_fd(test, 2);
 			write(2, ": No such file or directory\n", 28);
+			exit(0);
 		}
 	}
 }
@@ -52,7 +53,7 @@ char	*make_path(char **path, char **function)
 			break ;
 		free(test);
 		free(slash);
-		test = 0;
+		test = NULL;
 		i++;
 	}
 	return (test);
