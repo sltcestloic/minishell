@@ -15,7 +15,6 @@ SRC		= 	minishell.c \
 			util/ft_splitlen.c \
 			util/init.c \
 			util/prompt.c 
-			
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
 INCS	= includes
@@ -24,26 +23,19 @@ LIBC	= ar rcs
 CC		= gcc
 RM		= rm -f
 CFLAGS	= -Wall -Wextra -Werror
-
 srcs/%.o: srcs/%.c ${INCS}
 	${CC} ${CFLAGS} -c $< -o $@ -I${INCS} -g
-
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
 	${CC} -o ${NAME} ${OBJS} libft/libft.a
 all: ${NAME}
-
 bonus: all
-
 clean:
 	${MAKE} clean -C ./libft
 	${RM} ${OBJS}
 	${RM} a.out
-
 fclean: clean
 	${MAKE} fclean -C ./libft
 	${RM} ${NAME}
-
 re: fclean all
-	
 .PHONY: all clean fclean re .c.o
