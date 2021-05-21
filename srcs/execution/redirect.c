@@ -97,7 +97,7 @@ int	redirect_it(t_cmd *cmd, int in_out)
 				return (-1);
 		cmd = cmd->next;
 	}
-	if (open_dup_redirect(save, in_out) == -1)
+	if (open_dup_redirect(final, in_out) == -1)
 			return (-1);
 	return (0);
 }

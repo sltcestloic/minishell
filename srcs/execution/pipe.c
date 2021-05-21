@@ -28,12 +28,15 @@ int	pipe_it(t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (pid)
 	{
+		close(fd[1]);
 		wait(NULL);
 		if (dup2(fd[0], 0) == -1)
 			return (-1);
+		close(fd[0]);
 	}
 	else
 	{
+		close(fd[0]);
 		if (dup2(fd[1], 1) == -1)
 			exit(-1);
 		redirect(cmd);
@@ -47,8 +50,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 {
 	t_cmd *ptr;
 
-	printf("OKOKOKOKOKO\n");
-	print_cmd(cmd);
+	// print_cmd(cmd);
 	ptr = cmd;
 	while (ptr)
 	{
@@ -56,6 +58,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 			ptr = ptr->next;
 		if (ptr)
 		{
+			// write(1, "PIPING\n", 7);
 			if (pipe_it(cmd, shell) == -1)
 				ft_exit(shell->to_free);
 			cmd = ptr->next;
