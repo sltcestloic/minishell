@@ -6,9 +6,9 @@
 static int	get_type(char c)
 {
 	if (c == '>')
-		return (2);
-	else if (c == '<')
 		return (3);
+	else if (c == '<')
+		return (2);
 	else if (c == '|')
 		return (5);
 	else

@@ -47,6 +47,8 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 {
 	t_cmd *ptr;
 
+	printf("OKOKOKOKOKO\n");
+	print_cmd(cmd);
 	ptr = cmd;
 	while (ptr)
 	{
@@ -64,5 +66,4 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	to_exec(shell, cmd->value);
 	if (fd_restore(shell))
 		ft_exit(shell->to_free);
-	printf("\nok\n");
 }
