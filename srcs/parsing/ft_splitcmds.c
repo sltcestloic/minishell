@@ -35,7 +35,7 @@ void print_cmd(t_cmd *cmd)
 	printf("-------------------\n"); 						/*			*/
 }
 
-t_cmd	*ft_argdup(const char *str, int start, int end)
+t_cmd	*ft_argdup(const char *str, int start, int end, int type)
 {
 	t_cmd	*cmd;
 	char	*ret;
@@ -57,8 +57,9 @@ t_cmd	*ft_argdup(const char *str, int start, int end)
 	swap = ft_strtrim(ret, " ");
 	free(ret);
 	ret = swap;
-	cmd->type = 1;
+	cmd->type = type;
 	cmd->value = ft_split(ret, ' ');
+	//printf("add type %d\n", cmd->type);
 	free(ret);
 	return (cmd);
 }
@@ -104,37 +105,32 @@ t_cmd	*ft_splitcmds(const char *str, t_parser *parser)
 	t_cmd	*cmd;
 	t_cmd	*next;
 	t_index	i;
-	int		last;
+	int		last_sep;
 
 	cmd = malloc(sizeof(t_cmd));
 	cmd->type = -1;
 	cmd->next = NULL;
 	i = init_index();
 	i.i = -1;
+	last_sep = 1;
 	if (!str)
 		return (NULL);
 	while (parser->separators[++i.i])
 	{
-		last = cmd_last_type(cmd);
-		if (last == 2 || last == 3)
-			cmd_last(cmd)->value = get_content(str, i.j, parser->separators[i.i] - 1);
-		else
+		cmd_addback(cmd, ft_argdup(str, i.j, parser->separators[i.i] - 1, last_sep));
+		last_sep = get_type(str[parser->separators[i.i]]);
+		//printf("last sep = %d\n", last_sep);
+		if (get_type(str[parser->separators[i.i]]) == 5)
 		{
-			cmd_addback(cmd, ft_argdup(str, i.j, parser->separators[i.i] - 1));
-			if (get_type(str[parser->separators[i.i]]) != -1)
-			{
-				next = malloc(sizeof(t_cmd));
-				next->type = get_type(str[parser->separators[i.i]]);
-				cmd_addback(cmd, next);
-			}
+			next = malloc(sizeof(t_cmd));
+			next->type = 5;
+			cmd_addback(cmd, next);
+			last_sep = 1;
 		}
 		i.j = parser->separators[i.i] + 1;
 	}
-	last = cmd_last_type(cmd);
-	if (last == 2 || last == 3)
-		cmd_last(cmd)->value = get_content(str, i.j, ft_strlen(str));
-	else
-		cmd_addback(cmd, ft_argdup(str, i.j, ft_strlen(str)));
-	//print_cmd(cmd);
+	//printf("last sep = %d\n", last_sep);
+	cmd_addback(cmd, ft_argdup(str, i.j, ft_strlen(str), last_sep));
 	return (cmd);
 }
+ 

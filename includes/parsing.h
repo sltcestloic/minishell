@@ -57,4 +57,6 @@ void		parse_echo(char **args);
 
 t_cmd		*ft_splitcmds(const char *str, t_parser *parser);
 
+void print_cmd(t_cmd *cmd);
+
 #endif
