@@ -25,5 +25,6 @@ void	cmd_addback(t_cmd *cmd, t_cmd *add);
 void	cmd_free(t_cmd *cmd);
 int		cmd_last_type(t_cmd *cmd);
 t_cmd	*cmd_last(t_cmd *cmd);
+void	print_cmd(t_cmd *cmd);
 
 #endif

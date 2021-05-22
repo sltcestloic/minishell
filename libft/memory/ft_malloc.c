@@ -41,9 +41,9 @@ void	ft_free(t_free *to_free)
 	ptr = to_free;
 	while (to_free)
 	{
-		free(ptr->data);
+		// free(ptr->data);
 		ptr = ptr->next;
-		free(to_free);
+		// free(to_free);
 		to_free = ptr;
 	}
 }

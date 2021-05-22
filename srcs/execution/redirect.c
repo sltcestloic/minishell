@@ -58,46 +58,55 @@ int	init_fd(t_shell *shell)
 	return (0);
 }
 
-int	redirect_out(t_cmd *cmd)
+int	middle_redirect(t_cmd *cmd, int in_out)
+{	
+	int fd;
+
+	if (in_out)
+	{
+		if (open_creat(cmd->value[0]))
+			return (-1);
+		return (0);
+	}
+	fd = open(cmd->value[0], O_RDWR, 0644);
+	if (fd == -1)
+		return (-1);
+	return (0);
+}
+
+int	redirect_it(t_cmd *cmd, int in_out)
 {
 	t_cmd *save;
+	t_cmd *final;
 
-	save = cmd->next;
-	if (cmd->next && (cmd->next->type == 3 || cmd->next->type == 4))
+	save = cmd;
+	final = 0;
+	while (cmd)
 	{
-		while (save->next && (save->next->type == 3 || cmd->next->type == 4))
-		{
-			if (open_creat(save->value[0]) == -1)
-				return (-1);
-			save = save->next;
-		}
-		if (open_dup_redirect(save, 1) == -1)
-			return (-1);
+		if (cmd->type == in_out + 2)
+			final = cmd;
+		cmd = cmd->next;
 	}
+	if (!final)
+		return (0);
+	cmd = save;
+	while (cmd != final)
+	{
+		if (cmd->type == in_out + 2)
+			if (middle_redirect(cmd, in_out))
+				return (-1);
+		cmd = cmd->next;
+	}
+	if (open_dup_redirect(final, in_out) == -1)
+			return (-1);
 	return (0);
 }
 
 int	redirect(t_cmd *cmd)
 {
-	t_cmd *save;
-
-	save = cmd->next;
-	if (cmd->next && cmd->next->type == 2)
-	{
-		if (open_dup_redirect(save, 0) == -1)
-			return (-1);
-		while (save->next && save->next->next &&
-		(save->next->next->type == 3 || save->next->next->type == 4))
-		{
-			if (open_creat(save->next->value[0]) == -1)
-				return (-1);
-			save = save->next;
-		}
-		if (save->next)
-			if (open_dup_redirect(save->next, 1) == -1)
-				return (-1);
-	}
-	else if (redirect_out(cmd) == -1)
+	if (redirect_it(cmd, 0))
+		return (-1);
+	if (redirect_it(cmd, 1))
 		return (-1);
 	return (0);
 }
