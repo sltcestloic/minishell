@@ -26,10 +26,6 @@ void	add_separator(t_parser *parser, int indx)
 	parser->has_cmd = 0;
 }
 
-/*
-** TODO: ajouter > >> < | aux separateurs, puis au moment du split 
-** regarder le type du separateur et le mettre dans la structure en fonction 
-*/
 int	treat_input(t_shell *shell, char *input, t_parser *parser)
 {
 	t_index	i;
@@ -67,7 +63,6 @@ int	treat_input(t_shell *shell, char *input, t_parser *parser)
 		}
 		else if (is_separator(input[i.i]))
 		{
-			//printf("separateur %d\n", i.i);
 			if (!parser->s_quote && !parser->d_quote && !parser->backslash)
 			{
 				if (parser->has_cmd)
