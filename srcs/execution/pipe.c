@@ -50,7 +50,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 {
 	t_cmd *ptr;
 
-	// print_cmd(cmd);
+	print_cmd(cmd);
 	ptr = cmd;
 	while (ptr)
 	{
