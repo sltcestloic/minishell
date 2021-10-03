@@ -13,6 +13,8 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 void	display_prompt(t_shell *shell);
 

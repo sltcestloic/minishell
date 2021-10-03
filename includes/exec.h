@@ -1,11 +1,19 @@
 #ifndef EXEC_H
 # define EXEC_H
 
+typedef struct s_redirect
+{
+	char *file_name;
+	struct s_redirect *next;
+	int variation;
+}	t_redirect;
+
 typedef struct s_cmd
 {
-	int				type;
 	char			**value;
 	struct s_cmd	*next;
+	t_redirect *in;
+	t_redirect *out;
 }	t_cmd;
 
 typedef struct s_fdsys

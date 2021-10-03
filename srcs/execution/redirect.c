@@ -1,34 +1,32 @@
 #include "minishell.h"
 
-int	open_creat(char *file_path)
+int	here_doc(char *stop, int is_active)
 {
+	char *line;
 	int fd;
 
-	fd = open(file_path, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
+	if (is_active)
+		fd = dup(0);
+	line = NULL;
+	while (ft_strcmp(line, stop))
 	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
+		if (is_active && line)
+			write(fd, line, ft_strlen(line));
+		free(line);
+		line = readline(NULL);
 	}
 	return (0);
 }
 
-int	open_dup_redirect(t_cmd *cmd, int fd_stream)
+int	redirect_out(t_redirect *redirect)
 {
 	int fd;
 
-	if (fd_stream == 0)
-		fd = open(cmd->value[0], O_RDWR, 0644);
-	else if (cmd->type == 4)
-		fd = open(cmd->value[0], O_RDWR | O_CREAT | O_APPEND, 0644);
+	if (redirect->variation)
+		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
-		fd = open(cmd->value[0], O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
-	}
-	if (dup2(fd, fd_stream) == -1)
+		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (dup2(fd, 1) == -1)
 	{
 		ft_putstr_fd(strerror(errno), 1);
 		return (-1);
@@ -41,72 +39,70 @@ int	open_dup_redirect(t_cmd *cmd, int fd_stream)
 	return (0);
 }
 
-int	init_fd(t_shell *shell)
+int	redirect_in(t_redirect *redirect)
 {
-	shell->fdsys.fd_in = dup(0);
-	if (shell->fdsys.fd_in == -1)
-		{
-			ft_putstr_fd(strerror(errno), 1);
-			return (-1);
-		}
-	shell->fdsys.fd_out = dup(1);
-	if (shell->fdsys.fd_out == -1)
-		{
-			ft_putstr_fd(strerror(errno), 1);
-			return (-1);
-		}
+	int fd;
+
+	if (redirect->variation)
+		return (here_doc(redirect->file_name, 1));
+	fd = open(redirect->file_name, O_RDWR, 0644);
+	if (dup2(fd, 0) == -1)
+	{
+		ft_putstr_fd(strerror(errno), 1);
+		return (-1);
+	}
+	if (close(fd) == -1)
+	{
+		ft_putstr_fd(strerror(errno), 1);
+		return (-1);
+	}
 	return (0);
 }
 
-int	middle_redirect(t_cmd *cmd, int in_out)
+int	try_open(t_redirect *redirect)
 {	
 	int fd;
 
-	if (in_out)
-	{
-		if (open_creat(cmd->value[0]))
-			return (-1);
-		return (0);
-	}
-	fd = open(cmd->value[0], O_RDWR, 0644);
+	if (redirect->variation)
+		return (here_doc(redirect->file_name, 0));
+	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1)
+	{
+		ft_putstr_fd(strerror(errno), 1);
 		return (-1);
+	}
 	return (0);
 }
 
-int	redirect_it(t_cmd *cmd, int in_out)
+int	creat_trunc_file(char *file_name)
 {
-	t_cmd *save;
-	t_cmd *final;
+	int fd;
 
-	save = cmd;
-	final = 0;
-	while (cmd)
+	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
 	{
-		if (cmd->type == in_out + 2)
-			final = cmd;
-		cmd = cmd->next;
+		ft_putstr_fd(strerror(errno), 1);
+		return (-1);
 	}
-	if (!final)
-		return (0);
-	cmd = save;
-	while (cmd != final)
+	return (0);
+}
+
+int redirect(t_cmd *cmd)
+{
+	while (cmd->in && cmd->in->next)
 	{
-		if (cmd->type == in_out + 2)
-			if (middle_redirect(cmd, in_out))
-				return (-1);
-		cmd = cmd->next;
-	}
-	if (open_dup_redirect(final, in_out) == -1)
+		if (try_open(cmd->in))
 			return (-1);
-	return (0);
-}
-
-int	redirect(t_cmd *cmd)
-{
-	if (redirect_it(cmd, 0))
+		cmd->in = cmd->in->next;
+	}
+	if (redirect_in(cmd->in))
 		return (-1);
-	if (redirect_it(cmd, 1))
+	while (cmd->out && cmd->out->next)
+	{
+		creat_trunc_file(cmd->out->file_name);
+		cmd->out = cmd->out->next;
+	}
+	if (redirect_out(cmd->out))
 		return (-1);
 	return (0);
 }
