@@ -36,6 +36,7 @@ typedef struct	s_shell
 	t_envlst 	*env_var;
 	char		*pwd;
 	char		**envp;
+	int			last_exit_return;
 }	t_shell;
 
 void		ft_exit(t_free *to_free);

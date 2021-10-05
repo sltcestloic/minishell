@@ -15,6 +15,11 @@ int	here_doc(char *stop, int is_active)
 		free(line);
 		line = readline(NULL);
 	}
+	if (is_active)
+	{
+		dup2(fd, 0);
+		close(fd);
+	}
 	return (0);
 }
 
