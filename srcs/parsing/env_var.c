@@ -26,7 +26,7 @@ char	*get_env_var(t_shell *shell, char *str)
 	return (ret);
 }
 
-void	cat_var(t_parser *parser, char *var, char *input, t_index *indx)
+/* void	cat_var(t_parser *parser, char *var, char *input, t_index *indx)
 {
 	char	*swap;
 
@@ -39,4 +39,4 @@ void	cat_var(t_parser *parser, char *var, char *input, t_index *indx)
 	while (input[indx->i] && input[indx->i] != ' ')
 		indx->i++;
 	indx->i -= 2;
-}
+} */

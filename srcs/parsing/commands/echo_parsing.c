@@ -35,5 +35,5 @@ void	parse_echo(char **input)
 	else
 		has_n = FALSE;
 	args = compute_args(input, has_n);
-	echo(args, has_n);
+	//echo(args, has_n);
 }
