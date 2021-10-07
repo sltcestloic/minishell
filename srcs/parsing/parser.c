@@ -81,12 +81,13 @@ int		count_args(char *input)
 			parser.s_quote = !parser.s_quote;
 		else if (input[i] == '|')
 		{
-			if (ft_iswhitespace(input[i - 1]))
+			if (i > 0 && ft_iswhitespace(input[i - 1]))
 				result--;
 			break ;
 		}
 		i++;
 	}
+	printf("count args a pas segfault\n");
 	return (result);
 }
 
@@ -143,8 +144,11 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 				(*i)--; //pour que parse_input puisse lire le | et ajouter une cmd
 				break;
 			}
-			if (ft_iswhitespace(input[*i]))
+			if (ft_iswhitespace(input[*i]) || !input[*i + 1])
+			{
 				cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1);
+				printf("cmd->value[%d] = %s\n", idx.j - 1, cmd->value[idx.j - 1]);
+			}
 		}
 		(*i)++;
 	}
@@ -187,6 +191,7 @@ void	parse_input(char *input, t_shell *shell)
 		}
 		if (ft_isalnum(input[i]))
 		{
+			printf("call set content (%c)\n", input[i]);
 			if (!set_cmd_content(cmd_last(cmd), input, &i))
 			{
 				cmd_free(cmd); //TODO free correctement
@@ -197,11 +202,14 @@ void	parse_input(char *input, t_shell *shell)
 			parser->d_quote = !parser->d_quote;
 		else if (input[i] == '\'' == !parser->d_quote)
 			parser->s_quote = !parser->s_quote;
+		printf("%d\n", i);
 		i++;
 	}
 	if (parser->d_quote || parser->s_quote)
 		printf("Invalid input: unclosed quote.\n");
 	//TODO else send to exec
+	printf("end parser\n");
 	free(parser);
+	printf("parsed freed\n");
 	cmd_free(cmd);
 }
