@@ -13,7 +13,7 @@ int	here_doc(char *stop, int is_active)
 		if (is_active && line)
 			write(fd, line, ft_strlen(line));
 		free(line);
-		line = readline(NULL);
+		line = NULL;
 	}
 	if (is_active)
 	{

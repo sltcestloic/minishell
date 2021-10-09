@@ -16,18 +16,24 @@ int	count_separators(char *input)
 	return (ret);
 }
 
-t_parser	init_parser(char *input)
+t_parser	*init_parser()
 {
-	t_parser	ret;
+	t_parser	*ret;
 
-	ret.backslash = 0;
-	ret.d_quote = 0;
-	ret.s_quote = 0;
-	ret.parsed_input = malloc(ft_strlen(input) + 1);
-	ft_bzero(ret.parsed_input, ft_strlen(input) + 1);
-	ret.separators = malloc(sizeof(int) * (count_separators(input) + 1));
-	ft_bzero(ret.parsed_input, count_separators(input) + 1);
-	ret.has_cmd = 0;
+	ret = malloc(sizeof(t_parser));
+	ret->d_quote = 0;
+	ret->s_quote = 0;
+	return (ret);
+}
+
+t_cmd	*init_cmd(void)
+{
+	t_cmd	*ret;
+
+	ret = malloc(sizeof(t_cmd));
+	ret->next = NULL;
+	ret->in = NULL;
+	ret->out = NULL;
 	return (ret);
 }
 

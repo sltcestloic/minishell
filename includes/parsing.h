@@ -1,29 +1,22 @@
 #ifndef PARSING_H
 # define PARSING_H
 # include "exec.h"
+# define REDIRECT_OUT >
+# define REDIRECT_IN <
+# define REDIRECT_APPEND >>
+# define HEREDOC <<
 
 typedef struct s_command
 {
 	char	**args;
 	t_shell	*shell;
-
 }				t_command;
-
-typedef struct s_split
-{
-	int	quote1;
-	int	quote2;
-	int	indx;
-}				t_split;
 
 typedef struct s_parser
 {
 	int		s_quote;
 	int		d_quote;
-	int		has_cmd;
-	int		backslash;
-	char	*parsed_input;
-	int		*separators;
+	int		redirect;
 }				t_parser;
 
 typedef struct s_index
@@ -47,8 +40,9 @@ char		*get_env_var(t_shell *shell, char *str);
 ** Init
 */
 
-t_parser	init_parser(char *input);
+t_parser	*init_parser();
 t_index		init_index(void);
+t_cmd		*init_cmd(void);
 
 /*
 ** Commands parsing
@@ -57,6 +51,20 @@ t_index		init_index(void);
 void		parse_echo(char **args);
 
 t_cmd		*ft_splitcmds(const char *str, t_parser *parser);
+
+/*
+** Redirect
+*/
+
+int			is_redirect(char *str, int *i);
+t_redirect	*redirect_last(t_redirect *redirect);
+int			redirect_addback(t_redirect *redirect, int type);
+void		init_redirect(t_cmd *cmd, int type);
+void		set_file_name(t_redirect *redirect, char *input, int *i);
+
+/*
+** Debug
+*/
 
 void print_cmd(t_cmd *cmd);
 

@@ -30,6 +30,7 @@ char	*make_path(char **path, char **function)
 	struct stat		*buf;
 	char			*slash;
 	int				i;
+	int ret = 0;
 
 	i = 0;
 	buf = malloc(sizeof(struct stat));
@@ -43,10 +44,10 @@ char	*make_path(char **path, char **function)
 	{
 		slash = ft_strjoin(path[i], "/");
 		test = ft_strjoin(slash, function[0]);
-		if (!lstat(test, buf))
-			break ;
-		free(test);
 		free(slash);
+		if ((ret = access(test, X_OK)) == 0)
+			return (test);
+		free(test);
 		test = NULL;
 		i++;
 	}
@@ -66,6 +67,5 @@ void	to_exec(t_shell *shell, char **function)
 		exec_it(test, &function[0], shell->envp);
 	else
 		ft_putstr_fd("Minishell: command not found\n", 2);
-	free(test);
 	exit(-1);
 }

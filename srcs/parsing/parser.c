@@ -215,6 +215,7 @@ void	parse_input(char *input, t_shell *shell)
 	{
 		/* DEBUG START */
 		int count = 0;
+		cmd_parse(cmd, shell);
 		while (cmd)
 		{
 			printf("----------cmd #%d----------\n", count);
@@ -237,6 +238,7 @@ void	parse_input(char *input, t_shell *shell)
 			{
 				printf(" redirect out:\n");
 				k = 0;
+				
 				while (cmd->out)
 				{
 					printf("  redirect #%d:\n", k);
@@ -252,6 +254,7 @@ void	parse_input(char *input, t_shell *shell)
 		/* DEBUG END */
 
 		//TODO else send to exec
+		
 	}
 	printf("end parser\n");
 	free(parser);

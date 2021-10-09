@@ -8,13 +8,13 @@ SRC		= 	minishell.c \
 			execution/pipe.c \
 			parsing/commands/echo_parsing.c \
 			parsing/env_var.c \
-			parsing/ft_splitcmds.c \
 			parsing/parser.c \
-			parsing/treatment.c \
 			util/cmd.c \
 			util/ft_splitlen.c \
 			util/init.c \
-			util/prompt.c 
+			util/prompt.c  \
+			parsing/redirect.c
+
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
 INCS	= includes

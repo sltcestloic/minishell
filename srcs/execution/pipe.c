@@ -25,12 +25,12 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 			dup2(in, 0);
 			close(in);
 		}
-		if (out > 1)
+		if (out != 1)
 		{
 			dup2(out, 1);
 			close(out);
 		}
-		redirect(cmd);
+		// redirect(cmd);
 		to_exec(shell, cmd->value);
 		exit(0);
 	}
