@@ -169,7 +169,7 @@ void	parse_input(char *input, t_shell *shell)
 	(void)shell;
 	parser = init_parser();
 	i = 0;
-	cmd = init_cmd();
+  cmd = init_cmd();
 	while (input[i]) {
 		if (!parser->s_quote && !parser->d_quote)
 		{

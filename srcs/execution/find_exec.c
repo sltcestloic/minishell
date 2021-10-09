@@ -14,19 +14,13 @@ char	**find_path(t_shell *shell)
 
 static inline void	exec_it(char *test, char **function, char **envp)
 {
-	int	pid;
-
-	pid = fork();
-	wait(NULL);
-	if (pid == 0)
+	if (execve(test, function, envp))
 	{
-		if (execve(test, function, envp))
-		{
-			write(2, "Minishell: ", 11);
-			ft_putstr_fd(test, 2);
-			write(2, ": No such file or directory\n", 28);
-			exit(0);
-		}
+		write(2, "Minishell: ", 11);
+		ft_putstr_fd(test, 2);
+		write(2, ": No such file or directory\n", 28);
+		free(test);
+		exit(-1);
 	}
 }
 
@@ -65,12 +59,13 @@ void	to_exec(t_shell *shell, char **function)
 	char			*test;
 
 	path = find_path(shell);
-	test = 0;
+	test = NULL;
 	if (path)
 		test = make_path(path, function);
 	if (test)
 		exec_it(test, &function[0], shell->envp);
 	else
-		ft_putstr_fd("minishell: command not found\n", 2);
+		ft_putstr_fd("Minishell: command not found\n", 2);
 	free(test);
+	exit(-1);
 }

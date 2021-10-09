@@ -1,72 +1,57 @@
 #include "minishell.h"
 
-int	fd_restore(t_shell *shell)
+void	update_last_exit_value(t_shell *shell, int i)
 {
-	if (dup2(shell->fdsys.fd_in, 0) == -1)
-		{
-			ft_putstr_fd(strerror(errno), 1);
-			return (-1);
-		}
-	if (dup2(shell->fdsys.fd_out, 1) == -1)
+	int status;
+
+	status = 0;
+	while (i)
 	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
+		waitpid(-1, &status, 0);
+		shell->last_exit_return = WEXITSTATUS(status);
+		i--;
 	}
-	return (0);
 }
 
-int	pipe_it(t_cmd *cmd, t_shell *shell)
+void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 {
-	int fd[2];
 	int pid;
 
-	if(pipe(fd) == -1)
-	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
-	}
 	pid = fork();
-	if (pid)
+	if (!pid)
 	{
-		close(fd[1]);
-		wait(NULL);
-		if (dup2(fd[0], 0) == -1)
-			return (-1);
-		close(fd[0]);
-	}
-	else
-	{
-		close(fd[0]);
-		if (dup2(fd[1], 1) == -1)
-			exit(-1);
+		if (in)
+		{
+			dup2(in, 0);
+			close(in);
+		}
+		if (out > 1)
+		{
+			dup2(out, 1);
+			close(out);
+		}
 		redirect(cmd);
 		to_exec(shell, cmd->value);
 		exit(0);
 	}
-	return (0);
 }
 
 void	cmd_parse(t_cmd *cmd, t_shell *shell)
 {
-	t_cmd *ptr;
+	int in;
+	int number_of_child;
+	int fd[2];
 
-	print_cmd(cmd);
-	ptr = cmd;
-	while (ptr)
+	in = 0;
+	number_of_child = 1;
+	while (cmd->next)
 	{
-		while (ptr && ptr->type != 5)
-			ptr = ptr->next;
-		if (ptr)
-		{
-			// write(1, "PIPING\n", 7);
-			if (pipe_it(cmd, shell) == -1)
-				ft_exit(shell->to_free);
-			cmd = ptr->next;
-			ptr = ptr->next;
-		}
+		pipe(fd);
+		spawn_proc(in, fd[1], cmd, shell);
+		in = fd[0];
+		cmd = cmd->next;
+		number_of_child++;
 	}
-	redirect(cmd);
-	to_exec(shell, cmd->value);
-	if (fd_restore(shell))
-		ft_exit(shell->to_free);
+	spawn_proc(in, 1, cmd, shell);
+	update_last_exit_value(shell, number_of_child);
 }
