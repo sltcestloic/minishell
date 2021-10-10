@@ -59,18 +59,24 @@ int	init_redirect_io(t_cmd *cmd, int type)
 	if (type < 3)
 	{
 		if (!cmd->out)
+		{
 			cmd->out = malloc(sizeof(t_redirect));
+			cmd->out->next = NULL;
+		}
 		redirect = cmd->out;
 	}
 	else
 	{
 		if (!cmd->in)
+		{
 			cmd->in = malloc(sizeof(t_redirect));
+			cmd->in->next = NULL;
+		}
 		redirect = cmd->in;
 	}
 	if (!redirect)
  		return 0;
-	//printf("addback (redirect=%p)\n", redirect);
+	printf("addback (redirect=%p)\n", redirect);
 	return (redirect_addback(redirect, type));
 }
 
