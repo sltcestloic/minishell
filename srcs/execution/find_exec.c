@@ -24,22 +24,28 @@ static inline void	exec_it(char *test, char **function, char **envp)
 	}
 }
 
+int		find_slash(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] && str[i] != '/')
+		i++;
+	if (str[i])
+		return (1);
+	return (0);
+}
+
 char	*make_path(char **path, char **function)
 {
 	char			*test;
-	struct stat		*buf;
 	char			*slash;
 	int				i;
 	int ret = 0;
 
 	i = 0;
-	buf = malloc(sizeof(struct stat));
-	while (function[0][i] && function[0][i] != '/')
-		i++;
-	if (function[0][i])
-		return (ft_strdup(function[0]));
-	else
-		i = 0;
+	if (find_slash(function[0]))
+		return (function[0]);
 	while (path[i])
 	{
 		slash = ft_strjoin(path[i], "/");
@@ -48,10 +54,9 @@ char	*make_path(char **path, char **function)
 		if ((ret = access(test, X_OK)) == 0)
 			return (test);
 		free(test);
-		test = NULL;
 		i++;
 	}
-	return (test);
+	return (NULL);
 }
 
 void	to_exec(t_shell *shell, char **function)

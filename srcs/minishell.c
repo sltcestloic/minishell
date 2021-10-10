@@ -32,5 +32,4 @@ int	main(int ac, char **av, char **envp)
 		display_prompt(shell);
 		free(input);
 	}
-	free(input);
 }
