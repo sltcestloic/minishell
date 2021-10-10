@@ -1,18 +1,5 @@
 #include "minishell.h"
 
-void	update_last_exit_value(t_shell *shell, int i)
-{
-	int status;
-
-	status = 0;
-	while (i)
-	{
-		waitpid(-1, &status, 0);
-		shell->last_exit_return = WEXITSTATUS(status);
-		i--;
-	}
-}
-
 void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 {
 	int pid;
@@ -32,8 +19,10 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 		}
 		// redirect(cmd);
 		to_exec(shell, cmd->value);
-		exit(0);
 	}
+	if (out == 1)
+		waitpid(pid, &pid, 0);
+	shell->last_exit_return = WEXITSTATUS(pid);
 }
 
 void	cmd_parse(t_cmd *cmd, t_shell *shell)
@@ -46,12 +35,19 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	number_of_child = 1;
 	while (cmd->next)
 	{
-		pipe(fd);
+		if (pipe(fd))
+			return ;									//error
 		spawn_proc(in, fd[1], cmd, shell);
+		if (in)
+			close(in);
 		in = fd[0];
+		close(fd[1]);
 		cmd = cmd->next;
 		number_of_child++;
 	}
+	close(fd[1]);
 	spawn_proc(in, 1, cmd, shell);
-	update_last_exit_value(shell, number_of_child);
+	close(in);
+	while (--number_of_child)
+		wait(&in);
 }
