@@ -45,9 +45,14 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 		cmd = cmd->next;
 		number_of_child++;
 	}
-	close(fd[1]);
-	spawn_proc(in, 1, cmd, shell);
-	close(in);
+	if (number_of_child > 1)
+	{
+		close(fd[1]);
+		spawn_proc(in, 1, cmd, shell);
+		close(in);
+	}
+	else
+		spawn_proc(in, 1, cmd, shell);
 	while (--number_of_child)
 		wait(&in);
 }

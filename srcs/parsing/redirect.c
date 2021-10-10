@@ -30,12 +30,8 @@ t_redirect	*redirect_last(t_redirect *redirect)
 	t_redirect	*tmp;
 
 	tmp = redirect;
-	while (1)
-	{
-		if (!tmp->next)
-			break ;
+	while (tmp && tmp->next)
 		tmp = tmp->next;
-	}
 	return (tmp);
 }
 
