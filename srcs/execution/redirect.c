@@ -31,12 +31,7 @@ int	redirect_out(t_redirect *redirect)
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (dup2(fd, 1) == -1)
-	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
-	}
-	if (close(fd) == -1)
+	if (fd == -1 || dup2(fd, 1) == -1 || close(fd) == -1)
 	{
 		ft_putstr_fd(strerror(errno), 1);
 		return (-1);
@@ -51,12 +46,7 @@ int	redirect_in(t_redirect *redirect)
 	if (redirect->variation)
 		return (here_doc(redirect->file_name, 1));
 	fd = open(redirect->file_name, O_RDWR, 0644);
-	if (dup2(fd, 0) == -1)
-	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
-	}
-	if (close(fd) == -1)
+	if (fd == -1 || dup2(fd, 0) == -1 || close(fd) == -1)
 	{
 		ft_putstr_fd(strerror(errno), 1);
 		return (-1);
@@ -100,11 +90,13 @@ int redirect(t_cmd *cmd)
 			return (-1);
 		cmd->in = cmd->in->next;
 	}
-	if (redirect_in(cmd->in))
-		return (-1);
+	if (cmd->in)
+		if (redirect_in(cmd->in))
+			return (-1);
 	while (cmd->out && cmd->out->next)
 	{
-		creat_trunc_file(cmd->out->file_name);
+		if (creat_trunc_file(cmd->out->file_name))
+			return (-1);
 		cmd->out = cmd->out->next;
 	}
 	if (redirect_out(cmd->out))

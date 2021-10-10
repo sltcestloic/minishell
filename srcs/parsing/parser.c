@@ -62,6 +62,11 @@ void	add_new_cmd(t_cmd *cmd)
 	cmd_last(cmd)->next = new_cmd;
 }
 
+int	is_sep(char c)
+{
+	return (c == '>' || c == '<' || c == '|');
+}
+
 int		count_args(char *input)
 {
 	t_parser	parser;
@@ -80,7 +85,7 @@ int		count_args(char *input)
 			parser.d_quote = !parser.d_quote;
 		else if (input[i] == '\'' == !parser.d_quote)
 			parser.s_quote = !parser.s_quote;
-		else if (input[i] == '|')
+		else if (is_sep(input[i]))
 		{
 			if (i > 0 && ft_iswhitespace(input[i - 1]))
 				result--;
@@ -92,10 +97,6 @@ int		count_args(char *input)
 	return (result);
 }
 
-int	is_sep(char c)
-{
-	return (c == '>' || c == '<' || c == '|');
-}
 
 int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 {
@@ -215,43 +216,43 @@ void	parse_input(char *input, t_shell *shell)
 	else
 	{
 		/* DEBUG START */
-		// int count = 0;
-		cmd_parse(cmd, shell);
-		// while (cmd)
-		// {
-		// 	printf("----------cmd #%d----------\n", count);
-		// 	for (int n = 0; cmd->value[n]; n++)
-		// 		printf("cmd->value[%d] = %s\n", n, cmd->value[n]);
-		// 		int k = 0;
-		// 	if (cmd->in)
-		// 	{
-		// 		printf(" redirect in:\n");
-		// 		while (cmd->in)
-		// 		{
-		// 			printf("  redirect #%d:\n", k);
-		// 			printf("   cmd->in->file_name = %s\n", cmd->in->file_name);
-		// 			printf("   cmd->in->variation = %d\n", cmd->in->variation);
-		// 			k++;
-		// 			cmd->in = cmd->in->next;
-		// 		}
-		// 	}
-		// 	if (cmd->out)
-		// 	{
-		// 		printf(" redirect out:\n");
-		// 		k = 0;
+		int count = 0;
+		while (cmd)
+		{
+			printf("----------cmd #%d----------\n", count);
+			for (int n = 0; cmd->value[n]; n++)
+				printf("cmd->value[%d] = %s\n", n, cmd->value[n]);
+				int k = 0;
+			if (cmd->in)
+			{
+				printf(" redirect in:\n");
+				while (cmd->in)
+				{
+					printf("  redirect #%d:\n", k);
+					printf("   cmd->in->file_name = %s\n", cmd->in->file_name);
+					printf("   cmd->in->variation = %d\n", cmd->in->variation);
+					k++;
+					cmd->in = cmd->in->next;
+				}
+			}
+			if (cmd->out)
+			{
+				printf(" redirect out:\n");
+				k = 0;
 				
-		// 		while (cmd->out)
-		// 		{
-		// 			printf("  redirect #%d:\n", k);
-		// 			printf("   cmd->out->file_name = %s\n", cmd->out->file_name);
-		// 			printf("   cmd->out->variation = %d\n", cmd->out->variation);
-		// 			k++;
-		// 			cmd->out = cmd->out->next;
-		// 		}
-		// 	}
-		// 	cmd = cmd->next;
-		// 	count++;
-		// }
+				while (cmd->out)
+				{
+					printf("  redirect #%d:\n", k);
+					printf("   cmd->out->file_name = %s\n", cmd->out->file_name);
+					printf("   cmd->out->variation = %d\n", cmd->out->variation);
+					k++;
+					cmd->out = cmd->out->next;
+				}
+			}
+			cmd = cmd->next;
+			count++;
+		}
+		cmd_parse(cmd, shell);
 		/* DEBUG END */
 
 		//TODO else send to exec
