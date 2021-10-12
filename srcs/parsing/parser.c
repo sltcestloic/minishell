@@ -254,7 +254,6 @@ void	parse_input(char *input, t_shell *shell)
 			count++;
 		}
 		/* DEBUG END */
-
 		//TODO else send to exec
 		
 	}

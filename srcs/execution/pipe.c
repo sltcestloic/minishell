@@ -17,7 +17,7 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 			dup2(out, 1);
 			close(out);
 		}
-		// redirect(cmd);
+		redirect(cmd);								//error
 		to_exec(shell, cmd->value);
 	}
 	if (out == 1)
