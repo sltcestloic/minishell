@@ -54,6 +54,8 @@ void	add_new_cmd(t_cmd *cmd)
 
 	new_cmd = malloc(sizeof(t_cmd));
 	new_cmd->next = NULL;
+	new_cmd->in = NULL;
+	new_cmd->out = NULL;
 	if (!new_cmd)
 	{
 		cmd_free(cmd); //TODO free correctement
