@@ -216,46 +216,44 @@ void	parse_input(char *input, t_shell *shell)
 	else
 	{
 		/* DEBUG START */
-		int count = 0;
+		// int count = 0;
 		cmd_parse(cmd, shell);
-		while (cmd)
-		{
-			printf("----------cmd #%d----------\n", count);
-			for (int n = 0; cmd->value[n]; n++)
-				printf("cmd->value[%d] = %s\n", n, cmd->value[n]);
-				int k = 0;
-			if (cmd->in)
-			{
-				printf(" redirect in:\n");
-				while (cmd->in)
-				{
-					printf("  redirect #%d:\n", k);
-					printf("   cmd->in->file_name = %s\n", cmd->in->file_name);
-					printf("   cmd->in->variation = %d\n", cmd->in->variation);
-					k++;
-					cmd->in = cmd->in->next;
-				}
-			}
-			if (cmd->out)
-			{
-				printf(" redirect out:\n");
-				k = 0;
+		// while (cmd)
+		// {
+		// 	printf("----------cmd #%d----------\n", count);
+		// 	for (int n = 0; cmd->value[n]; n++)
+		// 		printf("cmd->value[%d] = %s\n", n, cmd->value[n]);
+		// 		int k = 0;
+		// 	if (cmd->in)
+		// 	{
+		// 		printf(" redirect in:\n");
+		// 		while (cmd->in)
+		// 		{
+		// 			printf("  redirect #%d:\n", k);
+		// 			printf("   cmd->in->file_name = %s\n", cmd->in->file_name);
+		// 			printf("   cmd->in->variation = %d\n", cmd->in->variation);
+		// 			k++;
+		// 			cmd->in = cmd->in->next;
+		// 		}
+		// 	}
+		// 	if (cmd->out)
+		// 	{
+		// 		printf(" redirect out:\n");
+		// 		k = 0;
 				
-				while (cmd->out)
-				{
-					printf("  redirect #%d:\n", k);
-					printf("   cmd->out->file_name = %s\n", cmd->out->file_name);
-					printf("   cmd->out->variation = %d\n", cmd->out->variation);
-					k++;
-					cmd->out = cmd->out->next;
-				}
-			}
-			cmd = cmd->next;
-			count++;
-		}
+		// 		while (cmd->out)
+		// 		{
+		// 			printf("  redirect #%d:\n", k);
+		// 			printf("   cmd->out->file_name = %s\n", cmd->out->file_name);
+		// 			printf("   cmd->out->variation = %d\n", cmd->out->variation);
+		// 			k++;
+		// 			cmd->out = cmd->out->next;
+		// 		}
+		// 	}
+		// 	cmd = cmd->next;
+		// 	count++;
+		// }
 		/* DEBUG END */
-		//TODO else send to exec
-		
 	}
 	// printf("end parser\n");
 	// free(parser);

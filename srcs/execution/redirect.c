@@ -99,7 +99,8 @@ int redirect(t_cmd *cmd)
 			return (-1);
 		cmd->out = cmd->out->next;
 	}
-	if (redirect_out(cmd->out))
-		return (-1);
+	if (cmd->out)
+		if (redirect_out(cmd->out))
+			return (-1);
 	return (0);
 }

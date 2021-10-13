@@ -17,6 +17,7 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 			dup2(out, 1);
 			close(out);
 		}
+		printf("cmd->in = %p - cmd->out = %p\n", cmd->in, cmd->out);
 		redirect(cmd);								//error
 		to_exec(shell, cmd->value);
 	}

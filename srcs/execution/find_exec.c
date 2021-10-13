@@ -14,8 +14,6 @@ char	**find_path(t_shell *shell)
 
 static inline void	exec_it(char *test, char **function, char **envp)
 {
-	printf("%s\n", test);
-	printf("%s\n", *function);
 	if (execve(test, function, envp))
 	{
 		write(2, "Minishell: ", 11);
