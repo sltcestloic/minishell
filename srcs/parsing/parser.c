@@ -81,11 +81,11 @@ int		count_args(char *input)
 	result = 0;
 	while (input[i])
 	{
-		if (ft_iswhitespace(input[i]) && !parser.s_quote && !parser.d_quote)
+		if (ft_iswhitespace(input[i]) && !ft_iswhitespace(input[i + 1]) && !parser.s_quote && !parser.d_quote)
 			result++;
 		else if (input[i] == '"' && !parser.s_quote)
 			parser.d_quote = !parser.d_quote;
-		else if (input[i] == '\'' == !parser.d_quote)
+		else if (input[i] == '\'' && !parser.d_quote)
 			parser.s_quote = !parser.s_quote;
 		else if (is_sep(input[i]))
 		{
@@ -95,7 +95,6 @@ int		count_args(char *input)
 		}
 		i++;
 	}
-	//printf("args: %d\n", result);
 	return (result);
 }
 
@@ -121,7 +120,6 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 		idx.i++;
 	}
 	cmd->value[0] = ft_strrdup(input, *i - idx.i, *i - 1);
-	//printf("cmd->value[0] = %s\n", cmd->value[0]);
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
 	idx.i = *i;
@@ -130,37 +128,30 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 		if (input[*i] == '"' && !parser.s_quote)
 		{
 			parser.d_quote = !parser.d_quote;
-			//printf("dquote: %d\n", parser.d_quote);
 		}
 		else if (input[*i] == '\'' && !parser.d_quote)
-		{
 			parser.s_quote = !parser.s_quote;
-			//printf("squote: %d\n", parser.d_quote);
-		}
-		//printf("char=%c inquote=%d\n", input[*i], parser.s_quote || parser.d_quote);
 		if (!parser.s_quote && !parser.d_quote)
 		{
 			if (is_sep(input[*i]))
 			{
-				(*i)--; //pour que parse_input puisse lire le | et ajouter une cmd
+				(*i)--;
 				break;
 			}
 			if (ft_iswhitespace(input[*i + 1]) || !input[*i + 1])
 			{
 				cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i);
-				//printf("cmd->value[%d] = %s\n", idx.j - 1, cmd->value[idx.j - 1]);
 				idx.i = *i + 1;
+				while (ft_iswhitespace(input[idx.i]))
+					idx.i++;
+				*i = idx.i - 1;
 			}
 		}
 		(*i)++;
 	}
 	(*i)--;
-	//printf("%d %d\n", idx.i, *i - 1);
 	if (idx.i < *i)
-	{
 		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1);
-		//printf("cmd->value[%d] = %s\n", idx.j - 1, cmd->value[idx.j - 1]);
-	}
 	return (1);
 }
 
@@ -180,18 +171,11 @@ void	parse_input(char *input, t_shell *shell)
 			parser->redirect = is_redirect(input, &i);
 			if (parser->redirect)
 			{
-				printf("redirect: %d\n", parser->redirect);
 				init_redirect(cmd_last(cmd), parser->redirect);
 				if (parser->redirect < 3)
-				{
-					printf("set out\n");
 					set_file_name(cmd_last(cmd)->out, input, &i);
-				}
 				else
-				{
-					printf("set in\n");
 					set_file_name(cmd_last(cmd)->in, input, &i);
-				}
 				continue ;
 			}
 			else if (input[i] == '|')
@@ -199,7 +183,11 @@ void	parse_input(char *input, t_shell *shell)
 		}
 		if (ft_isalnum(input[i]))
 		{
-			//printf("call set content (%c,%d)\n", input[i], i);
+			printf("%c\n", input[i]);
+			if (cmd_last(cmd)->value)
+			{
+				printf("cmd deja init !!\n"); //TODO gerer les trucs genre: echo bjr > a > b salut > c (salut s'ajoute comme arg a echo bjr)
+			}
 			if (!set_cmd_content(cmd_last(cmd), input, &i))
 			{
 				cmd_free(cmd); //TODO free correctement
@@ -210,51 +198,52 @@ void	parse_input(char *input, t_shell *shell)
 			parser->d_quote = !parser->d_quote;
 		else if (input[i] == '\'' == !parser->d_quote)
 			parser->s_quote = !parser->s_quote;
-		//printf("%d\n", i);
 		i++;
 	}
 	if (parser->d_quote || parser->s_quote)
 		printf("Invalid input: unclosed quote.\n");
 	else
 	{
+		substitute(shell, cmd);
 		/* DEBUG START */
-		// int count = 0;
-		cmd_parse(cmd, shell);
-		// while (cmd)
-		// {
-		// 	printf("----------cmd #%d----------\n", count);
-		// 	for (int n = 0; cmd->value[n]; n++)
-		// 		printf("cmd->value[%d] = %s\n", n, cmd->value[n]);
-		// 		int k = 0;
-		// 	if (cmd->in)
-		// 	{
-		// 		printf(" redirect in:\n");
-		// 		while (cmd->in)
-		// 		{
-		// 			printf("  redirect #%d:\n", k);
-		// 			printf("   cmd->in->file_name = %s\n", cmd->in->file_name);
-		// 			printf("   cmd->in->variation = %d\n", cmd->in->variation);
-		// 			k++;
-		// 			cmd->in = cmd->in->next;
-		// 		}
-		// 	}
-		// 	if (cmd->out)
-		// 	{
-		// 		printf(" redirect out:\n");
-		// 		k = 0;
+		int count = 0;
+		t_cmd *tmp = cmd;
+		while (cmd)
+		{
+			printf("----------cmd #%d----------\n", count);
+			for (int n = 0; cmd->value[n]; n++)
+				printf("cmd->value[%d] = |%s|\n", n, cmd->value[n]);
+				int k = 0;
+			if (cmd->in)
+			{
+				printf(" redirect in:\n");
+				while (cmd->in)
+				{
+					printf("  redirect #%d:\n", k);
+					printf("   cmd->in->file_name = %s\n", cmd->in->file_name);
+					printf("   cmd->in->variation = %d\n", cmd->in->variation);
+					k++;
+					cmd->in = cmd->in->next;
+				}
+			}
+			if (cmd->out)
+			{
+				printf(" redirect out:\n");
+				k = 0;
 				
-		// 		while (cmd->out)
-		// 		{
-		// 			printf("  redirect #%d:\n", k);
-		// 			printf("   cmd->out->file_name = %s\n", cmd->out->file_name);
-		// 			printf("   cmd->out->variation = %d\n", cmd->out->variation);
-		// 			k++;
-		// 			cmd->out = cmd->out->next;
-		// 		}
-		// 	}
-		// 	cmd = cmd->next;
-		// 	count++;
-		// }
+				while (cmd->out)
+				{
+					printf("  redirect #%d:\n", k);
+					printf("   cmd->out->file_name = %s\n", cmd->out->file_name);
+					printf("   cmd->out->variation = %d\n", cmd->out->variation);
+					k++;
+					cmd->out = cmd->out->next;
+				}
+			}
+			cmd = cmd->next;
+			count++;
+		}
+		cmd_parse(tmp, shell);
 		/* DEBUG END */
 	}
 	// printf("end parser\n");

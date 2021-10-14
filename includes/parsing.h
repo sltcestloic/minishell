@@ -66,6 +66,12 @@ void		set_file_name(t_redirect *redirect, char *input, int *i);
 ** Debug
 */
 
-void print_cmd(t_cmd *cmd);
+void		print_cmd(t_cmd *cmd);
+
+/*
+** Substitute
+*/
+
+void		substitute(t_shell *shell, t_cmd *cmd);
 
 #endif
