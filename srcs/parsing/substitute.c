@@ -29,9 +29,11 @@ static char	*substitute_env_var(char *input, int var)
 	char	*ret;
 	char	*var_name;
 	char	*new_var;
+	char	*end;
 	int		i;
 
 	ret = NULL;
+	end = NULL;
 	printf("input=|%s|\n", input);
 	if (var > 0) //dup le debut si la var n'est pas au debut de l'arg
 	{
@@ -47,6 +49,12 @@ static char	*substitute_env_var(char *input, int var)
 	var_name = malloc(sizeof(char *) * (i - var));
 	new_var = ft_strdup("test_var!"); //TODO recuperer la vraie valeur de la variable
 	ret = ft_strjoin(ret, new_var);
+	if ((int)ft_strlen(input) > i)
+	{
+		end = ft_strrdup(input, i, ft_strlen(input) - 1);
+		ret = ft_strjoin(ret, end);
+	}
+	printf("end: |%s|\n", end);
 	printf("ret: |%s|\n", ret);
 	return (ret);
 }
