@@ -12,8 +12,9 @@ typedef struct s_cmd
 {
 	char			**value;
 	struct s_cmd	*next;
-	t_redirect *in;
-	t_redirect *out;
+	t_redirect		*in;
+	t_redirect		*out;
+	int				quotes;
 }	t_cmd;
 
 typedef struct s_fdsys

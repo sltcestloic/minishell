@@ -72,6 +72,13 @@ void		print_cmd(t_cmd *cmd);
 ** Substitute
 */
 
-void		substitute(t_shell *shell, t_cmd *cmd);
+int			substitute(t_shell *shell, t_cmd *cmd);
+
+/*
+** cmd
+*/
+
+void		add_new_cmd(t_cmd *cmd);
+int			add_arg(t_cmd *cmd, char *input);
 
 #endif

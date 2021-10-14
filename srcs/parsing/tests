@@ -1,0 +1,3 @@
+echo bjr > a > b salut > c
+echo bjr > a > b "salut mec" > c
+echo bjr > a > b 'salut mec' > c
