@@ -149,6 +149,10 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 				cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i);
 				//printf("cmd->value[%d] = %s\n", idx.j - 1, cmd->value[idx.j - 1]);
 				idx.i = *i + 1;
+				while (ft_iswhitespace(input[idx.i]))
+					idx.i++;
+				*i = idx.i - 1;
+				//printf("%d=%c\n", idx.i + 1, input[idx.i + 1]);
 			}
 		}
 		(*i)++;
