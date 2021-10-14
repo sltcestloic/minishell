@@ -32,12 +32,10 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 	char	*end;
 	int		i;
 
-	ret = NULL;
-	end = NULL;
-	if (var > 0) //dup le debut si la var n'est pas au debut de l'arg
+	if (var > 0)
 		ret = ft_strrdup(input, 0, var - 1);
 	i = var;
-	while (input[i] && (ft_isalnum(input[i]) || i == var)) //i == var pour skip le $
+	while (input[i] && (ft_isalnum(input[i]) || i == var))
 	{
 		i++;
 	}
@@ -52,7 +50,6 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 		ret = ft_strjoin(ret, end);
 		free(end);
 	}
-	printf("ret: |%s|\n", ret);
 	return (ret);
 }
 
@@ -61,7 +58,7 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 */
 static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 {
-	t_index idx;
+	t_index	idx;
 	char	*tmp;
 
 	idx.i = 0;
@@ -75,7 +72,7 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k);
 			free(cmd->value[idx.i]);
 			cmd->value[idx.i] = tmp;
-			continue ; //continue sur cette value tant que idx.k != 0 donc qu'il reste une variable dans la value
+			continue ;
 		}
 		idx.i++;
 	}
@@ -84,7 +81,7 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 
 static void	substitute_quotes(t_cmd *cmd)
 {
-	t_index idx;
+	t_index	idx;
 	char	*new_value;
 
 	idx.i = 0;
@@ -94,10 +91,11 @@ static void	substitute_quotes(t_cmd *cmd)
 	{
 		new_value = malloc(sizeof(char) * (ft_strlen(cmd->value[idx.i]) + 1));
 		if (!new_value)
-			return ; //TODO exit ?
+			return; //TODO exit ?
 		while (cmd->value[idx.i][idx.j])
 		{
-			if (cmd->value[idx.i][idx.j] != '\'' && cmd->value[idx.i][idx.j] != '"')
+			if (cmd->value[idx.i][idx.j] != '\''
+			&& cmd->value[idx.i][idx.j] != '"')
 				new_value[idx.k++] = cmd->value[idx.i][idx.j];
 			new_value[idx.k] = 0;
 			idx.j++;
