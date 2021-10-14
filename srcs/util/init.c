@@ -34,6 +34,7 @@ t_cmd	*init_cmd(void)
 	ret->next = NULL;
 	ret->in = NULL;
 	ret->out = NULL;
+	ret->value = NULL;
 	return (ret);
 }
 

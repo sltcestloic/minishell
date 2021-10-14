@@ -183,6 +183,11 @@ void	parse_input(char *input, t_shell *shell)
 		}
 		if (ft_isalnum(input[i]))
 		{
+			printf("%c\n", input[i]);
+			if (cmd_last(cmd)->value)
+			{
+				printf("cmd deja init !!\n"); //TODO gerer les trucs genre: echo bjr > a > b salut > c (salut s'ajoute comme arg a echo bjr)
+			}
 			if (!set_cmd_content(cmd_last(cmd), input, &i))
 			{
 				cmd_free(cmd); //TODO free correctement
@@ -202,7 +207,7 @@ void	parse_input(char *input, t_shell *shell)
 		substitute(shell, cmd);
 		/* DEBUG START */
 		int count = 0;
-		//t_cmd *tmp = cmd;
+		t_cmd *tmp = cmd;
 		while (cmd)
 		{
 			printf("----------cmd #%d----------\n", count);
@@ -238,7 +243,7 @@ void	parse_input(char *input, t_shell *shell)
 			cmd = cmd->next;
 			count++;
 		}
-		//cmd_parse(tmp, shell);
+		cmd_parse(tmp, shell);
 		/* DEBUG END */
 	}
 	// printf("end parser\n");
