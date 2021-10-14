@@ -24,7 +24,7 @@ static int	has_env_var(char *input)
 	return (-1);
 }
 
-static char	*substitute_env_var(char *input, int var)
+static char	*substitute_env_var(t_shell *shell, char *input, int var)
 {
 	char	*ret;
 	char	*var_name;
@@ -34,27 +34,24 @@ static char	*substitute_env_var(char *input, int var)
 
 	ret = NULL;
 	end = NULL;
-	printf("input=|%s|\n", input);
 	if (var > 0) //dup le debut si la var n'est pas au debut de l'arg
-	{
 		ret = ft_strrdup(input, 0, var - 1);
-		printf("ret avant join: %s\n", ret);
-	}
 	i = var;
 	while (input[i] && (ft_isalnum(input[i]) || i == var)) //i == var pour skip le $
 	{
 		i++;
 	}
-	printf("var len: %d\n", i - var);
 	var_name = malloc(sizeof(char *) * (i - var));
 	new_var = ft_strdup("test_var!"); //TODO recuperer la vraie valeur de la variable
+	free(var_name);
 	ret = ft_strjoin(ret, new_var);
+	free(new_var);
 	if ((int)ft_strlen(input) > i)
 	{
 		end = ft_strrdup(input, i, ft_strlen(input) - 1);
 		ret = ft_strjoin(ret, end);
+		free(end);
 	}
-	printf("end: |%s|\n", end);
 	printf("ret: |%s|\n", ret);
 	return (ret);
 }
@@ -62,7 +59,7 @@ static char	*substitute_env_var(char *input, int var)
 /*
 ** idx.k = var $ index
 */
-static void	substitute_env_vars(t_cmd *cmd)
+static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 {
 	t_index idx;
 	char	*tmp;
@@ -75,7 +72,7 @@ static void	substitute_env_vars(t_cmd *cmd)
 		printf("var: %d\n", idx.k);
 		if (idx.k != -1)
 		{
-			tmp = substitute_env_var(cmd->value[idx.i], idx.k);
+			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k);
 			free(cmd->value[idx.i]);
 			cmd->value[idx.i] = tmp;
 			continue ; //continue sur cette value tant que idx.k != 0 donc qu'il reste une variable dans la value
@@ -113,14 +110,14 @@ static void	substitute_quotes(t_cmd *cmd)
 	}
 }
 
-void	substitute(t_cmd *cmd)
+void	substitute(t_shell *shell, t_cmd *cmd)
 {
 	t_cmd	*tmp;
 
 	tmp = cmd;
 	while (tmp)
 	{
-		substitute_env_vars(cmd);
+		substitute_env_vars(shell, cmd);
 		substitute_quotes(cmd);
 		tmp = tmp->next;
 	}

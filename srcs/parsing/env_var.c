@@ -1,17 +1,12 @@
 #include "minishell.h"
 
-char	*get_env_var(t_shell *shell, char *str)
+char	*get_env_var(t_shell *shell, char *name)
 {
 	t_envlst	*lst;
 	char		*ret;
-	char		**split;
-	char		*name;
 
-	split = ft_split(str, ' ');
-	name = ft_strtrim(&split[0][1], " \"'");
 	lst = shell->env_var;
-	ret = malloc(1);
-	*ret = 0;
+	ret = NULL;
 	while (lst)
 	{
 		if (ft_strcmp(lst->name, name) == 0)
@@ -22,7 +17,6 @@ char	*get_env_var(t_shell *shell, char *str)
 		}
 		lst = lst->next;
 	}
-	free_split(split);
 	return (ret);
 }
 
