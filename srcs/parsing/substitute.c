@@ -97,6 +97,8 @@ static void	substitute_quotes(t_cmd *cmd)
 			if (cmd->value[idx.i][idx.j] != '\''
 			&& cmd->value[idx.i][idx.j] != '"')
 				new_value[idx.k++] = cmd->value[idx.i][idx.j];
+			else
+				cmd->quotes++;
 			new_value[idx.k] = 0;
 			idx.j++;
 		}
@@ -108,7 +110,7 @@ static void	substitute_quotes(t_cmd *cmd)
 	}
 }
 
-void	substitute(t_shell *shell, t_cmd *cmd)
+int		substitute(t_shell *shell, t_cmd *cmd)
 {
 	t_cmd	*tmp;
 
@@ -117,6 +119,12 @@ void	substitute(t_shell *shell, t_cmd *cmd)
 	{
 		substitute_env_vars(shell, cmd);
 		substitute_quotes(cmd);
+		if (cmd->quotes % 2 != 0)
+		{
+			printf("Invalid input: unclosed quotes.\n");
+			return (0);
+		}
 		tmp = tmp->next;
 	}
+	return (1);
 }

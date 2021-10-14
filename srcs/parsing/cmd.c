@@ -36,7 +36,6 @@ static char	*next_word(char *input)
 		i++;
 	}
 	ret = ft_strrdup(input, 0, i - 1);
-	printf("next word=%s\n", ret);
 	return (ret);
 }
 

@@ -143,28 +143,23 @@ void	parse_input(char *input, t_shell *shell)
 	cmd = init_cmd();
 	while (input[i]) {
 		printf("i=%d sq=%d dq=%d c=%c\n", i, parser->s_quote, parser->d_quote, input[i]);
-		if (!parser->s_quote && !parser->d_quote)
+		parser->redirect = is_redirect(input, &i);
+		if (parser->redirect)
 		{
-			parser->redirect = is_redirect(input, &i);
-			if (parser->redirect)
-			{
-				init_redirect(cmd_last(cmd), parser->redirect);
-				if (parser->redirect < 3)
-					set_file_name(cmd_last(cmd)->out, input, &i);
-				else
-					set_file_name(cmd_last(cmd)->in, input, &i);
-				continue ;
-			}
-			else if (input[i] == '|')
-				add_new_cmd(cmd);
+			init_redirect(cmd_last(cmd), parser->redirect);
+			if (parser->redirect < 3)
+				set_file_name(cmd_last(cmd)->out, input, &i);
+			else
+				set_file_name(cmd_last(cmd)->in, input, &i);
+			continue ;
 		}
-		if (ft_isalnum(input[i]))
+		else if (input[i] == '|')
+			add_new_cmd(cmd);
+		else if (ft_isalnum(input[i]))
 		{
 			printf("%c\n", input[i]);
 			if (cmd_last(cmd)->value)
 			{
-				printf("cmd deja init, add arg!!\n"); //echo bjr > a > b salut > c | echo bjr > a > b "salut mec" > c
-				printf("i before: %d\n", i);
 				if (input[i - 1] == '\'' || input[i - 1] == '"')
 				{
 					i += add_arg(cmd_last(cmd), &input[i - 1]);
@@ -173,7 +168,6 @@ void	parse_input(char *input, t_shell *shell)
 				}
 				else
 					i += add_arg(cmd_last(cmd), &input[i]);
-				printf("i after: %d (%c)\n", i, input[i]);
 			}
 			else if (!set_cmd_content(cmd_last(cmd), input, &i))
 			{
@@ -181,21 +175,12 @@ void	parse_input(char *input, t_shell *shell)
 				exit(0);
 			}
 		}
-		else if (input[i] == '"' && !parser->s_quote)
-			parser->d_quote = !parser->d_quote;
-		else if (input[i] == '\'' == !parser->d_quote)
-			parser->s_quote = !parser->s_quote;
 		i++;
-		printf("end loop i = %d\n", i);
 	}
-	if (parser->d_quote || parser->s_quote)
-		printf("Invalid input: unclosed quote.\n");
-	else
-	{
-		substitute(shell, cmd);
-		print_struct_debug(cmd);
+	int sub = substitute(shell, cmd);
+	print_struct_debug(cmd);
+	if (sub)
 		cmd_parse(cmd, shell);
-	}
 	// printf("end parser\n");
 	// free(parser);
 	// printf("parser freed\n");
