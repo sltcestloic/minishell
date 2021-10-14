@@ -42,7 +42,7 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 		i++;
 	}
 	var_name = malloc(sizeof(char *) * (i - var));
-	new_var = ft_strdup("test_var!"); //TODO recuperer la vraie valeur de la variable
+	new_var = get_env_var(shell, var_name);
 	free(var_name);
 	ret = ft_strjoin(ret, new_var);
 	free(new_var);
