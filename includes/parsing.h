@@ -74,4 +74,10 @@ void		print_cmd(t_cmd *cmd);
 
 void		substitute(t_shell *shell, t_cmd *cmd);
 
+/*
+** cmd
+*/
+
+void		add_new_cmd(t_cmd *cmd);
+
 #endif

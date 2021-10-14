@@ -1,69 +1,5 @@
 #include "minishell.h"
 
-/* void	handle_cmd(char **input, t_shell *shell)
-{
-	int	i;
-
-	i = 1;
-	if (ft_strcmp("exit", input[0]) == 0)
-		ft_exit(shell->to_free);
-	else if (ft_strcmp("echo", input[0]) == 0)
-		parse_echo(input);
-	else if (ft_strcmp("env", input[0]) == 0)
-		env(shell->env_var);
-	else if (ft_strcmp("unset", input[0]) == 0)
-	{
-		while (input[i])
-		{
-			remove_env_elem(input[i], shell);
-			i++;
-		}
-	}
-	else if (ft_strcmp("export", input[0]) == 0)
-	{
-		if (!input[1])
-			export(shell->env_var);
-		else
-		{
-			while (input[i])
-			{
-				new_env_elem(input[i], shell);
-				i++;
-			}
-		}
-	}
-	else if (ft_strcmp("cd", input[0]) == 0)
-	{
-		if (!input[0])
-			change_pwd(shell, 0);
-		else if (ft_splitlen(input) > 2)
-			write(1, "cd: too many arguments\n", 24);
-		else
-			change_pwd(shell, input[0]);
-	}
-	else if (ft_strcmp("pwd", input[0]) == 0)
-		pwd(shell);
-	else
-		to_exec(shell, input);
-	free(input);
-} */
-
-void	add_new_cmd(t_cmd *cmd)
-{
-	t_cmd *new_cmd;
-
-	new_cmd = malloc(sizeof(t_cmd));
-	new_cmd->next = NULL;
-	new_cmd->in = NULL;
-	new_cmd->out = NULL;
-	if (!new_cmd)
-	{
-		cmd_free(cmd); //TODO free correctement
-		return ;
-	}
-	cmd_last(cmd)->next = new_cmd;
-}
-
 int	is_sep(char c)
 {
 	return (c == '>' || c == '<' || c == '|');
@@ -155,6 +91,46 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 	return (1);
 }
 
+void	print_struct_debug(t_cmd *cmd)
+{
+	t_cmd *tmp = cmd;
+	int count = 0;
+	while (tmp)
+	{
+		printf("----------cmd #%d----------\n", count);
+		for (int n = 0; tmp->value[n]; n++)
+			printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
+			int k = 0;
+		if (tmp->in)
+		{
+			printf(" redirect in:\n");
+			while (tmp->in)
+			{
+				printf("  redirect #%d:\n", k);
+				printf("   cmd->in->file_name = %s\n", tmp->in->file_name);
+				printf("   cmd->in->variation = %d\n", tmp->in->variation);
+				k++;
+				tmp->in = tmp->in->next;
+			}
+		}
+		if (tmp->out)
+		{
+			printf(" redirect out:\n");
+			k = 0;	
+			while (tmp->out)
+			{
+				printf("  redirect #%d:\n", k);
+				printf("   cmd->out->file_name = %s\n", tmp->out->file_name);
+				printf("   cmd->out->variation = %d\n", tmp->out->variation);
+				k++;
+				tmp->out = tmp->out->next;
+			}
+		}
+		tmp = tmp->next;
+		count++;
+	}
+}
+
 void	parse_input(char *input, t_shell *shell)
 {
 	t_cmd		*cmd;
@@ -205,46 +181,8 @@ void	parse_input(char *input, t_shell *shell)
 	else
 	{
 		substitute(shell, cmd);
-		/* DEBUG START */
-		int count = 0;
-		t_cmd *tmp = cmd;
-		while (cmd)
-		{
-			printf("----------cmd #%d----------\n", count);
-			for (int n = 0; cmd->value[n]; n++)
-				printf("cmd->value[%d] = |%s|\n", n, cmd->value[n]);
-				int k = 0;
-			if (cmd->in)
-			{
-				printf(" redirect in:\n");
-				while (cmd->in)
-				{
-					printf("  redirect #%d:\n", k);
-					printf("   cmd->in->file_name = %s\n", cmd->in->file_name);
-					printf("   cmd->in->variation = %d\n", cmd->in->variation);
-					k++;
-					cmd->in = cmd->in->next;
-				}
-			}
-			if (cmd->out)
-			{
-				printf(" redirect out:\n");
-				k = 0;
-				
-				while (cmd->out)
-				{
-					printf("  redirect #%d:\n", k);
-					printf("   cmd->out->file_name = %s\n", cmd->out->file_name);
-					printf("   cmd->out->variation = %d\n", cmd->out->variation);
-					k++;
-					cmd->out = cmd->out->next;
-				}
-			}
-			cmd = cmd->next;
-			count++;
-		}
-		cmd_parse(tmp, shell);
-		/* DEBUG END */
+		print_struct_debug(cmd);
+		cmd_parse(cmd, shell);
 	}
 	// printf("end parser\n");
 	// free(parser);
