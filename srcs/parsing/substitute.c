@@ -50,6 +50,7 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 		ret = ft_strjoin(ret, end);
 		free(end);
 	}
+	printf("ret=|%s|\n", ret);
 	return (ret);
 }
 
