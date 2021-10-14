@@ -142,6 +142,7 @@ void	parse_input(char *input, t_shell *shell)
 	i = 0;
 	cmd = init_cmd();
 	while (input[i]) {
+		printf("i=%d sq=%d dq=%d c=%c\n", i, parser->s_quote, parser->d_quote, input[i]);
 		if (!parser->s_quote && !parser->d_quote)
 		{
 			parser->redirect = is_redirect(input, &i);
@@ -162,9 +163,19 @@ void	parse_input(char *input, t_shell *shell)
 			printf("%c\n", input[i]);
 			if (cmd_last(cmd)->value)
 			{
-				printf("cmd deja init !!\n"); //TODO gerer les trucs genre: echo bjr > a > b salut > c (salut s'ajoute comme arg a echo bjr)
+				printf("cmd deja init, add arg!!\n"); //echo bjr > a > b salut > c | echo bjr > a > b "salut mec" > c
+				printf("i before: %d\n", i);
+				if (input[i - 1] == '\'' || input[i - 1] == '"')
+				{
+					i += add_arg(cmd_last(cmd), &input[i - 1]);
+					parser->d_quote = 0;
+					parser->s_quote = 0;
+				}
+				else
+					i += add_arg(cmd_last(cmd), &input[i]);
+				printf("i after: %d (%c)\n", i, input[i]);
 			}
-			if (!set_cmd_content(cmd_last(cmd), input, &i))
+			else if (!set_cmd_content(cmd_last(cmd), input, &i))
 			{
 				cmd_free(cmd); //TODO free correctement
 				exit(0);
@@ -175,6 +186,7 @@ void	parse_input(char *input, t_shell *shell)
 		else if (input[i] == '\'' == !parser->d_quote)
 			parser->s_quote = !parser->s_quote;
 		i++;
+		printf("end loop i = %d\n", i);
 	}
 	if (parser->d_quote || parser->s_quote)
 		printf("Invalid input: unclosed quote.\n");
