@@ -142,7 +142,6 @@ void	parse_input(char *input, t_shell *shell)
 	i = 0;
 	cmd = init_cmd();
 	while (input[i]) {
-		printf("i=%d sq=%d dq=%d c=%c\n", i, parser->s_quote, parser->d_quote, input[i]);
 		parser->redirect = is_redirect(input, &i);
 		if (parser->redirect)
 		{
@@ -157,9 +156,9 @@ void	parse_input(char *input, t_shell *shell)
 			add_new_cmd(cmd);
 		else if (ft_isalnum(input[i]))
 		{
-			printf("%c\n", input[i]);
 			if (cmd_last(cmd)->value)
 			{
+				printf("%s\n", cmd_last(cmd)->value[0]);
 				if (input[i - 1] == '\'' || input[i - 1] == '"')
 				{
 					i += add_arg(cmd_last(cmd), &input[i - 1]);

@@ -8,6 +8,7 @@ void		add_new_cmd(t_cmd *cmd)
 	new_cmd->next = NULL;
 	new_cmd->in = NULL;
 	new_cmd->out = NULL;
+	new_cmd->value = NULL;
 	if (!new_cmd)
 	{
 		cmd_free(cmd); //TODO free correctement
