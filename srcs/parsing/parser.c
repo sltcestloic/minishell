@@ -85,7 +85,7 @@ int		count_args(char *input)
 			result++;
 		else if (input[i] == '"' && !parser.s_quote)
 			parser.d_quote = !parser.d_quote;
-		else if (input[i] == '\'' == !parser.d_quote)
+		else if (input[i] == '\'' && !parser.d_quote)
 			parser.s_quote = !parser.s_quote;
 		else if (is_sep(input[i]))
 		{
@@ -219,7 +219,7 @@ void	parse_input(char *input, t_shell *shell)
 		substitute(cmd);
 		/* DEBUG START */
 		int count = 0;
-		t_cmd *tmp = cmd;
+		//t_cmd *tmp = cmd;
 		while (cmd)
 		{
 			printf("----------cmd #%d----------\n", count);
@@ -255,7 +255,7 @@ void	parse_input(char *input, t_shell *shell)
 			cmd = cmd->next;
 			count++;
 		}
-		cmd_parse(tmp, shell);
+		//cmd_parse(tmp, shell);
 		/* DEBUG END */
 	}
 	// printf("end parser\n");
