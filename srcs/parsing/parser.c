@@ -54,6 +54,8 @@ void	add_new_cmd(t_cmd *cmd)
 
 	new_cmd = malloc(sizeof(t_cmd));
 	new_cmd->next = NULL;
+	new_cmd->in = NULL;
+	new_cmd->out = NULL;
 	if (!new_cmd)
 	{
 		cmd_free(cmd); //TODO free correctement
@@ -110,7 +112,7 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 	args = count_args(&input[*i]);
 	cmd->value = malloc(sizeof(char *) * (args + 2));
 	cmd->value[args + 1] = 0;
-	printf("cmd->value[%d] = 0\n", args + 1);
+	// printf("cmd->value[%d] = 0\n", args + 1);
 	if (!cmd->value)
 		return (0);
 	while (input[*i] && input[*i] != '|' && !ft_iswhitespace(input[*i]))
@@ -178,7 +180,7 @@ void	parse_input(char *input, t_shell *shell)
 			parser->redirect = is_redirect(input, &i);
 			if (parser->redirect)
 			{
-				printf("redirect: %d\n", parser->redirect);
+				// printf("redirect: %d\n", parser->redirect);
 				init_redirect(cmd_last(cmd), parser->redirect);
 				if (parser->redirect < 3)
 				{

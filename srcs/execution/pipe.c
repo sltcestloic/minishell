@@ -17,23 +17,22 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 			dup2(out, 1);
 			close(out);
 		}
-		printf("cmd->in = %p - cmd->out = %p\n", cmd->in, cmd->out);
 		redirect(cmd);								//error
 		to_exec(shell, cmd->value);
 	}
 	if (out == 1)
+	{
 		waitpid(pid, &pid, 0);
-	shell->last_exit_return = WEXITSTATUS(pid);
+		shell->last_exit_return = WEXITSTATUS(pid);
+	}
 }
 
 void	cmd_parse(t_cmd *cmd, t_shell *shell)
 {
 	int in;
-	int number_of_child;
 	int fd[2];
 
 	in = 0;
-	number_of_child = 1;
 	while (cmd->next)
 	{
 		if (pipe(fd))
@@ -44,16 +43,14 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 		in = fd[0];
 		close(fd[1]);
 		cmd = cmd->next;
-		number_of_child++;
 	}
-	if (number_of_child > 1)
+	if (in)
 	{
-		close(fd[1]);
 		spawn_proc(in, 1, cmd, shell);
 		close(in);
+		while (wait(NULL) != -1)
+			;
 	}
 	else
 		spawn_proc(in, 1, cmd, shell);
-	while (--number_of_child)
-		wait(&in);
 }

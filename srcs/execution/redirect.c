@@ -3,22 +3,39 @@
 int	here_doc(char *stop, int is_active)
 {
 	char *line;
-	int fd;
+	int fd[2];
 
 	if (is_active)
-		fd = dup(0);
-	line = NULL;
-	while (ft_strcmp(line, stop))
 	{
-		if (is_active && line)
-			write(fd, line, ft_strlen(line));
+		pipe(fd);
+		while ((line = readline(NULL)))
+		{
+			if (ft_strcmp(line, stop))
+			{
+				write(fd[1], line, ft_strlen(line));
+				write(fd[1], "\n", 1);
+				free(line);
+			}
+			else
+				break;
+		}
 		free(line);
-		line = NULL;
+		close(fd[1]);
+		dup2(fd[0], 0);
+		close(fd[0]);
 	}
-	if (is_active)
+	else
 	{
-		dup2(fd, 0);
-		close(fd);
+		while ((line = readline(NULL)))
+		{
+			if (ft_strcmp(line, stop))
+				free(line);
+			else
+			{
+				free(line);
+				break;
+			}
+		}
 	}
 	return (0);
 }

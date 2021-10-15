@@ -90,14 +90,14 @@ void	init_redirect(t_cmd *cmd, int type)
 {
 	int	ret;
 
-	printf("init type=%d\n", type);
+	// printf("init type=%d\n", type);
 	ret = init_redirect_io(cmd, type);
 	if (!ret)
 	{
 		cmd_free(cmd); //TODO free correctement
 		return ;
 	}
-	printf("in=%p out=%p\n", cmd->in, cmd->out);
+	// printf("in=%p out=%p\n", cmd->in, cmd->out);
 }
 
 void	set_file_name(t_redirect *redirect, char *input, int *i)
