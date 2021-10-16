@@ -100,6 +100,9 @@ void	init_redirect(t_cmd *cmd, int type)
 	// printf("in=%p out=%p\n", cmd->in, cmd->out);
 }
 
+/*
+** TODO: gerer les noms avec des quotes (genre echo a > "salut test")
+*/
 void	set_file_name(t_redirect *redirect, char *input, int *i)
 {
 	int			j;
@@ -109,7 +112,7 @@ void	set_file_name(t_redirect *redirect, char *input, int *i)
 	last = redirect_last(redirect);
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
-	while (ft_isalnum(input[*i]))
+	while (input[*i] && !ft_iswhitespace(input[*i]))
 	{
 		(*i)++;
 		j++;
@@ -119,7 +122,7 @@ void	set_file_name(t_redirect *redirect, char *input, int *i)
 		exit(1); //TODO free correctement
 	*i -= j;
 	j = 0;
-	while (ft_isalnum(input[*i]))
+	while (input[*i] && !ft_iswhitespace(input[*i]))
 		last->file_name[j++] = input[(*i)++];
 	last->file_name[j] = '\0';
 }

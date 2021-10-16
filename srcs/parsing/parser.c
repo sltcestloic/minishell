@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+<<<<<<< HEAD
 /* void	handle_cmd(char **input, t_shell *shell)
 {
 	int	i;
@@ -64,6 +65,8 @@ void	add_new_cmd(t_cmd *cmd)
 	cmd_last(cmd)->next = new_cmd;
 }
 
+=======
+>>>>>>> 0df85e84781b5e680b34c12afcfd208710e101c3
 int	is_sep(char c)
 {
 	return (c == '>' || c == '<' || c == '|');
@@ -81,11 +84,11 @@ int		count_args(char *input)
 	result = 0;
 	while (input[i])
 	{
-		if (ft_iswhitespace(input[i]) && !parser.s_quote && !parser.d_quote)
+		if (ft_iswhitespace(input[i]) && !ft_iswhitespace(input[i + 1]) && !parser.s_quote && !parser.d_quote)
 			result++;
 		else if (input[i] == '"' && !parser.s_quote)
 			parser.d_quote = !parser.d_quote;
-		else if (input[i] == '\'' == !parser.d_quote)
+		else if (input[i] == '\'' && !parser.d_quote)
 			parser.s_quote = !parser.s_quote;
 		else if (is_sep(input[i]))
 		{
@@ -95,7 +98,6 @@ int		count_args(char *input)
 		}
 		i++;
 	}
-	//printf("args: %d\n", result);
 	return (result);
 }
 
@@ -121,7 +123,6 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 		idx.i++;
 	}
 	cmd->value[0] = ft_strrdup(input, *i - idx.i, *i - 1);
-	//printf("cmd->value[0] = %s\n", cmd->value[0]);
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
 	idx.i = *i;
@@ -130,38 +131,71 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 		if (input[*i] == '"' && !parser.s_quote)
 		{
 			parser.d_quote = !parser.d_quote;
-			//printf("dquote: %d\n", parser.d_quote);
 		}
 		else if (input[*i] == '\'' && !parser.d_quote)
-		{
 			parser.s_quote = !parser.s_quote;
-			//printf("squote: %d\n", parser.d_quote);
-		}
-		//printf("char=%c inquote=%d\n", input[*i], parser.s_quote || parser.d_quote);
 		if (!parser.s_quote && !parser.d_quote)
 		{
 			if (is_sep(input[*i]))
 			{
-				(*i)--; //pour que parse_input puisse lire le | et ajouter une cmd
+				(*i)--;
 				break;
 			}
 			if (ft_iswhitespace(input[*i + 1]) || !input[*i + 1])
 			{
 				cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i);
-				//printf("cmd->value[%d] = %s\n", idx.j - 1, cmd->value[idx.j - 1]);
 				idx.i = *i + 1;
+				while (ft_iswhitespace(input[idx.i]))
+					idx.i++;
+				*i = idx.i - 1;
 			}
 		}
 		(*i)++;
 	}
 	(*i)--;
-	//printf("%d %d\n", idx.i, *i - 1);
 	if (idx.i < *i)
-	{
 		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1);
-		//printf("cmd->value[%d] = %s\n", idx.j - 1, cmd->value[idx.j - 1]);
-	}
 	return (1);
+}
+
+void	print_struct_debug(t_cmd *cmd)
+{
+	t_cmd *tmp = cmd;
+	int count = 0;
+	while (tmp)
+	{
+		printf("----------cmd #%d----------\n", count);
+		for (int n = 0; tmp->value[n]; n++)
+			printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
+			int k = 0;
+		if (tmp->in)
+		{
+			printf(" redirect in:\n");
+			while (tmp->in)
+			{
+				printf("  redirect #%d:\n", k);
+				printf("   cmd->in->file_name = %s\n", tmp->in->file_name);
+				printf("   cmd->in->variation = %d\n", tmp->in->variation);
+				k++;
+				tmp->in = tmp->in->next;
+			}
+		}
+		if (tmp->out)
+		{
+			printf(" redirect out:\n");
+			k = 0;	
+			while (tmp->out)
+			{
+				printf("  redirect #%d:\n", k);
+				printf("   cmd->out->file_name = %s\n", tmp->out->file_name);
+				printf("   cmd->out->variation = %d\n", tmp->out->variation);
+				k++;
+				tmp->out = tmp->out->next;
+			}
+		}
+		tmp = tmp->next;
+		count++;
+	}
 }
 
 void	parse_input(char *input, t_shell *shell)
@@ -175,88 +209,44 @@ void	parse_input(char *input, t_shell *shell)
 	i = 0;
 	cmd = init_cmd();
 	while (input[i]) {
-		if (!parser->s_quote && !parser->d_quote)
+		parser->redirect = is_redirect(input, &i);
+		if (parser->redirect)
 		{
-			parser->redirect = is_redirect(input, &i);
-			if (parser->redirect)
+			init_redirect(cmd_last(cmd), parser->redirect);
+			if (parser->redirect < 3)
+				set_file_name(cmd_last(cmd)->out, input, &i);
+			else
+				set_file_name(cmd_last(cmd)->in, input, &i);
+			continue ;
+		}
+		else if (input[i] == '|')
+			add_new_cmd(cmd);
+		else if (ft_isalnum(input[i]))
+		{
+			if (cmd_last(cmd)->value)
 			{
-				// printf("redirect: %d\n", parser->redirect);
-				init_redirect(cmd_last(cmd), parser->redirect);
-				if (parser->redirect < 3)
+				printf("%s\n", cmd_last(cmd)->value[0]);
+				if (input[i - 1] == '\'' || input[i - 1] == '"')
 				{
-					printf("set out\n");
-					set_file_name(cmd_last(cmd)->out, input, &i);
+					i += add_arg(cmd_last(cmd), &input[i - 1]);
+					parser->d_quote = 0;
+					parser->s_quote = 0;
 				}
 				else
-				{
-					printf("set in\n");
-					set_file_name(cmd_last(cmd)->in, input, &i);
-				}
-				continue ;
+					i += add_arg(cmd_last(cmd), &input[i]);
 			}
-			else if (input[i] == '|')
-				add_new_cmd(cmd);
-		}
-		if (ft_isalnum(input[i]))
-		{
-			//printf("call set content (%c,%d)\n", input[i], i);
-			if (!set_cmd_content(cmd_last(cmd), input, &i))
+			else if (!set_cmd_content(cmd_last(cmd), input, &i))
 			{
 				cmd_free(cmd); //TODO free correctement
 				exit(0);
 			}
 		}
-		else if (input[i] == '"' && !parser->s_quote)
-			parser->d_quote = !parser->d_quote;
-		else if (input[i] == '\'' == !parser->d_quote)
-			parser->s_quote = !parser->s_quote;
-		//printf("%d\n", i);
 		i++;
 	}
-	if (parser->d_quote || parser->s_quote)
-		printf("Invalid input: unclosed quote.\n");
-	else
-	{
-		/* DEBUG START */
-		// int count = 0;
+	int sub = substitute(shell, cmd);
+	print_struct_debug(cmd);
+	if (sub)
 		cmd_parse(cmd, shell);
-		// while (cmd)
-		// {
-		// 	printf("----------cmd #%d----------\n", count);
-		// 	for (int n = 0; cmd->value[n]; n++)
-		// 		printf("cmd->value[%d] = %s\n", n, cmd->value[n]);
-		// 		int k = 0;
-		// 	if (cmd->in)
-		// 	{
-		// 		printf(" redirect in:\n");
-		// 		while (cmd->in)
-		// 		{
-		// 			printf("  redirect #%d:\n", k);
-		// 			printf("   cmd->in->file_name = %s\n", cmd->in->file_name);
-		// 			printf("   cmd->in->variation = %d\n", cmd->in->variation);
-		// 			k++;
-		// 			cmd->in = cmd->in->next;
-		// 		}
-		// 	}
-		// 	if (cmd->out)
-		// 	{
-		// 		printf(" redirect out:\n");
-		// 		k = 0;
-				
-		// 		while (cmd->out)
-		// 		{
-		// 			printf("  redirect #%d:\n", k);
-		// 			printf("   cmd->out->file_name = %s\n", cmd->out->file_name);
-		// 			printf("   cmd->out->variation = %d\n", cmd->out->variation);
-		// 			k++;
-		// 			cmd->out = cmd->out->next;
-		// 		}
-		// 	}
-		// 	cmd = cmd->next;
-		// 	count++;
-		// }
-		/* DEBUG END */
-	}
 	// printf("end parser\n");
 	// free(parser);
 	// printf("parser freed\n");

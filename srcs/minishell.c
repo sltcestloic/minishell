@@ -25,11 +25,11 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	set_env(envp, shell);
 	set_pwd(shell);
-	display_prompt(shell);
-	while (ft_get_next_line(0, &input) > 0)
+	input = readline("\e[0;92mminishell\e[0m$ ");
+	while (input)
 	{
 		parse_input(input, shell);
-		display_prompt(shell);
 		free(input);
+		input = readline("\e[0;92mminishell\e[0m$ ");
 	}
 }
