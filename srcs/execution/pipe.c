@@ -1,5 +1,20 @@
 #include "minishell.h"
 
+int	has_heredoc(t_cmd *cmd)
+{
+	if (!cmd->in)
+		return (0);
+	while (cmd->in->next)
+	{
+		if (cmd->in->variation)
+			return (1);
+		cmd->in = cmd->in->next;
+	}
+	if (cmd->in->variation)
+		return (1);
+	return (0);
+}
+
 void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 {
 	int pid;
@@ -7,20 +22,20 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (!pid)
 	{
-		if (in)
+		if (in && !has_heredoc(cmd))
 		{
 			dup2(in, 0);
 			close(in);
-		}
+		}	
 		if (out != 1)
 		{
 			dup2(out, 1);
 			close(out);
 		}
-		redirect(cmd);								//error
+		redirect(cmd);							//error
 		to_exec(shell, cmd->value);
 	}
-	if (out == 1)
+	if (out == 1 || has_heredoc(cmd))
 	{
 		waitpid(pid, &pid, 0);
 		shell->last_exit_return = WEXITSTATUS(pid);

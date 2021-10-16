@@ -8,7 +8,7 @@ int	here_doc(char *stop, int is_active)
 	if (is_active)
 	{
 		pipe(fd);
-		while ((line = readline(NULL)))
+		while (ft_get_next_line(0, &line))
 		{
 			if (ft_strcmp(line, stop))
 			{
@@ -26,7 +26,7 @@ int	here_doc(char *stop, int is_active)
 	}
 	else
 	{
-		while ((line = readline(NULL)))
+		while (ft_get_next_line(0, &line))
 		{
 			if (ft_strcmp(line, stop))
 				free(line);
