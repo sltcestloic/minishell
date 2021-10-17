@@ -59,11 +59,28 @@ char	*make_path(char **path, char **function)
 	return (NULL);
 }
 
+void	check_build_in(char **func, t_shell *shell)
+{
+	if (!ft_strcmp(func[0], "echo"))
+		echo(func[1], (func[2] > 0));
+	else if (!ft_strcmp(func[0], "env"))
+		env(func[1], (func[2] > 0));
+	if (!ft_strcmp(func[0], "export"))
+		export(func[1], (func[2] > 0));
+	if (!ft_strcmp(func[0], "exit"))
+		ft_exit(func[1], (func[2] > 0));
+	if (!ft_strcmp(func[0], "cd"))
+		change_pwd(func[1], (func[2] > 0));
+	if (!ft_strcmp(func[0], "pwd"))
+		pwd(func[1], (func[2] > 0));
+}
+
 void	to_exec(t_shell *shell, char **function)
 {
 	char			**path;
 	char			*test;
 
+	check_built_in(function, shell);
 	path = find_path(shell);
 	test = NULL;
 	if (path)

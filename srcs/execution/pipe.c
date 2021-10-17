@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void	print_error(char *cmd, char *msg)
+{
+	write(2, "Minishell: ", 11);
+	ft_putstr_fd(cmd, 2);
+	write(2, &msg, 28);
+	exit(-1);
+}
+
 int	has_heredoc(t_cmd *cmd)
 {
 	if (!cmd->in)
@@ -32,7 +40,8 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 			dup2(out, 1);
 			close(out);
 		}
-		redirect(cmd);							//error
+		if (redirect(cmd) == -1)
+			print_error(cmd->value[0], " : Error during redirection\n");
 		to_exec(shell, cmd->value);
 	}
 	if (out == 1 || has_heredoc(cmd))
@@ -51,7 +60,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	while (cmd->next)
 	{
 		if (pipe(fd))
-			return ;									//error
+			print_error(cmd->value[0], " : Error during pipe\n");								//error
 		spawn_proc(in, fd[1], cmd, shell);
 		if (in)
 			close(in);

@@ -1,44 +1,63 @@
 #include "minishell.h"
 
-int	here_doc(char *stop, int is_active)
+int passive_here_doc(char *stop)
 {
 	char *line;
-	int fd[2];
+	int ret;
 
-	if (is_active)
+	ret = 1;
+	while (ret)
 	{
-		pipe(fd);
-		while (ft_get_next_line(0, &line))
+		ret = ft_get_next_line(0, &line);
+		if (ret == -1)
 		{
-			if (ft_strcmp(line, stop))
-			{
-				write(fd[1], line, ft_strlen(line));
-				write(fd[1], "\n", 1);
-				free(line);
-			}
-			else
-				break;
+			free(line);
+			return (-1);
 		}
-		free(line);
-		close(fd[1]);
-		dup2(fd[0], 0);
-		close(fd[0]);
-	}
-	else
-	{
-		while (ft_get_next_line(0, &line))
+		if (ft_strcmp(line, stop))
+			free(line);
+		else
 		{
-			if (ft_strcmp(line, stop))
-				free(line);
-			else
-			{
-				free(line);
-				break;
-			}
+			free(line);
+			break;
 		}
 	}
 	return (0);
 }
+
+int	here_doc(char *stop)
+{
+	char *line;
+	int fd[2];
+	int ret;
+
+	if (pipe(fd))
+		return (-1);
+	ret = 1;
+	while (ret)
+	{
+		ret = ft_get_next_line(0, &line);
+		if (ret == -1)
+		{
+			free(line);
+			return (-1);
+		}
+		if (ft_strcmp(line, stop))
+		{
+			write(fd[1], line, ft_strlen(line));
+			write(fd[1], "\n", 1);
+			free(line);
+		}
+		else
+			break;
+	}
+	free(line);
+	close(fd[1]);
+	dup2(fd[0], 0);
+	close(fd[0]);
+	return (0);
+}
+
 
 int	redirect_out(t_redirect *redirect)
 {
@@ -61,7 +80,7 @@ int	redirect_in(t_redirect *redirect)
 	int fd;
 
 	if (redirect->variation)
-		return (here_doc(redirect->file_name, 1));
+		return (here_doc(redirect->file_name));
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1 || dup2(fd, 0) == -1 || close(fd) == -1)
 	{
@@ -76,7 +95,7 @@ int	try_open(t_redirect *redirect)
 	int fd;
 
 	if (redirect->variation)
-		return (here_doc(redirect->file_name, 0));
+		return (passive_here_doc(redirect->file_name));
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1)
 	{
