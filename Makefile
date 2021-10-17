@@ -10,12 +10,13 @@ SRC		= 	minishell.c \
 			parsing/cmd.c \
 			parsing/env_var.c \
 			parsing/parser.c \
+			parsing/redirect.c \
+			parsing/redirect_utils.c \
 			parsing/substitute.c \
 			util/cmd.c \
 			util/ft_splitlen.c \
 			util/init.c \
 			util/prompt.c  \
-			parsing/redirect.c
 
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
