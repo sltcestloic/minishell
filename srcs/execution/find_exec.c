@@ -8,7 +8,11 @@ char	**find_path(t_shell *shell)
 	ptr = find_in_list("PATH", shell->env_var);
 	path = 0;
 	if (ptr)
+	{
 		path = ft_split(ptr->value, ':');
+		if(!path)
+			ft_malloc_error(shell->to_free);
+	}
 	return (path);
 }
 
@@ -36,7 +40,7 @@ int		find_slash(char *str)
 	return (0);
 }
 
-char	*make_path(char **path, char **function)
+char	*make_path(char **path, char **function, t_shell *shell)
 {
 	char			*test;
 	char			*slash;
@@ -49,8 +53,12 @@ char	*make_path(char **path, char **function)
 	while (path[i])
 	{
 		slash = ft_strjoin(path[i], "/");
+		if(!slash)
+			ft_malloc_error(shell->to_free);
 		test = ft_strjoin(slash, function[0]);
 		free(slash);
+		if(!test)
+			ft_malloc_error(shell->to_free);
 		if ((ret = access(test, X_OK)) == 0)
 			return (test);
 		free(test);
@@ -59,20 +67,30 @@ char	*make_path(char **path, char **function)
 	return (NULL);
 }
 
-void	check_build_in(char **func, t_shell *shell)
+int	check_built_in(char **func, t_shell *shell)
 {
 	if (!ft_strcmp(func[0], "echo"))
-		echo(func[1], (func[2] > 0));
+		echo(func);
 	else if (!ft_strcmp(func[0], "env"))
-		env(func[1], (func[2] > 0));
-	if (!ft_strcmp(func[0], "export"))
-		export(func[1], (func[2] > 0));
-	if (!ft_strcmp(func[0], "exit"))
-		ft_exit(func[1], (func[2] > 0));
-	if (!ft_strcmp(func[0], "cd"))
-		change_pwd(func[1], (func[2] > 0));
-	if (!ft_strcmp(func[0], "pwd"))
-		pwd(func[1], (func[2] > 0));
+		env(shell->env_var);
+	else if (!ft_strcmp(func[0], "export"))
+	{
+		if (!func[1])
+			export(shell->env_var);
+		else if(func[1])
+			new_env_elem(func[1], shell);
+	}
+	else if (!ft_strcmp(func[0], "unset"))
+		remove_env_elem(func[1], shell);
+	else if (!ft_strcmp(func[0], "exit"))
+		ft_exit(shell->to_free);
+	else if (!ft_strcmp(func[0], "cd"))
+		change_pwd(shell, func[1]);
+	else if (!ft_strcmp(func[0], "pwd"))
+		pwd(shell);
+	else
+		return (0);
+	return (1);
 }
 
 void	to_exec(t_shell *shell, char **function)
@@ -80,11 +98,12 @@ void	to_exec(t_shell *shell, char **function)
 	char			**path;
 	char			*test;
 
-	check_built_in(function, shell);
+	if(check_built_in(function, shell))
+		exit(0);
 	path = find_path(shell);
 	test = NULL;
 	if (path)
-		test = make_path(path, function);
+		test = make_path(path, function, shell);
 	if (test)
 		exec_it(test, &function[0], shell->envp);
 	else

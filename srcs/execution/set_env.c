@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-inline static char	*copy_name(char *str)
+inline static char	*copy_name(char *str, t_shell *shell)
 {
 	register int	i;
 	char			*ptr;
@@ -8,7 +8,7 @@ inline static char	*copy_name(char *str)
 	i = 0;
 	while (str[i] != '=' && str[i])
 		i++;
-	ptr = malloc(i + 1);
+	ptr = ft_malloc(i + 1, &shell->to_free);
 	if (!ptr)
 		return (ptr);
 	i = -1;
@@ -18,7 +18,7 @@ inline static char	*copy_name(char *str)
 	return (ptr);
 }
 
-inline static char	*copy_value(char *str)
+inline static char	*copy_value(char *str, t_shell *shell)
 {
 	register int	i;
 	register int	j;
@@ -33,7 +33,7 @@ inline static char	*copy_value(char *str)
 	if (j == 0)
 		return (0);
 	i++;
-	ptr = malloc(j + 1);
+	ptr = ft_malloc(j + 1, &shell->to_free);
 	if (ptr)
 	{
 		j = 0;
@@ -74,8 +74,8 @@ void	new_env_elem(char *str, t_shell *shell)
 	}
 	if (ptr)
 	{
-		ptr->name = copy_name(str);
-		ptr->value = copy_value(str);
+		ptr->name = copy_name(str, shell);
+		ptr->value = copy_value(str, shell);
 		ptr->next = 0;
 	}
 	if (!ptr || !ptr->name)

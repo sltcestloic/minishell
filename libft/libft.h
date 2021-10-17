@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 19:59:28 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/27 14:28:46 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/17 16:06:33 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void			*ft_calloc(size_t count, size_t size);
 void			ft_free(t_free *to_free);
 void			ft_free_one(t_free **to_free);
 char			*ft_malloc(int size, t_free **to_free);
+void			ft_malloc_error(t_free *to_free);
 
 /*
 ** Print

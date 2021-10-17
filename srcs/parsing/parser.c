@@ -188,6 +188,6 @@ void	parse_input(char *input, t_shell *shell)
 	// printf("end parser\n");
 	// free(parser);
 	// printf("parser freed\n");
-	// cmd_free(cmd);
+	cmd_free(cmd);
 	// printf("cmd freed\n");
 }

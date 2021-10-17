@@ -41,7 +41,7 @@ typedef struct	s_shell
 }	t_shell;
 
 void		ft_exit(t_free *to_free);
-void		echo(char *str, int option);
+void		echo(char **str);
 void		env(t_envlst *env_lst);
 void		export(t_envlst *env_lst);
 void		set_env(char **envp, t_shell *shell);

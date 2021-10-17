@@ -7,7 +7,7 @@ inline static int	init_shell(t_shell **shell, char **envp)
 		return (-1);
 	(*shell)->to_free = 0;
 	(*shell)->env_var = 0;
-	(*shell)->pwd = malloc(10000);
+	(*shell)->pwd = ft_malloc(10000, &(*shell)->to_free);
 	(*shell)->envp = envp;
 	if ((*shell)->pwd == 0)
 		return (-1);

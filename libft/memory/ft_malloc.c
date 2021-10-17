@@ -1,6 +1,14 @@
 #include "../libft.h"
 
-inline static t_free	*last_elem(t_free *lst)
+void	ft_malloc_error(t_free *to_free)
+{
+	ft_free(to_free);
+	write(2, "Malloc error.\n", 14);
+	exit(0);
+}
+
+
+static t_free	*last_elem(t_free *lst)
 {
 	if (!lst)
 		return (0);
@@ -15,20 +23,19 @@ char	*ft_malloc(int size, t_free **to_free)
 	t_free	*elem;
 
 	ptr = malloc(size);
+	if (!ptr)
+		ft_malloc_error(*to_free);
 	elem = malloc(sizeof(t_free));
 	if (!elem)
 	{
 		if (ptr)
 			free(ptr);
-		return (0);
+		ft_malloc_error(*to_free);
 	}
 	elem->data = ptr;
 	elem->next = 0;
 	if (*to_free)
-	{
-		*to_free = last_elem(*to_free);
-		(*to_free)->next = elem;
-	}
+		last_elem(*to_free)->next = elem;
 	else
 		*to_free = elem;
 	return (ptr);
@@ -41,9 +48,9 @@ void	ft_free(t_free *to_free)
 	ptr = to_free;
 	while (to_free)
 	{
-		// free(ptr->data);
+		free(ptr->data);
 		ptr = ptr->next;
-		// free(to_free);
+		free(to_free);
 		to_free = ptr;
 	}
 }
