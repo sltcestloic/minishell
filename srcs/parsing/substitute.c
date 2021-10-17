@@ -37,9 +37,7 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 		ret = ft_strrdup(input, 0, var - 1);
 	i = var;
 	while (input[i] && (ft_isalnum(input[i]) || input[i] == '?' || i == var))
-	{
 		i++;
-	}
 	var_name = ft_strrdup(input, var, i - 1);
 	new_var = get_env_var(shell, var_name);
 	free(var_name);
@@ -93,7 +91,7 @@ static void	substitute_quotes(t_cmd *cmd)
 	{
 		new_value = malloc(sizeof(char) * (ft_strlen(cmd->value[idx.i]) + 1));
 		if (!new_value)
-			return; //TODO exit ?
+			return ; //TODO exit ?
 		*new_value = 0;
 		while (cmd->value[idx.i][idx.j])
 		{
@@ -120,7 +118,7 @@ static void	substitute_quotes(t_cmd *cmd)
 	}
 }
 
-int		substitute(t_shell *shell, t_cmd *cmd)
+int	substitute(t_shell *shell, t_cmd *cmd)
 {
 	t_cmd	*tmp;
 
