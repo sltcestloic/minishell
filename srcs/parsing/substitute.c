@@ -32,14 +32,15 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 	char	*end;
 	int		i;
 
+	ret = NULL;
 	if (var > 0)
 		ret = ft_strrdup(input, 0, var - 1);
 	i = var;
-	while (input[i] && (ft_isalnum(input[i]) || i == var))
+	while (input[i] && (ft_isalnum(input[i]) || input[i] == '?' || i == var))
 	{
 		i++;
 	}
-	var_name = malloc(sizeof(char *) * (i - var));
+	var_name = ft_strrdup(input, var, i - 1);
 	new_var = get_env_var(shell, var_name);
 	free(var_name);
 	ret = ft_strjoin(ret, new_var);
@@ -62,21 +63,23 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	t_index	idx;
 	char	*tmp;
 
-	idx.i = 0;
+	idx.i = 1;
 	idx.j = 0;
+	printf("called\n");
 	while (cmd->value[idx.i])
 	{
+		printf("value %d\n", idx.i);
 		idx.k = has_env_var(cmd->value[idx.i]);
 		if (idx.k != -1)
 		{
 			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k);
 			free(cmd->value[idx.i]);
 			cmd->value[idx.i] = tmp;
+			printf("cmd->value[%d] = %s\n", idx.i, cmd->value[idx.i]);
 			continue ;
 		}
 		idx.i++;
 	}
-	return ;
 }
 
 static void	substitute_quotes(t_cmd *cmd)
@@ -95,6 +98,7 @@ static void	substitute_quotes(t_cmd *cmd)
 		new_value = malloc(sizeof(char) * (ft_strlen(cmd->value[idx.i]) + 1));
 		if (!new_value)
 			return; //TODO exit ?
+		*new_value = 0;
 		while (cmd->value[idx.i][idx.j])
 		{
 			if (cmd->value[idx.i][idx.j] == '"' && !parser.s_quote)
@@ -127,6 +131,11 @@ int		substitute(t_shell *shell, t_cmd *cmd)
 	tmp = cmd;
 	while (tmp)
 	{
+		if (!tmp->value)
+		{
+			printf("Minishell: invalid command\n");
+			return (0);
+		}
 		substitute_env_vars(shell, cmd);
 		substitute_quotes(cmd);
 		if (cmd->quotes % 2 != 0)

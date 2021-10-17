@@ -47,7 +47,7 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 	args = count_args(&input[*i]);
 	cmd->value = malloc(sizeof(char *) * (args + 2));
 	cmd->value[args + 1] = 0;
-	// printf("cmd->value[%d] = 0\n", args + 1);
+	//printf("cmd->value[%d] = 0\n", args + 1);
 	if (!cmd->value)
 		return (0);
 	while (input[*i] && input[*i] != '|' && !ft_iswhitespace(input[*i]))
@@ -94,36 +94,41 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
+	t_redirect	*r_in = tmp->in;
+	t_redirect	*r_out = tmp->out;
 	int count = 0;
 	while (tmp)
 	{
 		printf("----------cmd #%d----------\n", count);
-		for (int n = 0; tmp->value[n]; n++)
-			printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
-			int k = 0;
-		if (tmp->in)
+		if (tmp->value)
+		{
+			for (int n = 0; tmp->value[n]; n++)
+				printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
+		}
+		int k = 0;
+		if (r_in)
 		{
 			printf(" redirect in:\n");
-			while (tmp->in)
+			while (r_in)
 			{
 				printf("  redirect #%d:\n", k);
-				printf("   cmd->in->file_name = %s\n", tmp->in->file_name);
-				printf("   cmd->in->variation = %d\n", tmp->in->variation);
+				printf("   cmd->in->file_name = %s\n", r_in->file_name);
+				printf("   cmd->in->variation = %d\n", r_in->variation);
 				k++;
-				tmp->in = tmp->in->next;
+				r_in = r_in->next;
 			}
 		}
-		if (tmp->out)
+		if (r_out)
 		{
 			printf(" redirect out:\n");
 			k = 0;	
-			while (tmp->out)
+			while (r_out)
 			{
 				printf("  redirect #%d:\n", k);
-				printf("   cmd->out->file_name = %s\n", tmp->out->file_name);
-				printf("   cmd->out->variation = %d\n", tmp->out->variation);
+				printf("   cmd->out->file_name = %s\n", r_out->file_name);
+				printf("   cmd->out->variation = %d\n", r_out->variation);
 				k++;
-				tmp->out = tmp->out->next;
+				r_out = r_out->next;
 			}
 		}
 		tmp = tmp->next;

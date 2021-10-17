@@ -28,7 +28,9 @@ int	main(int ac, char **av, char **envp)
 	input = readline("\e[0;92mminishell\e[0m$ ");
 	while (input)
 	{
-		parse_input(input, shell);
+		if (ft_strlen(input) > 0)
+			parse_input(input, shell);
+		add_history(input);
 		free(input);
 		input = readline("\e[0;92mminishell\e[0m$ ");
 	}
