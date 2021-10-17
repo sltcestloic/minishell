@@ -4,4 +4,4 @@ echo bjr > a > b 'salut mec' > c
 
 echo pizza " cookies are gooooood     l" | cat testi
 
-echo > t < a >> e
+echo abc > t < a >> e
