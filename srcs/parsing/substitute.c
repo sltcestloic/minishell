@@ -51,7 +51,6 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 		ret = ft_strjoin(ret, end);
 		free(end);
 	}
-	printf("ret=|%s|\n", ret);
 	return (ret);
 }
 
@@ -65,17 +64,14 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 
 	idx.i = 1;
 	idx.j = 0;
-	printf("called\n");
 	while (cmd->value[idx.i])
 	{
-		printf("value %d\n", idx.i);
 		idx.k = has_env_var(cmd->value[idx.i]);
 		if (idx.k != -1)
 		{
 			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k);
 			free(cmd->value[idx.i]);
 			cmd->value[idx.i] = tmp;
-			printf("cmd->value[%d] = %s\n", idx.i, cmd->value[idx.i]);
 			continue ;
 		}
 		idx.i++;
