@@ -23,7 +23,7 @@ int		count_args(char *input)
 			parser.d_quote = !parser.d_quote;
 		else if (input[i] == '\'' && !parser.d_quote)
 			parser.s_quote = !parser.s_quote;
-		else if (is_sep(input[i]))
+		else if (is_sep(input[i]) && !parser.s_quote && !parser.d_quote)
 		{
 			if (i > 0 && ft_iswhitespace(input[i - 1]))
 				result--;
@@ -47,7 +47,7 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 	args = count_args(&input[*i]);
 	cmd->value = malloc(sizeof(char *) * (args + 2));
 	cmd->value[args + 1] = 0;
-	//printf("cmd->value[%d] = 0\n", args + 1);
+	printf("cmd->value[%d] = 0\n", args + 1);
 	if (!cmd->value)
 		return (0);
 	while (input[*i] && input[*i] != '|' && !ft_iswhitespace(input[*i]))
@@ -158,7 +158,7 @@ void	parse_input(char *input, t_shell *shell)
 		}
 		else if (input[i] == '|')
 			add_new_cmd(cmd);
-		else if (ft_isalnum(input[i]))
+		else if (ft_isalnum(input[i]) || input[i] == '"')
 		{
 			if (cmd_last(cmd)->value)
 			{
@@ -181,7 +181,7 @@ void	parse_input(char *input, t_shell *shell)
 		i++;
 	}
 	int sub = substitute(shell, cmd);
-	// print_struct_debug(cmd);
+	print_struct_debug(cmd);
 	if (sub)
 		cmd_parse(cmd, shell);
 	free(parser);

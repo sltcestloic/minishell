@@ -121,6 +121,7 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 	parser.s_quote = 0;
 	while (cmd->value[idx.i])
 	{
+		printf("sub %s\n", cmd->value[idx.i]);
 		new_value = malloc(sizeof(char) * (ft_strlen(cmd->value[idx.i]) + 1));
 		if (!new_value)
 			ft_malloc_error(shell->to_free);
@@ -162,11 +163,12 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 			printf("Minishell: invalid command\n");
 			return (0);
 		}
-		substitute_env_vars(shell, cmd);
-		substitute_quotes(shell, cmd);
+		substitute_env_vars(shell, tmp);
+		printf("call sub\n");
+		substitute_quotes(shell, tmp);
 		if (cmd->quotes % 2 != 0)
 		{
-			printf("Invalid input: unclosed quotes.\n");
+			printf("Invalid input: unclosed quotes. (%d)\n", cmd->quotes);
 			return (0);
 		}
 		tmp = tmp->next;
