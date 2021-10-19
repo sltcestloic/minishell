@@ -49,7 +49,7 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 			free(ret);
 		ft_malloc_error(shell->to_free);
 	}
-	new_var = get_env_var(shell, var_name);
+	new_var = get_env_var(shell, var_name, input[var - 1] == '"');
 	if (!new_var)
 	{
 		if (ret)
