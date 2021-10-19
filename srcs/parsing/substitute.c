@@ -121,7 +121,6 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 	parser.s_quote = 0;
 	while (cmd->value[idx.i])
 	{
-		printf("sub %s\n", cmd->value[idx.i]);
 		new_value = malloc(sizeof(char) * (ft_strlen(cmd->value[idx.i]) + 1));
 		if (!new_value)
 			ft_malloc_error(shell->to_free);

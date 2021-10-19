@@ -47,7 +47,7 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 	args = count_args(&input[*i]);
 	cmd->value = malloc(sizeof(char *) * (args + 2));
 	cmd->value[args + 1] = 0;
-	printf("cmd->value[%d] = 0\n", args + 1);
+	//printf("cmd->value[%d] = 0\n", args + 1);
 	if (!cmd->value)
 		return (0);
 	while (input[*i] && input[*i] != '|' && !ft_iswhitespace(input[*i]))
