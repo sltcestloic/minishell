@@ -2,15 +2,15 @@
 
 void	echo(char **str)
 {
-	if (str[1] && ft_strcmp(str[1], "-n"))
+	if (str[1] && !ft_strcmp(str[1], "-n"))
 	{
 		if (str[2])
-			write(1, str, ft_strlen(str[2]));
+			printf("%s", str[2]);
 		return ;
 	}
 	else if (str[1])
-		write(1, str, ft_strlen(str[1]));
-	write(1, "\n", 1);
+		printf("%s", str[1]);
+	printf("\n");
 }
 
 void	env(t_envlst *lst)
