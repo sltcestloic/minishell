@@ -142,7 +142,6 @@ void	parse_input(char *input, t_shell *shell)
 	int			i;
 	t_parser	*parser;
 
-	(void)shell;
 	parser = init_parser();
 	i = 0;
 	cmd = init_cmd();
@@ -185,9 +184,7 @@ void	parse_input(char *input, t_shell *shell)
 	// print_struct_debug(cmd);
 	if (sub)
 		cmd_parse(cmd, shell);
-	// printf("end parser\n");
-	// free(parser);
-	// printf("parser freed\n");
+	free(parser);
 	cmd_free(cmd);
 	// printf("cmd freed\n");
 }
