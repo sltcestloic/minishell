@@ -108,7 +108,7 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	}
 }
 
-static void	substitute_quotes(t_cmd *cmd)
+static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 {
 	t_index		idx;
 	t_parser	parser;
@@ -123,7 +123,7 @@ static void	substitute_quotes(t_cmd *cmd)
 	{
 		new_value = malloc(sizeof(char) * (ft_strlen(cmd->value[idx.i]) + 1));
 		if (!new_value)
-			return ; //TODO exit ?
+			ft_malloc_error(shell->to_free);
 		*new_value = 0;
 		while (cmd->value[idx.i][idx.j])
 		{
@@ -163,7 +163,7 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 			return (0);
 		}
 		substitute_env_vars(shell, cmd);
-		substitute_quotes(cmd);
+		substitute_quotes(shell, cmd);
 		if (cmd->quotes % 2 != 0)
 		{
 			printf("Invalid input: unclosed quotes.\n");
