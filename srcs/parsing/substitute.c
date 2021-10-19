@@ -163,7 +163,6 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 			return (0);
 		}
 		substitute_env_vars(shell, tmp);
-		printf("call sub\n");
 		substitute_quotes(shell, tmp);
 		if (cmd->quotes % 2 != 0)
 		{
