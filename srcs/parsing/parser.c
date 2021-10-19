@@ -162,7 +162,7 @@ void	parse_input(char *input, t_shell *shell)
 		{
 			if (cmd_last(cmd)->value)
 			{
-				printf("%s\n", cmd_last(cmd)->value[0]);
+				//printf("%s\n", cmd_last(cmd)->value[0]);
 				if (input[i - 1] == '\'' || input[i - 1] == '"')
 				{
 					i += add_arg(cmd_last(cmd), &input[i - 1]);
@@ -174,10 +174,13 @@ void	parse_input(char *input, t_shell *shell)
 			}
 			else if (!set_cmd_content(cmd_last(cmd), input, &i))
 			{
-				cmd_free(cmd); //TODO free correctement
-				exit(0);
+				free(parser);
+				cmd_free(cmd);
+				ft_malloc_error(shell->to_free);
 			}
 		}
+		else if (!ft_iswhitespace(input[i]))
+			printf("invalid: %c\n", input[i]);
 		i++;
 	}
 	int sub = substitute(shell, cmd);
