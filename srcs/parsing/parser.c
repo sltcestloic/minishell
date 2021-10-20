@@ -163,7 +163,7 @@ void	parse_input(char *input, t_shell *shell)
 		{
 			if (cmd_last(cmd)->value)
 			{
-				printf("%s\n", cmd_last(cmd)->value[0]);
+				// printf("%s\n", cmd_last(cmd)->value[0]);
 				if (input[i - 1] == '\'' || input[i - 1] == '"')
 				{
 					i += add_arg(cmd_last(cmd), &input[i - 1]);
