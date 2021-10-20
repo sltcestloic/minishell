@@ -34,29 +34,59 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var)
 
 	ret = NULL;
 	if (var > 0)
+	{
 		ret = ft_strrdup(input, 0, var - 1);
+		if (!ret)
+			ft_malloc_error(shell->to_free);
+	}
 	i = var;
 	while (input[i] && (ft_isalnum(input[i]) || input[i] == '?' || i == var))
-	{
 		i++;
-	}
 	var_name = ft_strrdup(input, var, i - 1);
-	new_var = get_env_var(shell, var_name);
+	if (!var_name)
+	{
+		if (ret)
+			free(ret);
+		ft_malloc_error(shell->to_free);
+	}
+	new_var = get_env_var(shell, var_name, input[var - 1] == '"');
+	if (!new_var)
+	{
+		if (ret)
+			free(ret);
+		free(var_name);
+		ft_malloc_error(shell->to_free);
+	}
 	free(var_name);
 	ret = ft_strjoin(ret, new_var);
+	if (!ret)
+	{
+		free(var_name);
+		free(new_var);
+		ft_malloc_error(shell->to_free);
+	}
 	free(new_var);
 	if ((int)ft_strlen(input) > i)
 	{
 		end = ft_strrdup(input, i, ft_strlen(input) - 1);
+		if (!end)
+		{
+			free(var_name);
+			free(ret);
+			ft_malloc_error(shell->to_free);
+		}
 		ret = ft_strjoin(ret, end);
+		if (!ret)
+		{
+			free(var_name);
+			free(end);
+			ft_malloc_error(shell->to_free);
+		}
 		free(end);
 	}
 	return (ret);
 }
 
-/*
-** idx.k = var $ index
-*/
 static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 {
 	t_index	idx;
@@ -78,7 +108,7 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	}
 }
 
-static void	substitute_quotes(t_cmd *cmd)
+static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 {
 	t_index		idx;
 	t_parser	parser;
@@ -93,7 +123,7 @@ static void	substitute_quotes(t_cmd *cmd)
 	{
 		new_value = malloc(sizeof(char) * (ft_strlen(cmd->value[idx.i]) + 1));
 		if (!new_value)
-			return; //TODO exit ?
+			ft_malloc_error(shell->to_free);
 		*new_value = 0;
 		while (cmd->value[idx.i][idx.j])
 		{
@@ -120,7 +150,7 @@ static void	substitute_quotes(t_cmd *cmd)
 	}
 }
 
-int		substitute(t_shell *shell, t_cmd *cmd)
+int	substitute(t_shell *shell, t_cmd *cmd)
 {
 	t_cmd	*tmp;
 
@@ -132,11 +162,11 @@ int		substitute(t_shell *shell, t_cmd *cmd)
 			printf("Minishell: invalid command\n");
 			return (0);
 		}
-		substitute_env_vars(shell, cmd);
-		substitute_quotes(cmd);
+		substitute_env_vars(shell, tmp);
+		substitute_quotes(shell, tmp);
 		if (cmd->quotes % 2 != 0)
 		{
-			printf("Invalid input: unclosed quotes.\n");
+			printf("Invalid input: unclosed quotes. (%d)\n", cmd->quotes);
 			return (0);
 		}
 		tmp = tmp->next;

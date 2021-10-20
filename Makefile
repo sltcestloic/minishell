@@ -10,12 +10,13 @@ SRC		= 	minishell.c \
 			parsing/cmd.c \
 			parsing/env_var.c \
 			parsing/parser.c \
+			parsing/redirect.c \
+			parsing/redirect_utils.c \
 			parsing/substitute.c \
 			util/cmd.c \
 			util/ft_splitlen.c \
 			util/init.c \
 			util/prompt.c  \
-			parsing/redirect.c
 
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
@@ -24,12 +25,12 @@ NAME	= minishell
 LIBC	= ar rcs
 CC		= gcc
 RM		= rm -f
-CFLAGS	= -Wall -Wextra -Werror -g3
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
 srcs/%.o: srcs/%.c ${INCS}
 	${CC} ${CFLAGS} -c $< -o $@ -I${INCS} -g
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
-	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
+	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include -fsanitize=address
 all: ${NAME}
 bonus: all
 clean:

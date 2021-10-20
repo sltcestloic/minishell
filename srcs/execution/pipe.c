@@ -8,18 +8,20 @@ void	print_error(char *cmd, char *msg)
 	exit(-1);
 }
 
-int	has_heredoc(t_cmd *cmd)
+int	do_heredoc(t_cmd *cmd)
 {
-	if (!cmd->in)
-		return (0);
-	while (cmd->in->next)
+	t_redirect *i;
+	while (cmd)
 	{
-		if (cmd->in->variation)
-			return (1);
-		cmd->in = cmd->in->next;
+		i = cmd->in;
+		while (i)
+		{
+			if (cmd->in->variation)
+				parse_here_doc(i);
+			i = cmd->in->next;
+		}
+		cmd = cmd->next;
 	}
-	if (cmd->in->variation)
-		return (1);
 	return (0);
 }
 
@@ -30,7 +32,7 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (!pid)
 	{
-		if (in && !has_heredoc(cmd))
+		if (in)
 		{
 			dup2(in, 0);
 			close(in);
@@ -44,7 +46,7 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 			print_error(cmd->value[0], " : Error during redirection\n");
 		to_exec(shell, cmd->value);
 	}
-	if (out == 1 || has_heredoc(cmd))
+	if (out == 1)
 	{
 		waitpid(pid, &pid, 0);
 		shell->last_exit_return = WEXITSTATUS(pid);
@@ -84,6 +86,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	int fd[2];
 
 	in = 0;
+	do_heredoc(cmd);
 	while (cmd->next)
 	{
 		if (pipe(fd))

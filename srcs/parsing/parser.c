@@ -17,18 +17,13 @@ int		count_args(char *input)
 	result = 0;
 	while (input[i])
 	{
-		if (ft_iswhitespace(input[i]) && !ft_iswhitespace(input[i + 1]) && !parser.s_quote && !parser.d_quote)
+		if (ft_iswhitespace(input[i]) && input[i + 1] && !ft_iswhitespace(input[i + 1])
+			&& !parser.s_quote && !parser.d_quote)
 			result++;
 		else if (input[i] == '"' && !parser.s_quote)
 			parser.d_quote = !parser.d_quote;
 		else if (input[i] == '\'' && !parser.d_quote)
 			parser.s_quote = !parser.s_quote;
-		else if (is_sep(input[i]))
-		{
-			if (i > 0 && ft_iswhitespace(input[i - 1]))
-				result--;
-			break ;
-		}
 		i++;
 	}
 	return (result);
@@ -142,7 +137,6 @@ void	parse_input(char *input, t_shell *shell)
 	int			i;
 	t_parser	*parser;
 
-	(void)shell;
 	parser = init_parser();
 	i = 0;
 	cmd = init_cmd();
@@ -159,12 +153,12 @@ void	parse_input(char *input, t_shell *shell)
 		}
 		else if (input[i] == '|')
 			add_new_cmd(cmd);
-		else if (ft_isalnum(input[i]))
+		else if (ft_isalnum(input[i]) || input[i] == '"')
 		{
 			if (cmd_last(cmd)->value)
 			{
-				// printf("%s\n", cmd_last(cmd)->value[0]);
-				if (input[i - 1] == '\'' || input[i - 1] == '"')
+				//printf("%s\n", cmd_last(cmd)->value[0]);
+				if (input[i - 1] == '\'' || input[i - 1] == '"' || input[i - 1] == '\'')
 				{
 					i += add_arg(cmd_last(cmd), &input[i - 1]);
 					parser->d_quote = 0;
@@ -175,19 +169,20 @@ void	parse_input(char *input, t_shell *shell)
 			}
 			else if (!set_cmd_content(cmd_last(cmd), input, &i))
 			{
-				cmd_free(cmd); //TODO free correctement
-				exit(0);
+				free(parser);
+				cmd_free(cmd);
+				ft_malloc_error(shell->to_free);
 			}
 		}
+		else if (!ft_iswhitespace(input[i]))
+			printf("invalid: %c\n", input[i]);
 		i++;
 	}
 	int sub = substitute(shell, cmd);
-	// print_struct_debug(cmd);
+	print_struct_debug(cmd);
 	if (sub)
 		cmd_parse(cmd, shell);
-	// printf("end parser\n");
-	// free(parser);
-	// printf("parser freed\n");
+	free(parser);
 	cmd_free(cmd);
 	// printf("cmd freed\n");
 }
