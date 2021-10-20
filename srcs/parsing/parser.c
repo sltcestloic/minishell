@@ -17,18 +17,13 @@ int		count_args(char *input)
 	result = 0;
 	while (input[i])
 	{
-		if (ft_iswhitespace(input[i]) && !ft_iswhitespace(input[i + 1]) && !parser.s_quote && !parser.d_quote)
+		if (ft_iswhitespace(input[i]) && input[i + 1] && !ft_iswhitespace(input[i + 1])
+			&& !parser.s_quote && !parser.d_quote)
 			result++;
 		else if (input[i] == '"' && !parser.s_quote)
 			parser.d_quote = !parser.d_quote;
 		else if (input[i] == '\'' && !parser.d_quote)
 			parser.s_quote = !parser.s_quote;
-		else if (is_sep(input[i]) && !parser.s_quote && !parser.d_quote)
-		{
-			if (i > 0 && ft_iswhitespace(input[i - 1]))
-				result--;
-			break ;
-		}
 		i++;
 	}
 	return (result);
@@ -46,8 +41,8 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 	parser.d_quote = 0;
 	args = count_args(&input[*i]);
 	cmd->value = malloc(sizeof(char *) * (args + 2));
-	ft_bzero(cmd->value, args + 1);
-	printf("cmd->value[%d] = 0\n", args + 1);
+	cmd->value[args + 1] = 0;
+	//printf("cmd->value[%d] = 0\n", args + 1);
 	if (!cmd->value)
 		return (0);
 	while (input[*i] && input[*i] != '|' && !ft_iswhitespace(input[*i]))
