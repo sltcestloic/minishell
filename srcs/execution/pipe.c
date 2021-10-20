@@ -17,7 +17,7 @@ int	do_heredoc(t_cmd *cmd)
 		while (i)
 		{
 			if (cmd->in->variation)
-				here_doc(i);
+				parse_here_doc(i);
 			i = cmd->in->next;
 		}
 		cmd = cmd->next;
