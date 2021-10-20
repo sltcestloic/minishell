@@ -53,6 +53,33 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	}
 }
 
+static int	do_built_in(char **func, t_shell *shell)
+{
+	if (!ft_strcmp(func[0], "echo"))
+		echo(func);
+	else if (!ft_strcmp(func[0], "env"))
+		env(shell->env_var);
+	else if (!ft_strcmp(func[0], "export"))
+	{
+		if (!func[1])
+			export(shell->env_var);
+		else if(func[1])
+			new_env_elem(func[1], shell);
+	}
+	else if (!ft_strcmp(func[0], "unset"))
+		remove_env_elem(func[1], shell);
+	else if (!ft_strcmp(func[0], "exit"))
+		ft_exit(shell->to_free);
+	else if (!ft_strcmp(func[0], "cd"))
+		change_pwd(shell, func[1]);
+	else if (!ft_strcmp(func[0], "pwd"))
+		pwd(shell);
+	else
+		return (1);
+	shell->last_exit_return = 0;
+	return (0);
+}
+
 void	cmd_parse(t_cmd *cmd, t_shell *shell)
 {
 	int in;
@@ -78,6 +105,6 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 		while (wait(NULL) != -1)
 			;
 	}
-	else
+	else if (do_built_in(cmd->value, shell))
 		spawn_proc(in, 1, cmd, shell);
 }
