@@ -34,7 +34,7 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 		if (ft_strcmp(lst->name, name) == 0)
 		{
 			if (quotes)
-				return (ft_strdup(lst->value));
+				return (ft_strdup(lst->value, shell->to_free));
 			else
 				return (var_value_noquotes(lst->value));
 		}

@@ -35,7 +35,7 @@ char	*substitute_env_var(t_shell *shell, char *input, int var)
 		ft_malloc_error(shell->to_free);
 	}
 	free(var_name);
-	ret = ft_strjoin(ret, new_var);
+	ret = ft_strjoin(ret, new_var, shell->to_free);
 	if (!ret)
 	{
 		free(var_name);
@@ -52,7 +52,7 @@ char	*substitute_env_var(t_shell *shell, char *input, int var)
 			free(ret);
 			ft_malloc_error(shell->to_free);
 		}
-		ret = ft_strjoin(ret, end);
+		ret = ft_strjoin(ret, end, shell->to_free);
 		if (!ret)
 		{
 			free(var_name);
