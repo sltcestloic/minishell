@@ -5,6 +5,8 @@ int	is_redirect(char *str, int *i)
 	if (str[*i] == '>')
 	{
 		(*i)++;
+		if (str[*i] == '|')
+			(*i)++;
 		if (str[*i] == '>')
 		{
 			(*i)++;
@@ -15,6 +17,8 @@ int	is_redirect(char *str, int *i)
 	else if (str[*i] == '<')
 	{
 		(*i)++;
+		if (str[*i] == '|')
+			(*i)++;
 		if (str[*i] == '<')
 		{
 			(*i)++;
