@@ -180,11 +180,7 @@ void	parse_input(char *input, t_shell *shell)
 			{
 				if (input[i - 1] == '\'' || input[i - 1] == '"'
 					|| input[i - 1] == '\'')
-				{
 					i += add_arg(cmd_last(cmd), &input[i - 1]);
-					parser->d_quote = 0;
-					parser->s_quote = 0;
-				}
 				else
 					i += add_arg(cmd_last(cmd), &input[i]);
 			}
