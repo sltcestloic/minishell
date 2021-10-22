@@ -31,7 +31,7 @@ inline static char	*copy_value(char *str, t_shell *shell)
 	while (str[i + j])
 		j++;
 	if (j == 0)
-		return (0);
+		return (NULL);
 	i++;
 	ptr = ft_malloc(j + 1, &shell->to_free);
 	if (ptr)
@@ -47,6 +47,28 @@ inline static char	*copy_value(char *str, t_shell *shell)
 	return (ptr);
 }
 
+void	update_env_value(t_shell *shell, char **arg)
+{
+	t_envlst *item;
+	char *save;
+	int i;
+
+	i = 1;
+	while(arg[i])
+	{
+		item = find_in_list(copy_name(arg[i], shell), shell->env_var);
+		if (item)
+		{
+			save = copy_value(arg[i], shell);
+			if (save)
+				item->value = save;
+		}
+		else
+			new_env_elem(arg[i], shell);
+		i++;
+	}
+}
+
 t_envlst	*find_in_list(char *str, t_envlst *ptr)
 {
 	while (ptr && ft_strcmp(ptr->name, str))
@@ -59,6 +81,11 @@ void	new_env_elem(char *str, t_shell *shell)
 	t_envlst	*ptr;
 	t_envlst	*save;
 
+	if (str[0] >= '0' && str[0] <= '9')
+	{
+		printf("minishell: export: %s: not a valid identifier\n", str);
+		return ;
+	}
 	save = shell->env_var;
 	if (save)
 	{
@@ -75,6 +102,7 @@ void	new_env_elem(char *str, t_shell *shell)
 	if (ptr)
 	{
 		ptr->name = copy_name(str, shell);
+		
 		ptr->value = copy_value(str, shell);
 		ptr->next = 0;
 	}
