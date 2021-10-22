@@ -52,6 +52,7 @@ t_envlst	*copy_sorted_list(t_envlst *lst);
 void		set_pwd(t_shell *shell);
 void		change_pwd(t_shell *shell, char *str);
 void		pwd(t_shell *shell);
+void		exit_cmd(t_shell *shell, char **arg);
 void		to_exec(t_shell *shell, char **function);
 int			redirect(t_cmd *cmd);
 int			open_dup_redirect(t_cmd *cmd, int fd_stream);
@@ -60,5 +61,6 @@ void		cmd_parse(t_cmd *cmd, t_shell *shell);
 int			init_fd(t_shell *shell);
 int			here_doc(t_redirect *heredoc);
 int			parse_here_doc(t_redirect *heredoc);
+char		**lst_to_str(t_envlst *lst);
 
 #endif

@@ -96,7 +96,7 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	idx.j = 0;
 	while (cmd->value[idx.i])
 	{
-		printf("%d\n", idx.i);
+		// printf("%d\n", idx.i);
 		idx.k = has_env_var(cmd->value[idx.i]);
 		if (idx.k != -1)
 		{

@@ -2,16 +2,15 @@
 
 void	echo(char **str)
 {
-	printf("%s - %s - %s\n", str[0], str[1], str[2]);
-	// if (str[1] && !ft_strcmp(str[1], "-n"))
-	// {
-	// 	if (str[2])
-	// 		printf("%s", str[2]);
-	// 	return ;
-	// }
-	// else if (str[2])
-	// 	printf("%s", str[1]);
-	// printf("\n");
+	if (str[1] && !ft_strcmp(str[1], "-n"))
+	{
+		if (str[2])
+			printf("%s", str[2]);
+		return ;
+	}
+	else if (str[2])
+		printf("%s", str[1]);
+	printf("\n");
 }
 
 void	env(t_envlst *lst)
@@ -56,9 +55,36 @@ void	export(t_envlst *lst)
 	}
 }
 
+void	exit_cmd(t_shell *shell, char **arg)
+{
+	int ret;
+	char *save;
+
+	ret = 0;
+	if (arg[2])
+	{
+		printf("minishell: exit: too many arguments\n");
+		return ;
+	}
+	if (arg[1])
+	{
+		ret = ft_atoi(arg[1]);
+		save = ft_itoa(ret);
+		if (ft_strcmp(save, arg[1]))
+		{
+			free(save);
+			printf("minishell: exit: %s: numeric argument required\n", arg[1]);
+			return ;
+		}
+		free(save);
+	}
+	ft_free(shell->to_free);
+	write(1, "exit\n", 5);
+	exit(ret);
+}
+
 void	ft_exit(t_free *to_free)
 {
 	ft_free(to_free);
-	write(1, "exit\n", 5);
 	exit(0);
 }

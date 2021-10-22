@@ -1,5 +1,40 @@
 #include "minishell.h"
 
+int		size_list(t_envlst *lst)
+{
+	int i;
+
+	i = 0;
+	while(lst)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}
+
+char **lst_to_str(t_envlst *lst)
+{
+	char **ret;
+	char *save;
+	int i;
+
+	i = 0;
+	ret = malloc(sizeof(char *) * size_list(lst));
+	if (!ret)
+		return (NULL);
+	while(lst)
+	{
+		ret[i] = ft_strdup(lst->name);
+		save = ft_strjoin(lst->name, "=");
+		ret[i] = ft_strjoin(save, lst->value);
+		free(save);
+		lst = lst->next;
+		i++;
+	}
+	return (ret);
+}
+
 static inline void	swap_elem(t_envlst *elem1, t_envlst *elem2)
 {
 	char		*value;

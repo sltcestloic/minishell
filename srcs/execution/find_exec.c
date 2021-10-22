@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+
 char	**find_path(t_shell *shell)
 {
 	t_envlst	*ptr;
@@ -16,9 +17,9 @@ char	**find_path(t_shell *shell)
 	return (path);
 }
 
-static inline void	exec_it(char *test, char **function, char **envp)
+static inline void	exec_it(char *test, char **function, t_shell *shell)
 {
-	if (execve(test, function, envp))
+	if (execve(test, function, lst_to_str(shell->env_var)))
 	{
 		write(2, "Minishell: ", 11);
 		ft_putstr_fd(test, 2);
@@ -105,7 +106,7 @@ void	to_exec(t_shell *shell, char **function)
 	if (path)
 		test = make_path(path, function, shell);
 	if (test)
-		exec_it(test, &function[0], shell->envp);
+		exec_it(test, &function[0], shell);
 	else
 		ft_putstr_fd("Minishell: command not found\n", 2);
 	exit(-1);
