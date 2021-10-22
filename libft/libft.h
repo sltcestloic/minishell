@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 19:59:28 by lbertran          #+#    #+#             */
-/*   Updated: 2021/10/17 16:06:33 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/10/22 16:17:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,11 @@ size_t			ft_strlcat(char *dest, const char *src, size_t size);
 char			*ft_strnstr(const char *str, const char *to_find, size_t len);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strchr(const char *s, int c);
-char			*ft_strdup(const char *c);
+char			*ft_strdup(const char *c, t_free *to_free);
 char			*ft_substr(const char *s, unsigned int start, size_t len);
-char			*ft_strjoin(const char *s1, const char *s2);
+char			*ft_strjoin(const char *s1, const char *s2, t_free *to_free);
 char			*ft_strtrim(const char *s1, const char *s2);
-char			**ft_split(const char *s, char c);
+char			**ft_split(const char *s, char c, t_free *to_free);
 char			*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 char			*ft_strndup(const char *s, size_t n);
 int				ft_strichr(const char *s, int c);

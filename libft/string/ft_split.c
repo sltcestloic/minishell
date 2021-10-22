@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:21:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/01 14:56:07 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/22 16:14:58 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	count_words(const char *str, char c)
 	return (count);
 }
 
-char	**ft_split(const char *str, char c)
+char	**ft_split(const char *str, char c, t_free *to_free)
 {
 	char	**ret;
 	int		i;
@@ -87,7 +87,7 @@ char	**ft_split(const char *str, char c)
 		return (NULL);
 	ret = malloc(sizeof(char *) * (count_words(str, c) + 1));
 	if (!ret)
-		return (NULL);
+		ft_malloc_error(to_free);
 	while (str[++i])
 	{
 		if (str[i] != c && (str[i + 1] == c || !str[i + 1]))
