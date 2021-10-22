@@ -19,14 +19,14 @@ char	*substitute_env_var(t_shell *shell, char *input, int var)
 	i = var;
 	while (input[i] && (ft_isalnum(input[i]) || input[i] == '?' || i == var))
 		i++;
-	var_name = ft_strrdup(input, var, i - 1);
+	var_name = ft_strrdup(input, var + 1, i - 1);
 	if (!var_name)
 	{
 		if (ret)
 			free(ret);
 		ft_malloc_error(shell->to_free);
 	}
-	new_var = get_env_var(shell, var_name, input[var - 1] == '"');
+	new_var = get_env_var(shell, var_name, var && input[var - 1] == '"');
 	if (!new_var)
 	{
 		if (ret)

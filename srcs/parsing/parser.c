@@ -200,7 +200,7 @@ void	parse_input(char *input, t_shell *shell)
 		i++;
 	}
 	int sub = substitute(shell, cmd);
-	// print_struct_debug(cmd);
+	print_struct_debug(cmd);
 	if (sub)
 		cmd_parse(cmd, shell);
 	free(parser);

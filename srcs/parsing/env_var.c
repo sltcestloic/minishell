@@ -11,7 +11,7 @@ char	*var_value_noquotes(char *var)
 	j = 0;
 	while (var[i])
 	{
-		if (var[i] == ' ' && ret[j] != ' ')
+		if (var[i] == ' ' && j && ret[j - 1] != ' ')
 			ret[j++] = var[i];
 		else if (var[i] != ' ')
 			ret[j++] = var[i];
@@ -33,7 +33,7 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 	{
 		if (ft_strcmp(lst->name, name) == 0)
 		{
-			if (!quotes)
+			if (quotes)
 				return (ft_strdup(lst->value));
 			else
 				return (var_value_noquotes(lst->value));
