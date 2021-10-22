@@ -5,7 +5,7 @@ int	is_sep(char c)
 	return (c == '>' || c == '<' || c == '|');
 }
 
-int		count_args(char *input)
+int	count_args(char *input)
 {
 	t_parser	parser;
 	int			i;
@@ -17,7 +17,8 @@ int		count_args(char *input)
 	result = 0;
 	while (input[i])
 	{
-		if (ft_iswhitespace(input[i]) && input[i + 1] && !ft_iswhitespace(input[i + 1])
+		if (ft_iswhitespace(input[i]) && input[i + 1]
+			&& !ft_iswhitespace(input[i + 1])
 			&& !parser.s_quote && !parser.d_quote && !is_sep(input[i + 1]))
 			result++;
 		else if (input[i] == '"' && !parser.s_quote)
@@ -29,13 +30,51 @@ int		count_args(char *input)
 	return (result);
 }
 
-void cmd_bzero(t_cmd *cmd, int args)
+void	cmd_bzero(t_cmd *cmd, int args)
 {
 	int	i;
 
 	i = 0;
+	cmd->value = malloc(sizeof(char *) * args);
 	while (i < args)
 		cmd->value[i++] = 0;
+}
+
+void	quote(t_parser *parser, char c)
+{
+	if (c == '"' && !parser->s_quote)
+		parser->d_quote = !parser->d_quote;
+	else if (c == '\'' && !parser->d_quote)
+		parser->s_quote = !parser->s_quote;
+}
+
+void	cmd_content_loop(t_cmd *cmd, char *input, int *i, t_index *idx)
+{
+	t_parser	parser;
+
+	parser.s_quote = 0;
+	parser.d_quote = 0;
+	while (input[*i])
+	{
+		quote(&parser, input[*i]);
+		if (!parser.s_quote && !parser.d_quote)
+		{
+			if (is_sep(input[*i]))
+			{
+				(*i)--;
+				break ;
+			}
+			if (ft_iswhitespace(input[*i + 1]) || !input[*i + 1])
+			{
+				cmd->value[idx->j++] = ft_strrdup(input, idx->i, *i);
+				idx->i = *i + 1;
+				while (ft_iswhitespace(input[idx->i]))
+					idx->i++;
+				*i = idx->i - 1;
+			}
+		}
+		(*i)++;
+	}
 }
 
 int	set_cmd_content(t_cmd *cmd, char *input, int *i)
@@ -49,7 +88,6 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 	parser.s_quote = 0;
 	parser.d_quote = 0;
 	args = count_args(&input[*i]);
-	cmd->value = malloc(sizeof(char *) * (args + 2));
 	cmd_bzero(cmd, args + 2);
 	if (!cmd->value)
 		return (0);
@@ -62,34 +100,8 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
 	idx.i = *i;
-	while (input[*i])
-	{
-		if (input[*i] == '"' && !parser.s_quote)
-		{
-			parser.d_quote = !parser.d_quote;
-		}
-		else if (input[*i] == '\'' && !parser.d_quote)
-			parser.s_quote = !parser.s_quote;
-		if (!parser.s_quote && !parser.d_quote)
-		{
-			if (is_sep(input[*i]))
-			{
-				(*i)--;
-				break;
-			}
-			if (ft_iswhitespace(input[*i + 1]) || !input[*i + 1])
-			{
-				cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i);
-				idx.i = *i + 1;
-				while (ft_iswhitespace(input[idx.i]))
-					idx.i++;
-				*i = idx.i - 1;
-			}
-		}
-		(*i)++;
-	}
-	(*i)--;
-	if (idx.i < *i)
+	cmd_content_loop(cmd, input, i, &idx);
+	if (idx.i < --(*i))
 		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1);
 	return (1);
 }
@@ -148,7 +160,8 @@ void	parse_input(char *input, t_shell *shell)
 	parser = init_parser();
 	i = 0;
 	cmd = init_cmd();
-	while (input[i]) {
+	while (input[i])
+	{
 		parser->redirect = is_redirect(input, &i);
 		if (parser->redirect)
 		{
@@ -165,8 +178,8 @@ void	parse_input(char *input, t_shell *shell)
 		{
 			if (cmd_last(cmd)->value)
 			{
-				//printf("%s\n", cmd_last(cmd)->value[0]);
-				if (input[i - 1] == '\'' || input[i - 1] == '"' || input[i - 1] == '\'')
+				if (input[i - 1] == '\'' || input[i - 1] == '"'
+					|| input[i - 1] == '\'')
 				{
 					i += add_arg(cmd_last(cmd), &input[i - 1]);
 					parser->d_quote = 0;
@@ -192,5 +205,4 @@ void	parse_input(char *input, t_shell *shell)
 		cmd_parse(cmd, shell);
 	free(parser);
 	cmd_free(cmd);
-	// printf("cmd freed\n");
 }

@@ -44,3 +44,27 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 	*ret = 0;
 	return (ret);
 }
+
+int	has_env_var(char *input)
+{
+	t_parser	*parser;
+	int			i;
+
+	parser = init_parser();
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '"' && !parser->s_quote)
+			parser->d_quote = !parser->d_quote;
+		else if (input[i] == '\'' && !parser->d_quote)
+			parser->s_quote = !parser->s_quote;
+		else if (input[i] == '$' && !parser->s_quote)
+		{
+			free(parser);
+			return (i);
+		}
+		i++;
+	}
+	free(parser);
+	return (-1);
+}

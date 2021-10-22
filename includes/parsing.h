@@ -35,6 +35,7 @@ int			treat_input(t_shell *shell, char *input, t_parser *parser);
 
 void		cat_var(t_parser *parser, char *var, char *input, t_index *indx);
 char		*get_env_var(t_shell *shell, char *str, int quotes);
+int			has_env_var(char *input);
 
 /*
 ** Init
@@ -73,6 +74,7 @@ void		print_cmd(t_cmd *cmd);
 */
 
 int			substitute(t_shell *shell, t_cmd *cmd);
+char		*substitute_env_var(t_shell *shell, char *input, int var);
 
 /*
 ** cmd

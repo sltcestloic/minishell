@@ -1,92 +1,5 @@
 #include "minishell.h"
 
-static int	has_env_var(char *input)
-{
-	t_parser	*parser;
-	int			i;
-
-	parser = init_parser();
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == '"' && !parser->s_quote)
-			parser->d_quote = !parser->d_quote;
-		else if (input[i] == '\'' && !parser->d_quote)
-			parser->s_quote = !parser->s_quote;
-		else if (input[i] == '$' && !parser->s_quote)
-		{
-			free(parser);
-			return (i);
-		}
-		i++;
-	}
-	free(parser);
-	return (-1);
-}
-
-static char	*substitute_env_var(t_shell *shell, char *input, int var)
-{
-	char	*ret;
-	char	*var_name;
-	char	*new_var;
-	char	*end;
-	int		i;
-
-	ret = NULL;
-	if (var > 0)
-	{
-		ret = ft_strrdup(input, 0, var - 1);
-		if (!ret)
-			ft_malloc_error(shell->to_free);
-	}
-	i = var;
-	while (input[i] && (ft_isalnum(input[i]) || input[i] == '?' || i == var))
-		i++;
-	var_name = ft_strrdup(input, var, i - 1);
-	if (!var_name)
-	{
-		if (ret)
-			free(ret);
-		ft_malloc_error(shell->to_free);
-	}
-	new_var = get_env_var(shell, var_name, input[var - 1] == '"');
-	if (!new_var)
-	{
-		if (ret)
-			free(ret);
-		free(var_name);
-		ft_malloc_error(shell->to_free);
-	}
-	free(var_name);
-	ret = ft_strjoin(ret, new_var);
-	if (!ret)
-	{
-		free(var_name);
-		free(new_var);
-		ft_malloc_error(shell->to_free);
-	}
-	free(new_var);
-	if ((int)ft_strlen(input) > i)
-	{
-		end = ft_strrdup(input, i, ft_strlen(input) - 1);
-		if (!end)
-		{
-			free(var_name);
-			free(ret);
-			ft_malloc_error(shell->to_free);
-		}
-		ret = ft_strjoin(ret, end);
-		if (!ret)
-		{
-			free(var_name);
-			free(end);
-			ft_malloc_error(shell->to_free);
-		}
-		free(end);
-	}
-	return (ret);
-}
-
 static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 {
 	t_index	idx;
@@ -108,15 +21,27 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	}
 }
 
+static void quote(t_parser *parser, t_cmd *cmd, char c)
+{
+	if (c == '"' && !parser->s_quote)
+	{
+		parser->d_quote = !parser->d_quote;
+		cmd->quotes++;
+	}
+	else if (c == '\'' && !parser->d_quote)
+	{
+		parser->s_quote = !parser->s_quote;
+		cmd->quotes++;
+	}
+}
+
 static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 {
 	t_index		idx;
 	t_parser	parser;
 	char		*new_value;
 
-	idx.i = 0;
-	idx.j = 0;
-	idx.k = 0;
+	idx = init_index();
 	parser.d_quote = 0;
 	parser.s_quote = 0;
 	while (cmd->value[idx.i])
@@ -127,17 +52,8 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 		*new_value = 0;
 		while (cmd->value[idx.i][idx.j])
 		{
-			if (cmd->value[idx.i][idx.j] == '"' && !parser.s_quote)
-			{
-				parser.d_quote = !parser.d_quote;
-				cmd->quotes++;
-			}
-			else if (cmd->value[idx.i][idx.j] == '\'' && !parser.d_quote)
-			{
-				parser.s_quote = !parser.s_quote;
-				cmd->quotes++;
-			}
-			else
+			quote(&parser, cmd, cmd->value[idx.i][idx.j]);
+			if (cmd->value[idx.i][idx.j] != '\'' && cmd->value[idx.i][idx.j] != '"')
 				new_value[idx.k++] = cmd->value[idx.i][idx.j];
 			new_value[idx.k] = 0;
 			idx.j++;

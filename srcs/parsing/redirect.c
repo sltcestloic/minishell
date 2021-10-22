@@ -76,7 +76,7 @@ void	init_redirect(t_cmd *cmd, int type)
 	ret = init_redirect_io(cmd, type);
 	if (!ret)
 	{
-		cmd_free(cmd); //TODO free correctement
+		cmd_free(cmd);
 		return ;
 	}
 }
@@ -100,7 +100,7 @@ void	set_file_name(t_redirect *redirect, char *input, int *i)
 	}
 	last->file_name = malloc(sizeof(char) * (j + 1));
 	if (!last->file_name)
-		exit(1); //TODO free correctement
+		exit(1);
 	*i -= j;
 	j = 0;
 	while (input[*i] && !ft_iswhitespace(input[*i]))
