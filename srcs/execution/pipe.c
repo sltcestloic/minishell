@@ -64,7 +64,7 @@ static int	do_built_in(char **func, t_shell *shell)
 		if (!func[1])
 			export(shell->env_var);
 		else if(func[1])
-			new_env_elem(func[1], shell);
+			update_env_value(shell, func);
 	}
 	else if (!ft_strcmp(func[0], "unset"))
 		remove_env_elem(func[1], shell);
