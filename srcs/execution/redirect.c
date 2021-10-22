@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int parse_here_doc(t_redirect *heredoc)
+int parse_here_doc(t_redirect *heredoc, t_shell *shell)
 {
 	char *line;
 	char *save;
@@ -22,8 +22,8 @@ int parse_here_doc(t_redirect *heredoc)
 		if (ft_strcmp(line, heredoc->file_name))
 		{
 			to_free = save;
-			save = ft_strjoin(save, line);
-			save = ft_strjoin(save, "\n");
+			save = ft_strjoin(save, line, shell->to_free);
+			save = ft_strjoin(save, "\n", shell->to_free);
 			free(to_free);
 			free(line);
 		}

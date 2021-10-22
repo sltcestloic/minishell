@@ -13,22 +13,23 @@ int		size_list(t_envlst *lst)
 	return (i);
 }
 
-char **lst_to_str(t_envlst *lst)
+char **lst_to_str(t_shell *shell)
 {
 	char **ret;
 	char *save;
+	t_envlst *lst;
 	int i;
 
 	i = 0;
+	lst = shell->env_var;
 	ret = malloc(sizeof(char *) * size_list(lst));
 	if (!ret)
 		return (NULL);
 	while(lst)
 	{
-		ret[i] = ft_strdup(lst->name);
-		save = ft_strjoin(lst->name, "=");
-		ret[i] = ft_strjoin(save, lst->value);
-		free(save);
+		ret[i] = ft_strdup(lst->name, shell->to_free);
+		save = ft_strjoin(lst->name, "=", shell->to_free);
+		ret[i] = ft_strjoin(save, lst->value, shell->to_free);
 		lst = lst->next;
 		i++;
 	}

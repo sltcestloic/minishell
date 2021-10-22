@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/04/27 14:28:57 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/10/22 16:42:04 by lubourre         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		= char/ft_isalnum.c \
+SRCS		=	char/ft_isalnum.c \
 				char/ft_isalpha.c \
 				char/ft_isascii.c \
 				char/ft_isdigit.c \
@@ -56,17 +56,20 @@ SRCS		= char/ft_isalnum.c \
 				string/ft_strrchr.c \
 				string/ft_strtrim.c \
 				string/ft_substr.c
-SRCS_BONUS	= list/ft_lstadd_back.c \
-			list/ft_lstadd_front.c \
-			list/ft_lstclear.c \
-			list/ft_lstdelone.c \
-			list/ft_lstiter.c \
-			list/ft_lstlast.c \
-			list/ft_lstmap.c \
-			list/ft_lstnew.c \
-			list/ft_lstsize.c
+
+SRCS_BONUS	=	list/ft_lstadd_back.c \
+				list/ft_lstadd_front.c \
+				list/ft_lstclear.c \
+				list/ft_lstdelone.c \
+				list/ft_lstiter.c \
+				list/ft_lstlast.c \
+				list/ft_lstmap.c \
+				list/ft_lstnew.c \
+				list/ft_lstsize.c
+
 OBJS		= ${SRCS:.c=.o}
 OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
+
 INCS		= .
 NAME		= libft.a
 LIBC		= ar rc

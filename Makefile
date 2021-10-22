@@ -6,7 +6,6 @@ SRC		= 	minishell.c \
 			execution/find_exec.c \
 			execution/redirect.c \
 			execution/pipe.c \
-			parsing/commands/echo_parsing.c \
 			parsing/cmd.c \
 			parsing/env_var.c \
 			parsing/parser.c \

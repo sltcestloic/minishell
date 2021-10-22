@@ -10,7 +10,7 @@ char	**find_path(t_shell *shell)
 	path = 0;
 	if (ptr)
 	{
-		path = ft_split(ptr->value, ':');
+		path = ft_split(ptr->value, ':', shell->to_free);
 		if(!path)
 			ft_malloc_error(shell->to_free);
 	}
@@ -19,12 +19,11 @@ char	**find_path(t_shell *shell)
 
 static inline void	exec_it(char *test, char **function, t_shell *shell)
 {
-	if (execve(test, function, lst_to_str(shell->env_var)))
+	if (execve(test, function, lst_to_str(shell)))
 	{
 		write(2, "Minishell: ", 11);
 		ft_putstr_fd(test, 2);
 		write(2, ": No such file or directory\n", 28);
-		free(test);
 		exit(-1);
 	}
 }
@@ -53,16 +52,14 @@ char	*make_path(char **path, char **function, t_shell *shell)
 		return (function[0]);
 	while (path[i])
 	{
-		slash = ft_strjoin(path[i], "/");
+		slash = ft_strjoin(path[i], "/", shell->to_free);
 		if(!slash)
 			ft_malloc_error(shell->to_free);
-		test = ft_strjoin(slash, function[0]);
-		free(slash);
+		test = ft_strjoin(slash, function[0], shell->to_free);
 		if(!test)
 			ft_malloc_error(shell->to_free);
 		if ((ret = access(test, X_OK)) == 0)
 			return (test);
-		free(test);
 		i++;
 	}
 	return (NULL);

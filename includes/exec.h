@@ -60,8 +60,9 @@ int			open_creat(char *file_path);
 void		cmd_parse(t_cmd *cmd, t_shell *shell);
 int			init_fd(t_shell *shell);
 int			here_doc(t_redirect *heredoc);
-int			parse_here_doc(t_redirect *heredoc);
-char		**lst_to_str(t_envlst *lst);
+int			do_heredoc(t_cmd *cmd, t_shell *shell);
+int			parse_here_doc(t_redirect *heredoc, t_shell *shell);
+char		**lst_to_str(t_shell *shell);
 void		update_env_value(t_shell *shell, char **arg);
 
 #endif

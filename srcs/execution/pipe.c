@@ -8,7 +8,7 @@ void	print_error(char *cmd, char *msg)
 	exit(-1);
 }
 
-int	do_heredoc(t_cmd *cmd)
+int	do_heredoc(t_cmd *cmd, t_shell *shell)
 {
 	t_redirect *i;
 	while (cmd)
@@ -17,7 +17,7 @@ int	do_heredoc(t_cmd *cmd)
 		while (i)
 		{
 			if (cmd->in->variation)
-				parse_here_doc(i);
+				parse_here_doc(i, shell);
 			i = cmd->in->next;
 		}
 		cmd = cmd->next;
@@ -86,7 +86,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	int fd[2];
 
 	in = 0;
-	do_heredoc(cmd);
+	do_heredoc(cmd, shell);
 	while (cmd->next)
 	{
 		if (pipe(fd))
