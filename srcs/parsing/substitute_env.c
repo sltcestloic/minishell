@@ -22,7 +22,6 @@ char	*substitute_env_var(t_shell *shell, char *input, int var)
 	{
 		end = ft_strrdup(input, i, ft_strlen(input) - 1, shell->to_free);
 		ret = ft_strjoin(ret, end, shell->to_free);
-		free(end);
 	}
 	return (ret);
 }

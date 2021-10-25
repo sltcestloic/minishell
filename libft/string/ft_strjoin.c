@@ -6,12 +6,12 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:26:41 by lbertran          #+#    #+#             */
-/*   Updated: 2021/10/25 08:04:08 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/25 09:50:57 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
-
+#include <stdio.h>
 char	*ft_strjoin(const char *s1, const char *s2, t_free *to_free)
 {
 	size_t	i;
@@ -19,7 +19,7 @@ char	*ft_strjoin(const char *s1, const char *s2, t_free *to_free)
 	size_t	len;
 	char	*ret;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	len = ft_strlen(s1) + ft_strlen(s2);
 	ret = ft_malloc(sizeof(char) * (len + 1), &to_free);
@@ -27,8 +27,8 @@ char	*ft_strjoin(const char *s1, const char *s2, t_free *to_free)
 		ft_malloc_error(to_free);
 	if (s1)
 	{
-		while (s1[i++])
-			ret[i - 1] = s1[i - 1];
+		while (s1[++i])
+			ret[i] = s1[i];
 	}
 	if (s2)
 	{
