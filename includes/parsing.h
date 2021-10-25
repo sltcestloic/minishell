@@ -26,32 +26,28 @@ typedef struct s_index
 	int		k;
 }				t_index;
 
+/*
+** Main parsing
+*/
+
 void		parse_input(char *input, t_shell *shell);
-int			treat_input(t_shell *shell, char *input, t_parser *parser);
+int			count_args(char *input);
 
 /*
 ** Environment variables
 */
 
-void		cat_var(t_parser *parser, char *var, char *input, t_index *indx);
 char		*get_env_var(t_shell *shell, char *str, int quotes);
-int			has_env_var(char *input);
+int			has_env_var(char *input, t_shell *shell);
 
 /*
 ** Init
 */
 
-t_parser	*init_parser();
+t_parser	*init_parser(t_shell *shell);
 t_index		init_index(void);
 t_cmd		*init_cmd(void);
-
-/*
-** Commands parsing
-*/
-
-void		parse_echo(char **args);
-
-t_cmd		*ft_splitcmds(const char *str, t_parser *parser);
+t_parser	init_parser_nml(void);
 
 /*
 ** Redirect
@@ -82,5 +78,9 @@ char		*substitute_env_var(t_shell *shell, char *input, int var);
 
 void		add_new_cmd(t_cmd *cmd);
 int			add_arg(t_cmd *cmd, char *input, t_shell *shell);
+void		cmd_bzero(t_cmd *cmd, int args);
+void		quote_cmd(t_parser *parser, char c);
+int			is_sep(char c);
+int			set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell);
 
 #endif

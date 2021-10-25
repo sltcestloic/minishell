@@ -45,12 +45,12 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 	return (ret);
 }
 
-int	has_env_var(char *input)
+int	has_env_var(char *input, t_shell *shell)
 {
 	t_parser	*parser;
 	int			i;
 
-	parser = init_parser();
+	parser = init_parser(shell);
 	i = 0;
 	while (input[i])
 	{

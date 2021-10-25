@@ -25,6 +25,7 @@ char	*ft_malloc(int size, t_free **to_free)
 	ptr = malloc(size);
 	if (!ptr)
 		ft_malloc_error(*to_free);
+	*ptr = 0;
 	elem = malloc(sizeof(t_free));
 	if (!elem)
 	{

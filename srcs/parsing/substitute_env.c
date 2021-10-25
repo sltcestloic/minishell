@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 char	*substitute_env_var(t_shell *shell, char *input, int var)

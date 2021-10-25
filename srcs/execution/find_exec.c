@@ -105,6 +105,6 @@ void	to_exec(t_shell *shell, char **function)
 	if (test)
 		exec_it(test, &function[0], shell);
 	else
-		ft_putstr_fd("Minishell: command not found\n", 2);
+		ft_putstr_fd("minishell: command not found\n", 2);
 	exit(-1);
 }

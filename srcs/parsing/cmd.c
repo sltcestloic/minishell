@@ -65,3 +65,61 @@ int	add_arg(t_cmd *cmd, char *input, t_shell *shell)
 	cmd->value = new_value;
 	return (ft_strlen(cmd->value[i]) - 1);
 }
+
+void	cmd_content_loop(t_cmd *cmd, char *input, int *i, t_index *idx)
+{
+	t_parser	parser;
+
+	parser.s_quote = 0;
+	parser.d_quote = 0;
+	while (input[*i])
+	{
+		quote_cmd(&parser, input[*i]);
+		if (!parser.s_quote && !parser.d_quote)
+		{
+			if (is_sep(input[*i]))
+			{
+				(*i)--;
+				break ;
+			}
+			if (ft_iswhitespace(input[*i + 1]) || !input[*i + 1])
+			{
+				cmd->value[idx->j++] = ft_strrdup(input, idx->i, *i, NULL);
+				idx->i = *i + 1;
+				while (ft_iswhitespace(input[idx->i]))
+					idx->i++;
+				*i = idx->i - 1;
+			}
+		}
+		(*i)++;
+	}
+}
+
+int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
+{
+	t_index		idx;
+	t_parser	parser;
+	int			args;
+
+	idx.i = 0;
+	idx.j = 1;
+	parser.s_quote = 0;
+	parser.d_quote = 0;
+	args = count_args(&input[*i]);
+	cmd_bzero(cmd, args + 2);
+	if (!cmd->value)
+		return (0);
+	while (input[*i] && input[*i] != '|' && !ft_iswhitespace(input[*i]))
+	{
+		(*i)++;
+		idx.i++;
+	}
+	cmd->value[0] = ft_strrdup(input, *i - idx.i, *i - 1, shell->to_free);
+	while (ft_iswhitespace(input[*i]))
+		(*i)++;
+	idx.i = *i;
+	cmd_content_loop(cmd, input, i, &idx);
+	if (idx.i < --(*i))
+		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1, shell->to_free);
+	return (1);
+}

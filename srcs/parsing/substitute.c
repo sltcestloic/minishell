@@ -9,7 +9,7 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	idx.j = 0;
 	while (cmd->value[idx.i])
 	{
-		idx.k = has_env_var(cmd->value[idx.i]);
+		idx.k = has_env_var(cmd->value[idx.i], shell);
 		if (idx.k != -1)
 		{
 			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k);
@@ -21,7 +21,7 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	}
 }
 
-static void quote(t_parser *parser, t_cmd *cmd, char c)
+static void	quote(t_parser *parser, t_cmd *cmd, char c)
 {
 	if (c == '"' && !parser->s_quote)
 	{
@@ -42,18 +42,16 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 	char		*new_value;
 
 	idx = init_index();
-	parser.d_quote = 0;
-	parser.s_quote = 0;
+	parser = init_parser_nml();
 	while (cmd->value[idx.i])
 	{
-		new_value = malloc(sizeof(char) * (ft_strlen(cmd->value[idx.i]) + 1));
-		if (!new_value)
-			ft_malloc_error(shell->to_free);
-		*new_value = 0;
+		new_value = ft_malloc(sizeof(char)
+				* (ft_strlen(cmd->value[idx.i]) + 1), &shell->to_free);
 		while (cmd->value[idx.i][idx.j])
 		{
 			quote(&parser, cmd, cmd->value[idx.i][idx.j]);
-			if (cmd->value[idx.i][idx.j] != '\'' && cmd->value[idx.i][idx.j] != '"')
+			if (cmd->value[idx.i][idx.j] != '\''
+				&& cmd->value[idx.i][idx.j] != '"')
 				new_value[idx.k++] = cmd->value[idx.i][idx.j];
 			new_value[idx.k] = 0;
 			idx.j++;

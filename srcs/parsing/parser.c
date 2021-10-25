@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-int	is_sep(char c)
-{
-	return (c == '>' || c == '<' || c == '|');
-}
-
 int	count_args(char *input)
 {
 	t_parser	parser;
@@ -30,83 +25,7 @@ int	count_args(char *input)
 	return (result);
 }
 
-void	cmd_bzero(t_cmd *cmd, int args)
-{
-	int	i;
-
-	i = 0;
-	cmd->value = malloc(sizeof(char *) * args);
-	while (i < args)
-		cmd->value[i++] = 0;
-}
-
-void	quote(t_parser *parser, char c)
-{
-	if (c == '"' && !parser->s_quote)
-		parser->d_quote = !parser->d_quote;
-	else if (c == '\'' && !parser->d_quote)
-		parser->s_quote = !parser->s_quote;
-}
-
-void	cmd_content_loop(t_cmd *cmd, char *input, int *i, t_index *idx)
-{
-	t_parser	parser;
-
-	parser.s_quote = 0;
-	parser.d_quote = 0;
-	while (input[*i])
-	{
-		quote(&parser, input[*i]);
-		if (!parser.s_quote && !parser.d_quote)
-		{
-			if (is_sep(input[*i]))
-			{
-				(*i)--;
-				break ;
-			}
-			if (ft_iswhitespace(input[*i + 1]) || !input[*i + 1])
-			{
-				cmd->value[idx->j++] = ft_strrdup(input, idx->i, *i, NULL);
-				idx->i = *i + 1;
-				while (ft_iswhitespace(input[idx->i]))
-					idx->i++;
-				*i = idx->i - 1;
-			}
-		}
-		(*i)++;
-	}
-}
-
-int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
-{
-	t_index		idx;
-	t_parser	parser;
-	int			args;
-
-	idx.i = 0;
-	idx.j = 1;
-	parser.s_quote = 0;
-	parser.d_quote = 0;
-	args = count_args(&input[*i]);
-	cmd_bzero(cmd, args + 2);
-	if (!cmd->value)
-		return (0);
-	while (input[*i] && input[*i] != '|' && !ft_iswhitespace(input[*i]))
-	{
-		(*i)++;
-		idx.i++;
-	}
-	cmd->value[0] = ft_strrdup(input, *i - idx.i, *i - 1, shell->to_free);
-	while (ft_iswhitespace(input[*i]))
-		(*i)++;
-	idx.i = *i;
-	cmd_content_loop(cmd, input, i, &idx);
-	if (idx.i < --(*i))
-		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1, shell->to_free);
-	return (1);
-}
-
-void	print_struct_debug(t_cmd *cmd)
+/* void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
 	t_redirect	*r_in = tmp->in;
@@ -150,6 +69,32 @@ void	print_struct_debug(t_cmd *cmd)
 		count++;
 	}
 }
+ */
+static void	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
+{
+	init_redirect(cmd_last(cmd), parser->redirect);
+	if (parser->redirect < 3)
+		set_file_name(cmd_last(cmd)->out, input, i);
+	else
+		set_file_name(cmd_last(cmd)->in, input, i);
+}
+
+static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
+{
+	if (cmd_last(cmd)->value)
+	{
+		if (input[*i - 1] == '\'' || input[*i - 1] == '"'
+			|| input[*i - 1] == '\'')
+			*i += add_arg(cmd_last(cmd), &input[*i - 1], shell);
+		else
+			*i += add_arg(cmd_last(cmd), &input[*i], shell);
+	}
+	else if (!set_cmd_content(cmd_last(cmd), input, i, shell))
+	{
+		cmd_free(cmd);
+		ft_malloc_error(shell->to_free);
+	}
+}
 
 void	parse_input(char *input, t_shell *shell)
 {
@@ -157,7 +102,7 @@ void	parse_input(char *input, t_shell *shell)
 	int			i;
 	t_parser	*parser;
 
-	parser = init_parser();
+	parser = init_parser(shell);
 	i = 0;
 	cmd = init_cmd();
 	while (input[i])
@@ -165,45 +110,23 @@ void	parse_input(char *input, t_shell *shell)
 		parser->redirect = is_redirect(input, &i);
 		if (parser->redirect)
 		{
-			init_redirect(cmd_last(cmd), parser->redirect);
-			if (parser->redirect < 3)
-				set_file_name(cmd_last(cmd)->out, input, &i);
-			else
-				set_file_name(cmd_last(cmd)->in, input, &i);
+			handle_redirect(input, parser, cmd, &i);
 			continue ;
 		}
 		else if (input[i] == '|')
 			add_new_cmd(cmd);
 		else if (ft_isalnum(input[i]) || input[i] == '"')
-		{
-			if (cmd_last(cmd)->value)
-			{
-				if (input[i - 1] == '\'' || input[i - 1] == '"'
-					|| input[i - 1] == '\'')
-					i += add_arg(cmd_last(cmd), &input[i - 1], shell);
-				else
-					i += add_arg(cmd_last(cmd), &input[i], shell);
-			}
-			else if (!set_cmd_content(cmd_last(cmd), input, &i, shell))
-			{
-				free(parser);
-				cmd_free(cmd);
-				ft_malloc_error(shell->to_free);
-			}
-		}
+			handle_cmd(input, cmd, &i, shell);
 		else if (!ft_iswhitespace(input[i]))
 		{
 			cmd_free(cmd);
 			free(parser);
 			printf("minishell: invalid command.\n");
-			break ;
+			return ;
 		}
 		i++;
 	}
-	int sub = substitute(shell, cmd);
-	print_struct_debug(cmd);
-	if (sub)
+	if (substitute(shell, cmd))
 		cmd_parse(cmd, shell);
-	free(parser);
 	cmd_free(cmd);
 }
