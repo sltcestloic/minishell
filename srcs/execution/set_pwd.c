@@ -8,7 +8,7 @@ void	go_home(t_shell *shell)
 	if (ptr)
 		chdir(ptr->value);
 	else
-		write(2, "Minishell: cd: HOME not set\n", 28);
+		write(2, "minishell: cd: HOME not set\n", 28);
 }
 
 void	set_pwd(t_shell *shell)

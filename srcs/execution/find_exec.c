@@ -21,7 +21,7 @@ static inline void	exec_it(char *test, char **function, t_shell *shell)
 {
 	if (execve(test, function, lst_to_str(shell)))
 	{
-		write(2, "Minishell: ", 11);
+		write(2, "minishell: ", 11);
 		ft_putstr_fd(test, 2);
 		write(2, ": No such file or directory\n", 28);
 		exit(-1);

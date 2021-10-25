@@ -2,7 +2,7 @@
 
 void	print_error(char *cmd, char *msg)
 {
-	write(2, "Minishell: ", 11);
+	write(2, "minishell: ", 11);
 	ft_putstr_fd(cmd, 2);
 	write(2, &msg, 28);
 	exit(-1);

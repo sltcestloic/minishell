@@ -192,7 +192,12 @@ void	parse_input(char *input, t_shell *shell)
 			}
 		}
 		else if (!ft_iswhitespace(input[i]))
-			printf("invalid: %c\n", input[i]);
+		{
+			cmd_free(cmd);
+			free(parser);
+			printf("minishell: invalid command.\n");
+			break ;
+		}
 		i++;
 	}
 	int sub = substitute(shell, cmd);

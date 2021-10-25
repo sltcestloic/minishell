@@ -75,7 +75,7 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 	{
 		if (!tmp->value)
 		{
-			printf("Minishell: invalid command\n");
+			printf("minishell: invalid command\n");
 			return (0);
 		}
 		substitute_env_vars(shell, tmp);
