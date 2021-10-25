@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 10:05:16 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/01 14:59:08 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/25 08:01:56 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_ull_base(unsigned long long nbr, char *base)
 	i = 0;
 	baselen = ft_strlen(base);
 	if (nbr == 0)
-		return (ft_strdup("0"));
+		return (ft_strdup("0", NULL));
 	ret = malloc(sizeof(char) * (ft_uintlen(nbr, baselen) + 1));
 	if (!ret)
 		return (NULL);

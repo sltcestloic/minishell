@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 10:14:36 by lbertran          #+#    #+#             */
-/*   Updated: 2021/04/06 10:48:29 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/25 08:01:40 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	fill_line(char **line, char **save, int indx, int ret)
 		indx = ft_strichr(*save, '\n');
 	if (ft_strichr(*save, '\n') == -1 && ret == 0)
 	{
-		*line = ft_strdup(*save);
+		*line = ft_strdup(*save, NULL);
 		if (!*line)
 			return (-1);
 		free(*save);
@@ -30,7 +30,7 @@ int	fill_line(char **line, char **save, int indx, int ret)
 	else
 	{
 		*line = ft_strndup(*save, indx);
-		new_save = ft_strdup(&(*save)[indx + 1]);
+		new_save = ft_strdup(&(*save)[indx + 1], NULL);
 		if (!*line || !new_save)
 			return (-1);
 		free(*save);
@@ -63,7 +63,7 @@ int	read_buff(char *buff, int fd, char **save, int *indx)
 		if (ret <= 0)
 			break ;
 		buff[ret] = '\0';
-		new_save = ft_strjoin(*save, buff);
+		new_save = ft_strjoin(*save, buff, NULL);
 		if (!new_save)
 			return (-1);
 		free(*save);

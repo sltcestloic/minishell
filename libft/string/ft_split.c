@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:21:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/10/25 07:51:46 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/25 08:03:43 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_strrdup(const char *str, int start, int end, t_free *to_free)
 	int		i;
 
 	i = 0;
-	ret = ft_malloc(sizeof(char) * (end - start + 2), to_free);
+	ret = ft_malloc(sizeof(char) * (end - start + 2), &to_free);
 	if (!ret)
 		ft_malloc_error(to_free);
 	while (start <= end)
@@ -85,7 +85,7 @@ char	**ft_split(const char *str, char c, t_free *to_free)
 	wc = 0;
 	if (!str)
 		return (NULL);
-	ret = ft_malloc(sizeof(char *) * (count_words(str, c) + 1), to_free);
+	ret = malloc(sizeof(char *) * (count_words(str, c) + 1));
 	if (!ret)
 		ft_malloc_error(to_free);
 	while (str[++i])

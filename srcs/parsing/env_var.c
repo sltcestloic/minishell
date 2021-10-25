@@ -40,7 +40,7 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 		}
 		lst = lst->next;
 	}
-	ret = malloc(1);
+	ret = ft_malloc(1, &shell->to_free);
 	*ret = 0;
 	return (ret);
 }

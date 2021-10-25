@@ -17,7 +17,7 @@ void	add_new_cmd(t_cmd *cmd)
 	cmd_last(cmd)->next = new_cmd;
 }
 
-static char	*next_word(char *input)
+static char	*next_word(char *input, t_shell *shell)
 {
 	t_parser	parser;
 	char		*ret;
@@ -37,7 +37,7 @@ static char	*next_word(char *input)
 			break ;
 		i++;
 	}
-	ret = ft_strrdup(input, 0, i - 1);
+	ret = ft_strrdup(input, 0, i - 1, shell->to_free);
 	return (ret);
 }
 
@@ -59,7 +59,7 @@ int	add_arg(t_cmd *cmd, char *input, t_shell *shell)
 		free(cmd->value[i]);
 		i++;
 	}
-	new_value[i] = next_word(input);
+	new_value[i] = next_word(input, shell);
 	new_value[i + 1] = 0;
 	free(cmd->value);
 	cmd->value = new_value;
