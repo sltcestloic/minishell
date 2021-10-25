@@ -81,6 +81,6 @@ char		*substitute_env_var(t_shell *shell, char *input, int var);
 */
 
 void		add_new_cmd(t_cmd *cmd);
-int			add_arg(t_cmd *cmd, char *input);
+int			add_arg(t_cmd *cmd, char *input, t_shell *shell);
 
 #endif

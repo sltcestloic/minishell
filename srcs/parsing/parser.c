@@ -66,7 +66,7 @@ void	cmd_content_loop(t_cmd *cmd, char *input, int *i, t_index *idx)
 			}
 			if (ft_iswhitespace(input[*i + 1]) || !input[*i + 1])
 			{
-				cmd->value[idx->j++] = ft_strrdup(input, idx->i, *i);
+				cmd->value[idx->j++] = ft_strrdup(input, idx->i, *i, NULL);
 				idx->i = *i + 1;
 				while (ft_iswhitespace(input[idx->i]))
 					idx->i++;
@@ -77,7 +77,7 @@ void	cmd_content_loop(t_cmd *cmd, char *input, int *i, t_index *idx)
 	}
 }
 
-int	set_cmd_content(t_cmd *cmd, char *input, int *i)
+int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
 {
 	t_index		idx;
 	t_parser	parser;
@@ -96,13 +96,13 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i)
 		(*i)++;
 		idx.i++;
 	}
-	cmd->value[0] = ft_strrdup(input, *i - idx.i, *i - 1);
+	cmd->value[0] = ft_strrdup(input, *i - idx.i, *i - 1, shell->to_free);
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
 	idx.i = *i;
 	cmd_content_loop(cmd, input, i, &idx);
 	if (idx.i < --(*i))
-		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1);
+		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1, shell->to_free);
 	return (1);
 }
 
@@ -180,11 +180,11 @@ void	parse_input(char *input, t_shell *shell)
 			{
 				if (input[i - 1] == '\'' || input[i - 1] == '"'
 					|| input[i - 1] == '\'')
-					i += add_arg(cmd_last(cmd), &input[i - 1]);
+					i += add_arg(cmd_last(cmd), &input[i - 1], shell);
 				else
-					i += add_arg(cmd_last(cmd), &input[i]);
+					i += add_arg(cmd_last(cmd), &input[i], shell);
 			}
-			else if (!set_cmd_content(cmd_last(cmd), input, &i))
+			else if (!set_cmd_content(cmd_last(cmd), input, &i, shell))
 			{
 				free(parser);
 				cmd_free(cmd);

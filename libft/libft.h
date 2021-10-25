@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 19:59:28 by lbertran          #+#    #+#             */
-/*   Updated: 2021/10/22 16:17:55 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/25 07:52:00 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ char			*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 char			*ft_strndup(const char *s, size_t n);
 int				ft_strichr(const char *s, int c);
 void			free_split(char **ret);
-char			*ft_strrdup(const char *str, int start, int end);
+char			*ft_strrdup(const char *str, int start, int end, t_free *to_free);
 
 /*
 ** Text colors

@@ -44,7 +44,7 @@ static char	*next_word(char *input)
 /*
 ** return la taille du mot ajouté au parser pour qu'il passe a la suite
 */
-int	add_arg(t_cmd *cmd, char *input)
+int	add_arg(t_cmd *cmd, char *input, t_shell *shell)
 {
 	char	**new_value;
 	int		i;
@@ -55,7 +55,7 @@ int	add_arg(t_cmd *cmd, char *input)
 		return (-1);
 	while (cmd->value[i])
 	{
-		new_value[i] = ft_strdup(cmd->value[i]);
+		new_value[i] = ft_strdup(cmd->value[i], shell->to_free);
 		free(cmd->value[i]);
 		i++;
 	}

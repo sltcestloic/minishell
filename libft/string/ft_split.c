@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:21:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/10/22 16:14:58 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/25 07:51:46 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ int	get_w_start(const char *str, char c, int index)
 	return (i);
 }
 
-char	*ft_strrdup(const char *str, int start, int end)
+char	*ft_strrdup(const char *str, int start, int end, t_free *to_free)
 {
 	char	*ret;
 	int		i;
 
 	i = 0;
-	ret = malloc(sizeof(char) * (end - start + 2));
+	ret = ft_malloc(sizeof(char) * (end - start + 2), to_free);
 	if (!ret)
-		return (NULL);
+		ft_malloc_error(to_free);
 	while (start <= end)
 	{
 		ret[i] = str[start];
@@ -85,14 +85,14 @@ char	**ft_split(const char *str, char c, t_free *to_free)
 	wc = 0;
 	if (!str)
 		return (NULL);
-	ret = malloc(sizeof(char *) * (count_words(str, c) + 1));
+	ret = ft_malloc(sizeof(char *) * (count_words(str, c) + 1), to_free);
 	if (!ret)
 		ft_malloc_error(to_free);
 	while (str[++i])
 	{
 		if (str[i] != c && (str[i + 1] == c || !str[i + 1]))
 		{
-			ret[wc] = ft_strrdup(str, get_w_start(str, c, i), i);
+			ret[wc] = ft_strrdup(str, get_w_start(str, c, i), i, to_free);
 			if (!ret[wc++])
 			{
 				free_split(ret);
