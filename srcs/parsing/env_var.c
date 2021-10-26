@@ -35,6 +35,8 @@ char	*var_value_noquotes(char *var)
 			ret[j++] = var[i];
 		i++;
 	}
+	if (ret[j - 1] == ' ')
+		ret[j - 1] = 0;
 	ret[j] = 0;
 	printf("var value = %s\n", ret);
 	return (ret);

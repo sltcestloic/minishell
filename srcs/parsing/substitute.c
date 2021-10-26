@@ -5,7 +5,7 @@ static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	t_index	idx;
 	char	*tmp;
 
-	idx.i = 1;
+	idx.i = 0;
 	idx.j = 0;
 	while (cmd->value[idx.i])
 	{

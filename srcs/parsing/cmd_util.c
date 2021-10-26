@@ -20,5 +20,5 @@ void	quote_cmd(t_parser *parser, char c)
 
 int	is_sep(char c)
 {
-	return (c == '>' || c == '<' || c == '|');
+	return (c == '>' || c == '<' || c == '|' || ft_iswhitespace(c));
 }

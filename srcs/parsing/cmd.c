@@ -109,17 +109,18 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
 	cmd_bzero(cmd, args + 2);
 	if (!cmd->value)
 		return (0);
-	while (input[*i] && input[*i] != '|' && !ft_iswhitespace(input[*i]))
+	while (input[*i] && !is_sep(input[*i]))
 	{
 		(*i)++;
 		idx.i++;
 	}
+	printf("i apres while %d\n", *i);
 	cmd->value[0] = ft_strrdup(input, *i - idx.i, *i - 1, shell->to_free);
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
 	idx.i = *i;
 	cmd_content_loop(cmd, input, i, &idx);
-	if (idx.i < --(*i))
-		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i, shell->to_free);
+	if (idx.i < *i - 1)
+		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1, shell->to_free);
 	return (1);
 }

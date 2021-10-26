@@ -28,11 +28,13 @@ int	count_args(char *input)
 void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
-	t_redirect	*r_in = tmp->in;
-	t_redirect	*r_out = tmp->out;
+	t_redirect	*r_in;
+	t_redirect	*r_out;
 	int count = 0;
 	while (tmp)
 	{
+		r_in = tmp->in;
+		r_out = tmp->out;
 		printf("----------cmd #%d----------\n", count);
 		if (tmp->value)
 		{
@@ -115,15 +117,10 @@ void	parse_input(char *input, t_shell *shell)
 		}
 		else if (input[i] == '|')
 			add_new_cmd(cmd);
-		else if (ft_isalnum(input[i]) || input[i] == '"')
-			handle_cmd(input, cmd, &i, shell);
 		else if (!ft_iswhitespace(input[i]))
-		{
-			cmd_free(cmd);
-			free(parser);
-			printf("minishell: invalid command.\n");
-			return ;
-		}
+			handle_cmd(input, cmd, &i, shell);
+		if (!input[i])
+			break ;
 		i++;
 	}
 	if (substitute(shell, cmd))
