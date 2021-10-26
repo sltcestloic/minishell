@@ -7,7 +7,6 @@ void	ft_malloc_error(t_free *to_free)
 	exit(0);
 }
 
-
 static t_free	*last_elem(t_free *lst)
 {
 	if (!lst)

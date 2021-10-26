@@ -6,12 +6,12 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:26:41 by lbertran          #+#    #+#             */
-/*   Updated: 2021/10/26 09:13:54 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/26 10:26:43 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
-#include <stdio.h>
+
 char	*ft_strjoin(const char *s1, const char *s2, t_free *to_free)
 {
 	size_t	i;

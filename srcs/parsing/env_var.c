@@ -1,16 +1,34 @@
 #include "minishell.h"
 
+int	count_quotes(char *input)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'' || input[i] == '"')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 char	*var_value_noquotes(char *var)
 {
 	char	*ret;
 	int		i;
 	int		j;
 
-	ret = malloc(sizeof(char) * (ft_strlen(var) + 1));
+	ret = malloc(sizeof(char) * (ft_strlen(var) + count_quotes(var) + 1));
 	i = 0;
 	j = 0;
 	while (var[i])
 	{
+		if (var[i] == '\'' || var[i] == '"')
+			ret[j++] = '\\';
 		if (var[i] == ' ' && j && ret[j - 1] != ' ')
 			ret[j++] = var[i];
 		else if (var[i] != ' ')
@@ -18,6 +36,7 @@ char	*var_value_noquotes(char *var)
 		i++;
 	}
 	ret[j] = 0;
+	printf("var value = %s\n", ret);
 	return (ret);
 }
 

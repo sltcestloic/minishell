@@ -77,4 +77,7 @@ void		quote_cmd(t_parser *parser, char c);
 int			is_sep(char c);
 int			set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell);
 
+
+int			is_quote(char c);
+
 #endif
