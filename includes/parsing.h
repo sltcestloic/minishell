@@ -6,12 +6,6 @@
 # define REDIRECT_APPEND >>
 # define HEREDOC <<
 
-typedef struct s_command
-{
-	char	**args;
-	t_shell	*shell;
-}				t_command;
-
 typedef struct s_parser
 {
 	int		s_quote;

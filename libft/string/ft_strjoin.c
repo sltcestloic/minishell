@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:26:41 by lbertran          #+#    #+#             */
-/*   Updated: 2021/10/25 09:50:57 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/10/26 09:13:54 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	*ft_strjoin(const char *s1, const char *s2, t_free *to_free)
 		while (s1[++i])
 			ret[i] = s1[i];
 	}
+	if ((int)i == -1)
+		i = 0;
 	if (s2)
 	{
 		while (s2[j])

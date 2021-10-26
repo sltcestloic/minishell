@@ -27,7 +27,7 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 	char		*ret;
 
 	lst = shell->env_var;
-	if (ft_strcmp(name, "$?") == 0)
+	if (ft_strcmp(name, "?") == 0)
 		return (ft_itoa(shell->last_exit_return));
 	while (lst)
 	{
