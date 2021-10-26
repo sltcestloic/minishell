@@ -35,16 +35,17 @@ static void	quote(t_parser *parser, t_cmd *cmd, char c)
 	}
 }
 
-static int	is_non_removable(t_parser *parser, char c)
+void	substitute_loop_body(t_cmd *cmd, t_parser *parser, t_index *idx,
+		char *new_value)
 {
-	if (c != '\'' && c != '"')
-		return (1);
-	else if (c == '\'' && parser->d_quote)
-		return (1);
-	else if (c == '"' && parser->s_quote)
-		return (1);
-	else
-		return (0);
+	quote(parser, cmd, cmd->value[idx->i][idx->j]);
+	if (cmd->value[idx->i][idx->j] == '\\'
+		&& is_quote(cmd->value[idx->i][idx->j + 1]))
+		new_value[idx->k++] = cmd->value[idx->i][++idx->j];
+	if (is_non_removable(parser, cmd->value[idx->i][idx->j]))
+		new_value[idx->k++] = cmd->value[idx->i][idx->j];
+	new_value[idx->k] = 0;
+	idx->j++;
 }
 
 static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
@@ -60,16 +61,7 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 		new_value = ft_malloc(sizeof(char)
 				* (ft_strlen(cmd->value[idx.i]) + 1), &shell->to_free);
 		while (cmd->value[idx.i][idx.j])
-		{
-			quote(&parser, cmd, cmd->value[idx.i][idx.j]);
-			if (cmd->value[idx.i][idx.j] == '\\'
-				&& is_quote(cmd->value[idx.i][idx.j + 1]))
-				new_value[idx.k++] = cmd->value[idx.i][++idx.j];
-			if (is_non_removable(&parser, cmd->value[idx.i][idx.j]))
-				new_value[idx.k++] = cmd->value[idx.i][idx.j];
-			new_value[idx.k] = 0;
-			idx.j++;
-		}
+			substitute_loop_body(cmd, &parser, &idx, new_value);
 		free(cmd->value[idx.i]);
 		cmd->value[idx.i] = new_value;
 		idx.i++;

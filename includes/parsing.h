@@ -65,6 +65,7 @@ void		print_cmd(t_cmd *cmd);
 
 int			substitute(t_shell *shell, t_cmd *cmd);
 char		*substitute_env_var(t_shell *shell, char *input, int var);
+int			is_non_removable(t_parser *parser, char c);
 
 /*
 ** cmd
@@ -74,10 +75,13 @@ void		add_new_cmd(t_cmd *cmd);
 int			add_arg(t_cmd *cmd, char *input, t_shell *shell);
 void		cmd_bzero(t_cmd *cmd, int args);
 void		quote_cmd(t_parser *parser, char c);
-int			is_sep(char c);
 int			set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell);
 
+/*
+** Util
+*/
 
+int			is_sep(char c);
 int			is_quote(char c);
 
 #endif
