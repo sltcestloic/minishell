@@ -93,7 +93,7 @@ void	set_file_name(t_redirect *redirect, char *input, int *i)
 	last = redirect_last(redirect);
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
-	while (input[*i] && !ft_iswhitespace(input[*i]))
+	while (input[*i] && !is_sep(input[*i]))
 	{
 		(*i)++;
 		j++;
@@ -103,7 +103,7 @@ void	set_file_name(t_redirect *redirect, char *input, int *i)
 		exit(1);
 	*i -= j;
 	j = 0;
-	while (input[*i] && !ft_iswhitespace(input[*i]))
+	while (input[*i] && !is_sep(input[*i]))
 		last->file_name[j++] = input[(*i)++];
 	last->file_name[j] = '\0';
 }

@@ -120,7 +120,7 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
 		(*i)++;
 	idx.i = *i;
 	cmd_content_loop(cmd, input, i, &idx);
-	if (idx.i < *i - 1)
-		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i - 1, shell->to_free);
+	if (idx.i < *i)
+		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i, shell->to_free);
 	return (1);
 }
