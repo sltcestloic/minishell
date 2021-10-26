@@ -114,7 +114,6 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
 		(*i)++;
 		idx.i++;
 	}
-	printf("i apres while %d\n", *i);
 	cmd->value[0] = ft_strrdup(input, *i - idx.i, *i - 1, shell->to_free);
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
