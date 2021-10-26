@@ -17,8 +17,7 @@ SRC		= 	minishell.c \
 			parsing/substitute_utils.c \
 			util/cmd.c \
 			util/ft_splitlen.c \
-			util/init.c \
-			util/prompt.c  \
+			util/init.c
 
 SRCS 	= $(addprefix srcs/, ${SRC})
 OBJS	= ${SRCS:.c=.o}
