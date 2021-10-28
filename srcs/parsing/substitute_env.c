@@ -17,7 +17,6 @@ char	*substitute_env_var(t_shell *shell, char *input, int var, int quotes)
 	var_name = ft_strrdup(input, var + 1, i - 1, shell->to_free);
 	new_var = get_env_var(shell, var_name, quotes);
 	ret = ft_strjoin(ret, new_var, shell->to_free);
-	free(new_var);
 	if ((int)ft_strlen(input) > i)
 	{
 		end = ft_strrdup(input, i, ft_strlen(input) - 1, shell->to_free);

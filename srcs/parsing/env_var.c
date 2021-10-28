@@ -16,13 +16,14 @@ int	count_quotes(char *input)
 	return (count);
 }
 
-char	*var_value_noquotes(char *var)
+char	*var_value_noquotes(char *var, t_free *to_free)
 {
 	char	*ret;
 	int		i;
 	int		j;
 
-	ret = malloc(sizeof(char) * (ft_strlen(var) + count_quotes(var) + 1));
+	ret = ft_malloc(sizeof(char) * (ft_strlen(var)
+				+ count_quotes(var) + 1), &to_free);
 	i = 0;
 	j = 0;
 	while (var[i])
@@ -56,7 +57,7 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 			if (quotes)
 				return (ft_strdup(lst->value, shell->to_free));
 			else
-				return (var_value_noquotes(lst->value));
+				return (var_value_noquotes(lst->value, shell->to_free));
 		}
 		lst = lst->next;
 	}
