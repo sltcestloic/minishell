@@ -3,16 +3,18 @@
 static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 {
 	t_index	idx;
+	t_index	var;
 	char	*tmp;
 
 	idx.i = 0;
 	idx.j = 0;
 	while (cmd->value[idx.i])
 	{
-		idx.k = has_env_var(cmd->value[idx.i], shell);
+		var = has_env_var(cmd->value[idx.i], shell);
+		idx.k = var.i;
 		if (idx.k != -1)
 		{
-			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k);
+			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k, var.j);
 			free(cmd->value[idx.i]);
 			cmd->value[idx.i] = tmp;
 			continue ;

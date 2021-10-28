@@ -32,7 +32,7 @@ int			count_args(char *input);
 */
 
 char		*get_env_var(t_shell *shell, char *str, int quotes);
-int			has_env_var(char *input, t_shell *shell);
+t_index		has_env_var(char *input, t_shell *shell);
 
 /*
 ** Init
@@ -64,7 +64,7 @@ void		print_cmd(t_cmd *cmd);
 */
 
 int			substitute(t_shell *shell, t_cmd *cmd);
-char		*substitute_env_var(t_shell *shell, char *input, int var);
+char		*substitute_env_var(t_shell *shell, char *input, int var, int quotes);
 int			is_non_removable(t_parser *parser, char c);
 
 /*

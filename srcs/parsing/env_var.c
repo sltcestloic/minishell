@@ -65,26 +65,29 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 	return (ret);
 }
 
-int	has_env_var(char *input, t_shell *shell)
+t_index	has_env_var(char *input, t_shell *shell)
 {
 	t_parser	*parser;
-	int			i;
+	t_index		idx;
 
 	parser = init_parser(shell);
-	i = 0;
-	while (input[i])
+	idx.i = 0;
+	idx.j = 0;
+	while (input[idx.i])
 	{
-		if (input[i] == '"' && !parser->s_quote)
+		if (input[idx.i] == '"' && !parser->s_quote)
 			parser->d_quote = !parser->d_quote;
-		else if (input[i] == '\'' && !parser->d_quote)
+		else if (input[idx.i] == '\'' && !parser->d_quote)
 			parser->s_quote = !parser->s_quote;
-		else if (input[i] == '$' && !parser->s_quote)
+		else if (input[idx.i] == '$' && !parser->s_quote)
 		{
+			idx.j = parser->d_quote || parser->s_quote;
 			free(parser);
-			return (i);
+			return (idx);
 		}
-		i++;
+		idx.i++;
 	}
 	free(parser);
-	return (-1);
+	idx.i = -1;
+	return (idx);
 }
