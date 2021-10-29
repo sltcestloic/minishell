@@ -17,6 +17,7 @@
 # include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/param.h>
 
 void	display_prompt(t_shell *shell);
 

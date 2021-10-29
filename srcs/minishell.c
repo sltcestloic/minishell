@@ -6,8 +6,9 @@ inline static int	init_shell(t_shell **shell, char **envp)
 	if (!*shell)
 		return (-1);
 	(*shell)->to_free = 0;
+	(*shell)->to_close = 0;
 	(*shell)->env_var = 0;
-	(*shell)->pwd = ft_malloc(10000, &(*shell)->to_free);
+	(*shell)->pwd = ft_malloc(MAXPATHLEN, &(*shell)->to_free);
 	(*shell)->envp = envp;
 	if ((*shell)->pwd == 0)
 		return (-1);

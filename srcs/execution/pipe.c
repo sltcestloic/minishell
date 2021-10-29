@@ -32,6 +32,8 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (!pid)
 	{
+		if (shell->to_close)
+			close(shell->to_close);
 		if (in)
 		{
 			dup2(in, 0);
@@ -90,8 +92,10 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	while (cmd->next)
 	{
 		if (pipe(fd))
-			print_error(cmd->value[0], " : Error during pipe\n");								//error
+			print_error(cmd->value[0], " : Error during pipe\n");
+		shell->to_close = fd[0];
 		spawn_proc(in, fd[1], cmd, shell);
+		shell->to_close = 0;
 		if (in)
 			close(in);
 		in = fd[0];

@@ -37,6 +37,7 @@ typedef struct	s_shell
 	t_envlst 	*env_var;
 	char		*pwd;
 	char		**envp;
+	int 		to_close;
 	int			last_exit_return;
 }	t_shell;
 
