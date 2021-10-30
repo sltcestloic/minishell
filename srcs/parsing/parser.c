@@ -126,7 +126,7 @@ void	parse_input(char *input, t_shell *shell)
 	}
 	if (substitute(shell, cmd))
 	{
-		print_struct_debug(cmd);
+		// print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
 	}
 	cmd_free(cmd);

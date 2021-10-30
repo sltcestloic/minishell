@@ -55,26 +55,28 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	}
 }
 
-static int	do_built_in(char **func, t_shell *shell)
+static int	do_built_in(t_cmd *cmd, t_shell *shell)
 {
-	if (!ft_strcmp(func[0], "echo"))
-		echo(func);
-	else if (!ft_strcmp(func[0], "env"))
+	// if (redirect(cmd) == -1)
+	// 		print_error(cmd->value[0], " : Error during redirection\n");
+	if (!ft_strcmp(cmd->value[0], "echo"))
+		echo(cmd->value);
+	else if (!ft_strcmp(cmd->value[0], "env"))
 		env(shell->env_var);
-	else if (!ft_strcmp(func[0], "export"))
+	else if (!ft_strcmp(cmd->value[0], "export"))
 	{
-		if (!func[1])
+		if (!cmd->value[1])
 			export(shell->env_var);
-		else if(func[1])
-			update_env_value(shell, func);
+		else if(cmd->value[1])
+			update_env_value(shell, cmd->value);
 	}
-	else if (!ft_strcmp(func[0], "unset"))
-		remove_env_elem(func, shell);
-	else if (!ft_strcmp(func[0], "exit"))
-		exit_cmd(shell, func);
-	else if (!ft_strcmp(func[0], "cd"))
-		change_pwd(shell, func[1]);
-	else if (!ft_strcmp(func[0], "pwd"))
+	else if (!ft_strcmp(cmd->value[0], "unset"))
+		remove_env_elem(cmd->value, shell);
+	else if (!ft_strcmp(cmd->value[0], "exit"))
+		exit_cmd(shell, cmd->value);
+	else if (!ft_strcmp(cmd->value[0], "cd"))
+		change_pwd(shell, cmd->value[1]);
+	else if (!ft_strcmp(cmd->value[0], "pwd"))
 		pwd(shell);
 	else
 		return (1);
@@ -109,6 +111,6 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 		while (wait(NULL) != -1)
 			;
 	}
-	else if (do_built_in(cmd->value, shell))
+	else if (do_built_in(cmd, shell))
 		spawn_proc(in, 1, cmd, shell);
 }
