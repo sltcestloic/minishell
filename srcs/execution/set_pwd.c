@@ -28,6 +28,7 @@ void	set_pwd(t_shell *shell)
 void	change_pwd(t_shell *shell, char *str)
 {
 	t_envlst	*ptr;
+	t_envlst	*oldptr;
 
 	if (str)
 		chdir(str);
@@ -38,13 +39,22 @@ void	change_pwd(t_shell *shell, char *str)
 	{
 		ptr = ptr->next;
 	}
+	oldptr = shell->env_var;
+	while (oldptr && ft_strcmp(oldptr->name, "OLDPWD"))
+	{
+		oldptr = oldptr->next;
+	}
+	if (oldptr)
+		oldptr->value = ptr->value;
 	if (ptr)
-		getcwd(ptr->value, 10000);
-	getcwd(shell->pwd, 10000);
+	{
+		ptr->value = ft_malloc(MAXPATHLEN, &shell->to_free);
+		getcwd(ptr->value, MAXPATHLEN);
+	}
+	getcwd(shell->pwd, MAXPATHLEN);
 }
 
 void	pwd(t_shell *shell)
 {
-	ft_putstr_fd(shell->pwd, 1);
-	write(1, "\n", 1);
+	printf("%s\n", shell->pwd);
 }
