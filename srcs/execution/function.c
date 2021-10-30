@@ -30,20 +30,19 @@ void	echo(char **str)
 
 void	env(t_envlst *lst)
 {
-	if (lst)
+	while (lst)
 	{
-		while (lst)
+		if (lst->value)
 		{
 			if (lst->name)
-				ft_putstr_fd(lst->name, 1);
-			if (lst->value)
 			{
+				ft_putstr_fd(lst->name, 1);
 				write(1, "=", 1);
 				ft_putstr_fd(lst->value, 1);
+				write(1, "\n", 1);
 			}
-			write(1, "\n", 1);
-			lst = lst->next;
 		}
+		lst = lst->next;
 	}
 }
 
@@ -56,16 +55,14 @@ void	export(t_envlst *lst)
 		sorted = copy_sorted_list(lst);
 		while (sorted)
 		{
-			if (sorted->value)
+			if (sorted->name)
 			{
-				write(1, "declare -x ", 11);
-				ft_putstr_fd(sorted->name, 1);
-				write(1, "=\"", 2);
-				ft_putstr_fd(sorted->value, 1);
-				write(1, "\"", 1);
-				write(1, "\n", 1);
+				printf("declare -x %s", sorted->name);
+				if (sorted->value)
+					printf("=\"%s\"", sorted->value);
+				printf("\n");
+				sorted = sorted->next;
 			}
-			sorted = sorted->next;
 		}
 	}
 }
