@@ -79,7 +79,7 @@ int	check_built_in(char **func, t_shell *shell)
 			new_env_elem(func[1], shell);
 	}
 	else if (!ft_strcmp(func[0], "unset"))
-		remove_env_elem(func[1], shell);
+		remove_env_elem(func, shell);
 	else if (!ft_strcmp(func[0], "exit"))
 		ft_exit(shell->to_free);
 	else if (!ft_strcmp(func[0], "cd"))

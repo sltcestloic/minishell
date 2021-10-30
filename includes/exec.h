@@ -47,7 +47,7 @@ void		env(t_envlst *env_lst);
 void		export(t_envlst *env_lst);
 void		set_env(char **envp, t_shell *shell);
 void		new_env_elem(char *str, t_shell *shell);
-void		remove_env_elem(char *name, t_shell *shell);
+void		remove_env_elem(char **arg, t_shell *shell);
 t_envlst	*find_in_list(char *str, t_envlst *ptr);
 t_envlst	*copy_sorted_list(t_envlst *lst);
 void		set_pwd(t_shell *shell);

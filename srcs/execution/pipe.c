@@ -69,7 +69,7 @@ static int	do_built_in(char **func, t_shell *shell)
 			update_env_value(shell, func);
 	}
 	else if (!ft_strcmp(func[0], "unset"))
-		remove_env_elem(func[1], shell);
+		remove_env_elem(func, shell);
 	else if (!ft_strcmp(func[0], "exit"))
 		exit_cmd(shell, func);
 	else if (!ft_strcmp(func[0], "cd"))

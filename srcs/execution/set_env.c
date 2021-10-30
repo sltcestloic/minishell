@@ -131,17 +131,23 @@ void	new_env_elem(char *str, t_shell *shell)
 		ft_exit(shell->to_free);
 }
 
-void	remove_env_elem(char *name, t_shell *shell)
+void	remove_env_elem(char **arg, t_shell *shell)
 {
 	t_envlst	*ptr;
+	int i;
 
-	ptr = shell->env_var;
-	while (ptr->next && ft_strcmp(ptr->next->name, name))
+	i = 0;
+	while (arg[i])
 	{
-		ptr = ptr->next;
+		ptr = shell->env_var;
+		while (ptr->next && ft_strcmp(ptr->next->name, arg[i]))
+		{
+			ptr = ptr->next;
+		}
+		if (ptr->next)
+			ptr->next = ptr->next->next;
+		i++;
 	}
-	if (ptr->next)
-		ptr->next = ptr->next->next;
 }
 
 void	set_env(char **envp, t_shell *shell)
