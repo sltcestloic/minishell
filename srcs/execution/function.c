@@ -73,9 +73,11 @@ void	exit_cmd(t_shell *shell, char **arg)
 	char *save;
 
 	ret = 0;
+	write(1, "exit\n", 5);
 	if (arg[1] && arg[2])
 	{
 		printf("minishell: exit: too many arguments\n");
+		exit(255);
 		return ;
 	}
 	if (arg[1])
@@ -85,12 +87,12 @@ void	exit_cmd(t_shell *shell, char **arg)
 		if (ft_strcmp(save, arg[1]))
 		{
 			printf("minishell: exit: %s: numeric argument required\n", arg[1]);
+			exit(255);
 			return ;
 		}
 	}
 	// ft_free(shell->to_free);
 	(void) shell->to_free;
-	write(1, "exit\n", 5);
 	exit((unsigned char)ret);
 }
 

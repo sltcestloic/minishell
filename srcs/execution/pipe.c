@@ -57,8 +57,6 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 
 static int	do_built_in(t_cmd *cmd, t_shell *shell)
 {
-	// if (redirect(cmd) == -1)
-	// 		print_error(cmd->value[0], " : Error during redirection\n");
 	if (!ft_strcmp(cmd->value[0], "echo"))
 		echo(cmd->value);
 	else if (!ft_strcmp(cmd->value[0], "env"))
@@ -82,6 +80,28 @@ static int	do_built_in(t_cmd *cmd, t_shell *shell)
 		return (1);
 	shell->last_exit_return = 0;
 	return (0);
+}
+
+static int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
+{
+	int in;
+	int out;
+	int ret;
+
+	in = dup(0);
+	out = dup(1);
+	ret = redirect(cmd);
+	if (ret == -1)
+	{
+		print_error(cmd->value[0], " : Error during redirection\n");
+		return(-1);
+	}
+	ret = do_built_in(cmd, shell);
+	dup2(in, 0);
+	dup2(out, 1);
+	close(in);
+	close(out);
+	return (ret);
 }
 
 void	cmd_parse(t_cmd *cmd, t_shell *shell)
@@ -111,6 +131,6 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 		while (wait(NULL) != -1)
 			;
 	}
-	else if (do_built_in(cmd, shell))
+	else if (redirect_to_built_in(cmd, shell))
 		spawn_proc(in, 1, cmd, shell);
 }
