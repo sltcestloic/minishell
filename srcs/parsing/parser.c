@@ -25,7 +25,7 @@ int	count_args(char *input)
 	return (result);
 }
 
-void	print_struct_debug(t_cmd *cmd)
+/* void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
 	t_redirect	*r_in;
@@ -70,7 +70,7 @@ void	print_struct_debug(t_cmd *cmd)
 		tmp = tmp->next;
 		count++;
 	}
-}
+} */
 static int	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
 {
 	init_redirect(cmd_last(cmd), parser->redirect);
@@ -126,7 +126,7 @@ void	parse_input(char *input, t_shell *shell)
 	}
 	if (substitute(shell, cmd))
 	{
-		// print_struct_debug(cmd);
+		print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
 	}
 	cmd_free(cmd);
