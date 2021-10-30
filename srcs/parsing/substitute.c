@@ -93,7 +93,7 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 		}
 		if (cmd->quotes % 2 != 0)
 		{
-			printf("minishell: invalid input: unclosed quotes. (%d)\n", cmd->quotes);
+			printf("minishell: invalid input: unclosed quotes.\n");
 			return (0);
 		}
 		tmp = tmp->next;

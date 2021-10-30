@@ -14,8 +14,8 @@ static void	quote(t_parser *parser, t_redirect *redirect, char c)
 	}
 }
 
-static void	substitute_loop_body(t_redirect *redirect, t_parser *parser, t_index *idx,
-		char *new_value)
+static void	substitute_loop_body(t_redirect *redirect, t_parser *parser,
+		t_index *idx, char *new_value)
 {
 	quote(parser, redirect, redirect->file_name[idx->i]);
 	if (redirect->file_name[idx->i] == '\\'
