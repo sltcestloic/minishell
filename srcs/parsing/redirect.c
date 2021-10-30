@@ -5,8 +5,6 @@ int	is_redirect(char *str, int *i)
 	if (str[*i] == '>')
 	{
 		(*i)++;
-		if (str[*i] == '|')
-			(*i)++;
 		if (str[*i] == '>')
 		{
 			(*i)++;
@@ -17,8 +15,6 @@ int	is_redirect(char *str, int *i)
 	else if (str[*i] == '<')
 	{
 		(*i)++;
-		if (str[*i] == '|')
-			(*i)++;
 		if (str[*i] == '<')
 		{
 			(*i)++;
@@ -52,6 +48,7 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 		}
 		*redirect = cmd->in;
 	}
+	(*redirect)->file_name = NULL;
 }
 
 int	init_redirect_io(t_cmd *cmd, int type)
@@ -84,26 +81,40 @@ void	init_redirect(t_cmd *cmd, int type)
 /*
 ** TODO: gerer les noms avec des quotes (genre echo a > "salut test")
 */
-void	set_file_name(t_redirect *redirect, char *input, int *i)
+int	set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i)
 {
 	int			j;
 	t_redirect	*last;
+	t_parser	parser;
 
 	j = 0;
+	parser = init_parser_nml();
 	last = redirect_last(redirect);
 	while (ft_iswhitespace(input[*i]))
 		(*i)++;
-	while (input[*i] && !is_sep(input[*i]))
+	while (input[*i])
 	{
+		quote_cmd(&parser, input[*i]);
+		if (!parser.s_quote && !parser.d_quote && is_sep(input[*i]))
+			break ;
 		(*i)++;
 		j++;
 	}
-	last->file_name = malloc(sizeof(char) * (j + 1));
+	if (j == 0)
+		return (-1);
+	last->file_name = ft_malloc(sizeof(char) * (j + 1), &shell->to_free);
 	if (!last->file_name)
 		exit(1);
 	*i -= j;
 	j = 0;
-	while (input[*i] && !is_sep(input[*i]))
-		last->file_name[j++] = input[(*i)++];
+	while (input[*i])
+	{
+		quote_cmd(&parser, input[*i]);
+		last->file_name[j++] = input[*i];
+		if (!parser.s_quote && !parser.d_quote && is_sep(input[*i]))
+			break ;
+		(*i)++;
+	}
 	last->file_name[j] = '\0';
+	return (1);
 }

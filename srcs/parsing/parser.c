@@ -25,7 +25,7 @@ int	count_args(char *input)
 	return (result);
 }
 
-/* void	print_struct_debug(t_cmd *cmd)
+void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
 	t_redirect	*r_in;
@@ -70,14 +70,14 @@ int	count_args(char *input)
 		tmp = tmp->next;
 		count++;
 	}
-} */
-static void	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
+}
+static int	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
 {
 	init_redirect(cmd_last(cmd), parser->redirect);
 	if (parser->redirect < 3)
-		set_file_name(cmd_last(cmd)->out, input, i);
+		return (set_file_name(cmd->shell, cmd_last(cmd)->out, input, i));
 	else
-		set_file_name(cmd_last(cmd)->in, input, i);
+		return (set_file_name(cmd->shell, cmd_last(cmd)->in, input, i));
 }
 
 static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
@@ -105,13 +105,16 @@ void	parse_input(char *input, t_shell *shell)
 
 	parser = init_parser(shell);
 	i = -1;
-	cmd = init_cmd();
+	cmd = init_cmd(shell);
 	while (input[++i])
 	{
 		parser->redirect = is_redirect(input, &i);
 		if (parser->redirect)
 		{
-			handle_redirect(input, parser, cmd, &i);
+			if (!handle_redirect(input, parser, cmd, &i))
+				break ;
+			if (!input[i])
+				break ;
 			continue ;
 		}
 		else if (input[i] == '|')
@@ -122,6 +125,9 @@ void	parse_input(char *input, t_shell *shell)
 			break ;
 	}
 	if (substitute(shell, cmd))
+	{
+		print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
+	}
 	cmd_free(cmd);
 }

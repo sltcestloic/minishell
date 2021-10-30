@@ -6,16 +6,8 @@ typedef struct s_redirect
 	char *file_name;
 	struct s_redirect *next;
 	int variation;
+	int	quotes;
 }	t_redirect;
-
-typedef struct s_cmd
-{
-	char			**value;
-	struct s_cmd	*next;
-	t_redirect		*in;
-	t_redirect		*out;
-	int				quotes;
-}	t_cmd;
 
 typedef struct s_fdsys
 {
@@ -40,6 +32,16 @@ typedef struct	s_shell
 	int 		to_close;
 	int			last_exit_return;
 }	t_shell;
+
+typedef struct s_cmd
+{
+	char			**value;
+	struct s_cmd	*next;
+	t_redirect		*in;
+	t_redirect		*out;
+	int				quotes;
+	t_shell			*shell;
+}	t_cmd;
 
 void		ft_exit(t_free *to_free);
 void		echo(char **str);

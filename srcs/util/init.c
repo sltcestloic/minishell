@@ -26,7 +26,7 @@ t_parser	init_parser_nml(void)
 	return (ret);
 }
 
-t_cmd	*init_cmd(void)
+t_cmd	*init_cmd(t_shell *shell)
 {
 	t_cmd	*ret;
 
@@ -36,6 +36,7 @@ t_cmd	*init_cmd(void)
 	ret->out = NULL;
 	ret->value = NULL;
 	ret->quotes = 0;
+	ret->shell = shell;
 	return (ret);
 }
 

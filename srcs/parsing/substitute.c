@@ -86,6 +86,11 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 		}
 		substitute_env_vars(shell, tmp);
 		substitute_quotes(shell, tmp);
+		if (!substitute_redirect_quotes(shell, cmd))
+		{
+			printf("Invalid input: bad redirect.\n");
+			return (0);
+		}
 		if (cmd->quotes % 2 != 0)
 		{
 			printf("Invalid input: unclosed quotes. (%d)\n", cmd->quotes);

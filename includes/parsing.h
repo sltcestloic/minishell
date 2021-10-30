@@ -40,7 +40,7 @@ t_index		has_env_var(char *input, t_shell *shell);
 
 t_parser	*init_parser(t_shell *shell);
 t_index		init_index(void);
-t_cmd		*init_cmd(void);
+t_cmd		*init_cmd(t_shell *shell);
 t_parser	init_parser_nml(void);
 
 /*
@@ -51,7 +51,7 @@ int			is_redirect(char *str, int *i);
 t_redirect	*redirect_last(t_redirect *redirect);
 int			redirect_addback(t_redirect *redirect, int type);
 void		init_redirect(t_cmd *cmd, int type);
-void		set_file_name(t_redirect *redirect, char *input, int *i);
+int			set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i);
 
 /*
 ** Debug
@@ -65,6 +65,7 @@ void		print_cmd(t_cmd *cmd);
 
 int			substitute(t_shell *shell, t_cmd *cmd);
 char		*substitute_env_var(t_shell *shell, char *input, int var, int quotes);
+int			substitute_redirect_quotes(t_shell *shell, t_cmd *cmd);
 int			is_non_removable(t_parser *parser, char c);
 
 /*
