@@ -6,7 +6,7 @@ inline static char	*copy_name(char *str, t_shell *shell)
 	char			*ptr;
 
 	i = 0;
-	while (str[i] != '=' && str[i])
+	while ((str[i] != '+' || str[i] != '=') && str[i])
 		i++;
 	ptr = ft_malloc(i + 1, &shell->to_free);
 	if (!ptr)
@@ -57,12 +57,18 @@ static int	is_equal_concatenate(char *str)
 		if (str[i] == '+')
 		{
 			if(str[i + 1] == '=')
+			{
+				printf("it's concatenate\n");
 				return (2);
+			}
 			else
 				return (-1);
 		}
 		else if (str[i] == '=')
+		{
+			printf("it's not conca\n");
 			return (1);
+		}
 		else
 			i++;
 	}
