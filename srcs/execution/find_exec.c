@@ -22,8 +22,7 @@ static inline void	exec_it(char *test, char **function, t_shell *shell)
 	if (execve(test, function, lst_to_str(shell)))
 	{
 		write(2, "minishell: ", 11);
-		ft_putstr_fd(test, 2);
-		write(2, ": No such file or directory\n", 28);
+		perror(function[0]);
 		exit(-1);
 	}
 }
@@ -105,6 +104,10 @@ void	to_exec(t_shell *shell, char **function)
 	if (test)
 		exec_it(test, &function[0], shell);
 	else
-		ft_putstr_fd("minishell: command not found\n", 2);
+	{
+		write(2, "minishell: ", 11);
+		write(2, function[0], ft_strlen(function[0]));
+		write(2, ": command not found\n", 20);
+	}
 	exit(-1);
 }
