@@ -14,12 +14,16 @@ void	go_home(t_shell *shell)
 void	set_pwd(t_shell *shell)
 {
 	t_envlst	*ptr;
+	t_envlst	*oldptr;
 
 	ptr = shell->env_var;
+	oldptr = shell->env_var;
+	while (oldptr && ft_strcmp(oldptr->name, "OLDPWD"))
+		oldptr = oldptr->next;
+	if (oldptr)
+		oldptr->value = NULL;
 	while (ptr && ft_strcmp(ptr->name, "PWD"))
-	{
 		ptr = ptr->next;
-	}
 	if (ptr)
 		getcwd(ptr->value, 10000);
 	getcwd(shell->pwd, 10000);
@@ -36,14 +40,10 @@ void	change_pwd(t_shell *shell, char *str)
 		go_home(shell);
 	ptr = shell->env_var;
 	while (ptr && ft_strcmp(ptr->name, "PWD"))
-	{
 		ptr = ptr->next;
-	}
 	oldptr = shell->env_var;
 	while (oldptr && ft_strcmp(oldptr->name, "OLDPWD"))
-	{
 		oldptr = oldptr->next;
-	}
 	if (oldptr)
 		oldptr->value = ptr->value;
 	if (ptr)
