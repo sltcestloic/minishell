@@ -35,7 +35,10 @@ void	change_pwd(t_shell *shell, char *str)
 	t_envlst	*oldptr;
 
 	if (str)
-		chdir(str);
+	{
+		if (chdir(str) == -1 && write(2, "minishell: cd: ", 15))
+			perror(str);
+	}
 	else
 		go_home(shell);
 	ptr = shell->env_var;
