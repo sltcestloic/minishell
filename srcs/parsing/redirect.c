@@ -102,7 +102,6 @@ int	set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i)
 	}
 	if (j == 0)
 		return (-1);
-	printf("malloc %d\n", j + 1);
 	last->file_name = ft_malloc(sizeof(char) * (j + 1), &shell->to_free);
 	if (!last->file_name)
 		exit(1);
