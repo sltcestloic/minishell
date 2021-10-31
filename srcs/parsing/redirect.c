@@ -78,9 +78,6 @@ void	init_redirect(t_cmd *cmd, int type)
 	}
 }
 
-/*
-** TODO: gerer les noms avec des quotes (genre echo a > "salut test")
-*/
 int	set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i)
 {
 	int			j;
@@ -104,7 +101,7 @@ int	set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i)
 		return (-1);
 	last->file_name = ft_malloc(sizeof(char) * (j + 1), &shell->to_free);
 	if (!last->file_name)
-		exit(1);
+		ft_malloc_error(shell->to_free);
 	*i -= j;
 	j = 0;
 	while (input[*i])
