@@ -67,24 +67,39 @@ void	export(t_envlst *lst)
 	}
 }
 
+int		ft_atoi_exit(char *arg, int *ret)
+{
+	int i;
+
+	i = 0;
+	while (arg[i] == ' ')
+		i++;
+	while (arg[i] >= '0' && arg[i] <= '9')
+	{
+		*ret = *ret * 10 + (arg[i] - '0');
+		i++;
+	}
+	while (arg[i] == ' ')
+		i++;
+	if (arg[i])
+		return (-1);
+	return (0);
+}
+
 void	exit_cmd(t_shell *shell, char **arg)
 {
 	int ret;
-	char *save;
 
 	ret = 0;
 	write(1, "exit\n", 5);
 	if (arg[1] && arg[2])
 	{
 		printf("minishell: exit: too many arguments\n");
-		exit(255);
 		return ;
 	}
 	if (arg[1])
 	{
-		ret = ft_atoi(arg[1]);
-		save = ft_itoa(ret);
-		if (ft_strcmp(save, arg[1]))
+		if (ft_atoi_exit(arg[1], &ret) == -1)
 		{
 			printf("minishell: exit: %s: numeric argument required\n", arg[1]);
 			exit(255);
