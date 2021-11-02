@@ -97,7 +97,7 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 	}
 }
 
-void	parse_input(char *input, t_shell *shell)
+t_cmd	*parse_input(char *input, t_shell *shell)
 {
 	t_cmd		*cmd;
 	int			i;
@@ -129,5 +129,6 @@ void	parse_input(char *input, t_shell *shell)
 		//print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
 	}
-	cmd_free(cmd);
+	//cmd_free(cmd);
+	return (cmd); //temporaire, pour le tester
 }

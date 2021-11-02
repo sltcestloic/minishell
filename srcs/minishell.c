@@ -26,6 +26,8 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	set_env(envp, shell);
 	set_pwd(shell);
+	if (ac > 1)
+		return (unit_test(shell));
 	input = readline("\e[0;92mminishell\e[0m$ ");
 	while (input)
 	{

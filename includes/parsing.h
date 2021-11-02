@@ -24,7 +24,7 @@ typedef struct s_index
 ** Main parsing
 */
 
-void		parse_input(char *input, t_shell *shell);
+t_cmd		*parse_input(char *input, t_shell *shell);
 int			count_args(char *input);
 
 /*
@@ -84,5 +84,11 @@ int			set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell);
 
 int			is_sep(char c);
 int			is_quote(char c);
+
+/*
+** Tests
+*/
+
+int			unit_test(t_shell *shell);
 
 #endif

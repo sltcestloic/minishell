@@ -1,0 +1,10 @@
+#format : <nom du test>;<commande>;<values attendues>;<redirects attendus>
+#exemple pour le echo #1:
+# nom: echo #1
+# commande: echo "salut test" oui > abc
+# values attendues: salut test dans la value 0 de la commande 0 et oui dans la value 1 de la commande 0 (premiere commande de la structure)
+# redirects attendus: un redirect out avec abc comme file name dans la commande 0
+
+#TODO: comparer l'output
+
+echo #1;echo "salut test" oui > abc;0:0:salut test,0:1:oui;0:out:abc
