@@ -57,16 +57,17 @@ int			set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i);
 ** Debug
 */
 
-void		print_cmd(t_cmd *cmd);
+void		print_struct_debug(t_cmd *cmd);
 
 /*
 ** Substitute
 */
 
 int			substitute(t_shell *shell, t_cmd *cmd);
-char		*substitute_env_var(t_shell *shell, char *input, int var, int quotes);
+void		substitute_env_vars(t_shell *shell, t_cmd *cmd);
 int			substitute_redirect_quotes(t_shell *shell, t_cmd *cmd);
 int			is_non_removable(t_parser *parser, char c);
+void		split_tokens(t_cmd *cmd);
 
 /*
 ** cmd
