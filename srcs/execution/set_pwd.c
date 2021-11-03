@@ -5,8 +5,11 @@ void	go_home(t_shell *shell)
 	t_envlst	*ptr;
 
 	ptr = find_in_list("HOME", shell->env_var);
-	if (ptr)
-		chdir(ptr->value);
+	if (ptr && ptr->value)
+	{
+		if (chdir(ptr->value) == -1)
+			write(2, "minishell: cd: incorrect HOME path\n", 28);
+	}
 	else
 		write(2, "minishell: cd: HOME not set\n", 28);
 }

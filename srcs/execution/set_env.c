@@ -12,7 +12,7 @@ inline static char	*copy_name(char *str, t_shell *shell)
 	if (!ptr)
 		return (ptr);
 	i = -1;
-	while (str[++i] != '=' && str[i])
+	while (str[++i] != '=' && str[i] != '+' && str[i])
 		ptr[i] = str[i];
 	ptr[i] = 0;
 	return (ptr);
@@ -58,7 +58,6 @@ static int	is_equal_concatenate(char *str)
 		{
 			if(str[i + 1] == '=')
 			{
-				printf("it's concatenate\n");
 				return (2);
 			}
 			else
@@ -66,7 +65,6 @@ static int	is_equal_concatenate(char *str)
 		}
 		else if (str[i] == '=')
 		{
-			printf("it's not conca\n");
 			return (1);
 		}
 		else
@@ -85,7 +83,11 @@ void	update_env_value(t_shell *shell, char **arg)
 	{
 		item = find_in_list(copy_name(arg[i], shell), shell->env_var);
 		if (is_equal_concatenate(arg[i]) == -1)
-			printf("minishell: export: %s: not a valid identifier\n", arg[i]);
+		{
+			ft_putstr_fd("minishell: export: ", 2);
+			ft_putstr_fd(arg[i], 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
+		}
 		else if (item && is_equal_concatenate(arg[i]) == 1)
 			item->value = copy_value(arg[i], shell);
 		else if (item && is_equal_concatenate(arg[i]) == 2)
@@ -110,7 +112,9 @@ void	new_env_elem(char *str, t_shell *shell)
 
 	if (str[0] >= '0' && str[0] <= '9')
 	{
-		printf("minishell: export: %s: not a valid identifier\n", str);
+		ft_putstr_fd("minishell: export: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
 		return ;
 	}
 	save = shell->env_var;
