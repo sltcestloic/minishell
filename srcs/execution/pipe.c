@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-void	print_error(char *cmd, char *msg)
+void	print_error(char *cmd, char *msg, t_free *to_free)
 {
 	write(2, "minishell: ", 11);
 	ft_putstr_fd(cmd, 2);
-	write(2, &msg, 28);
-	exit(-1);
+	write(2, &msg, ft_strlen(msg));
+	ft_exit(to_free);
 }
 
 int	do_heredoc(t_cmd *cmd, t_shell *shell)
@@ -45,7 +45,7 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 			close(out);
 		}
 		if (redirect(cmd) == -1)
-			print_error(cmd->value[0], " : Error during redirection\n");
+			print_error(cmd->value[0], ": Error during redirection\n", shell->to_free);
 		to_exec(shell, cmd->value);
 	}
 	if (out == 1)
@@ -93,7 +93,7 @@ static int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
 	ret = redirect(cmd);
 	if (ret == -1)
 	{
-		print_error(cmd->value[0], " : Error during redirection\n");
+		print_error(cmd->value[0], ": Error during redirection\n", shell->to_free);
 		return(-1);
 	}
 	ret = do_built_in(cmd, shell);
@@ -114,7 +114,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	while (cmd->next)
 	{
 		if (pipe(fd))
-			print_error(cmd->value[0], " : Error during pipe\n");
+			print_error(cmd->value[0], ": Error during pipe\n", shell->to_free);
 		shell->to_close = fd[0];
 		spawn_proc(in, fd[1], cmd, shell);
 		shell->to_close = 0;

@@ -35,12 +35,7 @@ void	env(t_envlst *lst)
 		if (lst->value)
 		{
 			if (lst->name)
-			{
-				ft_putstr_fd(lst->name, 1);
-				write(1, "=", 1);
-				ft_putstr_fd(lst->value, 1);
-				write(1, "\n", 1);
-			}
+				printf("%s=%s\n", lst->name, lst->value);
 		}
 		lst = lst->next;
 	}
@@ -67,7 +62,7 @@ void	export(t_envlst *lst)
 	}
 }
 
-int		ft_atoi_exit(char *arg, int *ret)
+static int		ft_atoi_exit(char *arg, int *ret)
 {
 	int i;
 
@@ -94,14 +89,16 @@ void	exit_cmd(t_shell *shell, char **arg)
 	write(1, "exit\n", 5);
 	if (arg[1] && arg[2])
 	{
-		printf("minishell: exit: too many arguments\n");
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return ;
 	}
 	if (arg[1])
 	{
 		if (ft_atoi_exit(arg[1], &ret) == -1)
 		{
-			printf("minishell: exit: %s: numeric argument required\n", arg[1]);
+			ft_putstr_fd("minishell: exit:", 2);
+			ft_putstr_fd(arg[1], 2);
+			ft_putstr_fd("numeric argument required\n", 2);
 			exit(255);
 			return ;
 		}
