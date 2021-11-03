@@ -30,7 +30,9 @@ t_cmd	*init_cmd(t_shell *shell)
 {
 	t_cmd	*ret;
 
-	ret = malloc(sizeof(t_cmd));
+	ret = (t_cmd *)ft_malloc(sizeof(t_cmd), &shell->to_free);
+	if (!ret)
+		ft_malloc_error(shell->to_free);
 	ret->next = NULL;
 	ret->in = NULL;
 	ret->out = NULL;

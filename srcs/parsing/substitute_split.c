@@ -51,8 +51,8 @@ void	split_cmd(t_cmd *cmd, int index, int spaces)
 
 	idx = init_index();
 	last = 0;
-	new_value = malloc(sizeof(char *) * (ft_splitlen(cmd->value) + spaces + 1));
-	end_value = malloc(sizeof(char *) * (ft_splitlen(&cmd->value[index]) + 1));
+	new_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(cmd->value) + spaces + 1), &cmd->shell->to_free);
+	end_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(&cmd->value[index]) + 1), &cmd->shell->to_free);
 	copy_content(&cmd->value[index + 1], end_value);
 	copy_first_values(&idx, index, new_value, cmd);
 	while (cmd->value[index][idx.i])

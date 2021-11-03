@@ -91,10 +91,7 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 			*i += add_arg(cmd_last(cmd), &input[*i], shell);
 	}
 	else if (!set_cmd_content(cmd_last(cmd), input, i, shell))
-	{
-		cmd_free(cmd);
 		ft_malloc_error(shell->to_free);
-	}
 }
 
 void	parse_input(char *input, t_shell *shell)
@@ -118,7 +115,7 @@ void	parse_input(char *input, t_shell *shell)
 			continue ;
 		}
 		else if (input[i] == '|')
-			add_new_cmd(cmd);
+			add_new_cmd(cmd, shell);
 		else if (!ft_iswhitespace(input[i]))
 			handle_cmd(input, cmd, &i, shell);
 		if (!input[i])
