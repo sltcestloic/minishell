@@ -63,6 +63,7 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 		}
 		substitute_env_vars(shell, tmp);
 		split_tokens(tmp);
+		// print_struct_debug(tmp);
 		substitute_quotes(shell, tmp);
 		if (!substitute_redirect_quotes(shell, cmd))
 		{
