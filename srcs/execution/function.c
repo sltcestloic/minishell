@@ -103,7 +103,7 @@ void	exit_cmd(t_shell *shell, char **arg)
 			return ;
 		}
 	}
-	// ft_free(shell->to_free);
+	ft_free(shell->to_free);
 	(void) shell->to_free;
 	exit((unsigned char)ret);
 }

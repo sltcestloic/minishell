@@ -15,16 +15,6 @@ void	cmd_addback(t_cmd *cmd, t_cmd *add)
 	current->next = add;
 }
 
-void	free_cmd_value(char **value)
-{
-	size_t	i;
-
-	i = 0;
-	while (value[i])
-		free(value[i++]);
-	free(value);
-}
-
 t_cmd	*cmd_last(t_cmd *cmd)
 {
 	t_cmd	*current;

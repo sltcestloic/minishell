@@ -42,7 +42,6 @@ void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 		if (idx.k != -1)
 		{
 			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k, var.j);
-			free(cmd->value[idx.i]);
 			cmd->value[idx.i] = tmp;
 			continue ;
 		}

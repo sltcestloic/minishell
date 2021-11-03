@@ -54,12 +54,10 @@ int	add_arg(t_cmd *cmd, char *input, t_shell *shell)
 	while (cmd->value[i])
 	{
 		new_value[i] = ft_strdup(cmd->value[i], shell->to_free);
-		free(cmd->value[i]);
 		i++;
 	}
 	new_value[i] = next_word(input, shell);
 	new_value[i + 1] = 0;
-	free(cmd->value);
 	cmd->value = new_value;
 	return (ft_strlen(cmd->value[i]) - 1);
 }

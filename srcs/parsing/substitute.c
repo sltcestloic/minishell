@@ -41,7 +41,6 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 				* (ft_strlen(cmd->value[idx.i]) + 1), &shell->to_free);
 		while (cmd->value[idx.i][idx.j])
 			substitute_loop_body(cmd, &parser, &idx, new_value);
-		free(cmd->value[idx.i]);
 		cmd->value[idx.i] = new_value;
 		idx.i++;
 		idx.j = 0;
