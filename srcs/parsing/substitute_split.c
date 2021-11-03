@@ -24,19 +24,16 @@ void	copy_content(char **src, char **dest)
 	int	i;
 
 	i = 0;
-	
 	while (src[i])
 	{
 		dest[i] = ft_strdup(src[i], NULL);
-		printf("dest[%d] = %s\n", i, dest[i]);
 		i++;
-		printf("i=%d\n", i);
 	}
-	printf("dest[%d] = 0\n", i);
 	dest[i] = 0;
 }
 
-static void	copy_first_values(t_index *idx, int index, char **new_value, t_cmd *cmd)
+static void	copy_first_values(t_index *idx, int index,
+			char **new_value, t_cmd *cmd)
 {
 	while (idx->j < index)
 	{
@@ -62,7 +59,8 @@ void	split_cmd(t_cmd *cmd, int index, int spaces)
 	{
 		if (cmd->value[index][idx.i] == ' ')
 		{
-			new_value[idx.j++] = ft_strrdup(cmd->value[index], last, idx.i - 1, NULL);
+			new_value[idx.j++]
+				= ft_strrdup(cmd->value[index], last, idx.i - 1, NULL);
 			last = idx.i + 1;
 		}
 		idx.i++;

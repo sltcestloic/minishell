@@ -33,6 +33,7 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 		if (!cmd->out)
 		{
 			cmd->out = malloc(sizeof(t_redirect));
+			cmd->out->file_name = NULL;
 			cmd->out->next = NULL;
 			*init = 1;
 		}
@@ -43,12 +44,12 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 		if (!cmd->in)
 		{
 			cmd->in = malloc(sizeof(t_redirect));
+			cmd->in->file_name = NULL;
 			cmd->in->next = NULL;
 			*init = 1;
 		}
 		*redirect = cmd->in;
 	}
-	(*redirect)->file_name = NULL;
 }
 
 int	init_redirect_io(t_cmd *cmd, int type)

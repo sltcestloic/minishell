@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-static char	*substitute_env_var(t_shell *shell, char *input, int var, int quotes)
+static char	*substitute_env_var(t_shell *shell, char *input,
+	int var, int quotes)
 {
 	char	*ret;
 	char	*var_name;
@@ -12,7 +13,7 @@ static char	*substitute_env_var(t_shell *shell, char *input, int var, int quotes
 	if (var > 0)
 		ret = ft_strrdup(input, 0, var - 1, shell->to_free);
 	i = var;
-	while (input[i] && !is_sep(input[i]) 
+	while (input[i] && !is_sep(input[i])
 		&& (!is_quote(input[i]) || input[i] == '?' || i == var))
 		i++;
 	var_name = ft_strrdup(input, var + 1, i - 1, shell->to_free);
