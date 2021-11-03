@@ -85,7 +85,7 @@ void	exit_cmd(t_shell *shell, char **arg)
 {
 	int ret;
 
-	ret = 0;
+	ret = shell->last_exit_return;
 	write(1, "exit\n", 5);
 	if (arg[1] && arg[2])
 	{
@@ -96,9 +96,9 @@ void	exit_cmd(t_shell *shell, char **arg)
 	{
 		if (ft_atoi_exit(arg[1], &ret) == -1)
 		{
-			ft_putstr_fd("minishell: exit:", 2);
+			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(arg[1], 2);
-			ft_putstr_fd("numeric argument required\n", 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
 			exit(255);
 			return ;
 		}

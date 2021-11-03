@@ -78,7 +78,6 @@ static int	do_built_in(t_cmd *cmd, t_shell *shell)
 		pwd(shell);
 	else
 		return (1);
-	shell->last_exit_return = 0;
 	return (0);
 }
 
