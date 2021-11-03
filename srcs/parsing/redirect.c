@@ -32,7 +32,8 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 	{
 		if (!cmd->out)
 		{
-			cmd->out = malloc(sizeof(t_redirect));
+			cmd->out = (t_redirect *)ft_malloc(sizeof(t_redirect), &cmd->shell->to_free);
+			cmd->out->file_name = NULL;
 			cmd->out->next = NULL;
 			*init = 1;
 		}
@@ -42,13 +43,13 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 	{
 		if (!cmd->in)
 		{
-			cmd->in = malloc(sizeof(t_redirect));
+			cmd->in = (t_redirect *)ft_malloc(sizeof(t_redirect), &cmd->shell->to_free);
+			cmd->in->file_name = NULL;
 			cmd->in->next = NULL;
 			*init = 1;
 		}
 		*redirect = cmd->in;
 	}
-	(*redirect)->file_name = NULL;
 }
 
 int	init_redirect_io(t_cmd *cmd, int type)
@@ -62,7 +63,7 @@ int	init_redirect_io(t_cmd *cmd, int type)
 		return (0);
 	redirect->variation = type == 2 || type == 4;
 	if (!init)
-		redirect_addback(redirect, type);
+		redirect_addback(redirect, type, cmd->shell);
 	return (1);
 }
 
@@ -72,10 +73,7 @@ void	init_redirect(t_cmd *cmd, int type)
 
 	ret = init_redirect_io(cmd, type);
 	if (!ret)
-	{
-		cmd_free(cmd);
-		return ;
-	}
+		ft_malloc_error(cmd->shell->to_free);
 }
 
 int	set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i)

@@ -83,12 +83,10 @@ t_index	has_env_var(char *input, t_shell *shell)
 		else if (input[idx.i] == '$' && !parser->s_quote)
 		{
 			idx.j = parser->d_quote || parser->s_quote;
-			free(parser);
 			return (idx);
 		}
 		idx.i++;
 	}
-	free(parser);
 	idx.i = -1;
 	return (idx);
 }

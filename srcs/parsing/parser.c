@@ -47,7 +47,7 @@ void	print_struct_debug(t_cmd *cmd)
 			printf(" redirect in:\n");
 			while (r_in)
 			{
-				printf("  redirect #%d:\n", k);
+				printf("  (%p) redirect #%d:\n", r_in, k);
 				printf("   cmd->in->file_name = %s\n", r_in->file_name);
 				printf("   cmd->in->variation = %d\n", r_in->variation);
 				k++;
@@ -60,7 +60,7 @@ void	print_struct_debug(t_cmd *cmd)
 			k = 0;	
 			while (r_out)
 			{
-				printf("  redirect #%d:\n", k);
+				printf("  (%p) redirect #%d:\n", r_out, k);
 				printf("   cmd->out->file_name = %s\n", r_out->file_name);
 				printf("   cmd->out->variation = %d\n", r_out->variation);
 				k++;
@@ -91,10 +91,7 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 			*i += add_arg(cmd_last(cmd), &input[*i], shell);
 	}
 	else if (!set_cmd_content(cmd_last(cmd), input, i, shell))
-	{
-		cmd_free(cmd);
 		ft_malloc_error(shell->to_free);
-	}
 }
 
 void	parse_input(char *input, t_shell *shell)
@@ -118,7 +115,7 @@ void	parse_input(char *input, t_shell *shell)
 			continue ;
 		}
 		else if (input[i] == '|')
-			add_new_cmd(cmd);
+			add_new_cmd(cmd, shell);
 		else if (!ft_iswhitespace(input[i]))
 			handle_cmd(input, cmd, &i, shell);
 		if (!input[i])
@@ -126,8 +123,7 @@ void	parse_input(char *input, t_shell *shell)
 	}
 	if (substitute(shell, cmd))
 	{
-		//print_struct_debug(cmd);
+		print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
 	}
-	cmd_free(cmd);
 }

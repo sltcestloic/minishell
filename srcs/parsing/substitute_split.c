@@ -24,19 +24,16 @@ void	copy_content(char **src, char **dest)
 	int	i;
 
 	i = 0;
-	
 	while (src[i])
 	{
 		dest[i] = ft_strdup(src[i], NULL);
-		printf("dest[%d] = %s\n", i, dest[i]);
 		i++;
-		printf("i=%d\n", i);
 	}
-	printf("dest[%d] = 0\n", i);
 	dest[i] = 0;
 }
 
-static void	copy_first_values(t_index *idx, int index, char **new_value, t_cmd *cmd)
+static void	copy_first_values(t_index *idx, int index,
+			char **new_value, t_cmd *cmd)
 {
 	while (idx->j < index)
 	{
@@ -54,15 +51,16 @@ void	split_cmd(t_cmd *cmd, int index, int spaces)
 
 	idx = init_index();
 	last = 0;
-	new_value = malloc(sizeof(char *) * (ft_splitlen(cmd->value) + spaces + 1));
-	end_value = malloc(sizeof(char *) * (ft_splitlen(&cmd->value[index]) + 1));
+	new_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(cmd->value) + spaces + 1), &cmd->shell->to_free);
+	end_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(&cmd->value[index]) + 1), &cmd->shell->to_free);
 	copy_content(&cmd->value[index + 1], end_value);
 	copy_first_values(&idx, index, new_value, cmd);
 	while (cmd->value[index][idx.i])
 	{
 		if (cmd->value[index][idx.i] == ' ')
 		{
-			new_value[idx.j++] = ft_strrdup(cmd->value[index], last, idx.i - 1, NULL);
+			new_value[idx.j++]
+				= ft_strrdup(cmd->value[index], last, idx.i - 1, NULL);
 			last = idx.i + 1;
 		}
 		idx.i++;

@@ -49,7 +49,7 @@ t_parser	init_parser_nml(void);
 
 int			is_redirect(char *str, int *i);
 t_redirect	*redirect_last(t_redirect *redirect);
-int			redirect_addback(t_redirect *redirect, int type);
+int			redirect_addback(t_redirect *redirect, int type, t_shell *shell);
 void		init_redirect(t_cmd *cmd, int type);
 int			set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i);
 
@@ -73,7 +73,7 @@ void		split_tokens(t_cmd *cmd);
 ** cmd
 */
 
-void		add_new_cmd(t_cmd *cmd);
+void		add_new_cmd(t_cmd *cmd, t_shell *shell);
 int			add_arg(t_cmd *cmd, char *input, t_shell *shell);
 void		cmd_bzero(t_cmd *cmd, int args);
 void		quote_cmd(t_parser *parser, char c);
