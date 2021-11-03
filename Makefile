@@ -15,6 +15,7 @@ SRC		= 	minishell.c \
 			parsing/substitute_env.c \
 			parsing/substitute.c \
 			parsing/substitute_redirect.c \
+			parsing/substitute_split.c \
 			parsing/substitute_utils.c \
 			util/cmd.c \
 			util/ft_splitlen.c \

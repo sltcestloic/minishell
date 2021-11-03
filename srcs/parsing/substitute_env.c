@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*substitute_env_var(t_shell *shell, char *input, int var, int quotes)
+static char	*substitute_env_var(t_shell *shell, char *input, int var, int quotes)
 {
 	char	*ret;
 	char	*var_name;
@@ -24,4 +24,27 @@ char	*substitute_env_var(t_shell *shell, char *input, int var, int quotes)
 		ret = ft_strjoin(ret, end, shell->to_free);
 	}
 	return (ret);
+}
+
+void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
+{
+	t_index	idx;
+	t_index	var;
+	char	*tmp;
+
+	idx.i = 0;
+	idx.j = 0;
+	while (cmd->value[idx.i])
+	{
+		var = has_env_var(cmd->value[idx.i], shell);
+		idx.k = var.i;
+		if (idx.k != -1)
+		{
+			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k, var.j);
+			free(cmd->value[idx.i]);
+			cmd->value[idx.i] = tmp;
+			continue ;
+		}
+		idx.i++;
+	}
 }

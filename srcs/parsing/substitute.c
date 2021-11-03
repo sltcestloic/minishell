@@ -1,28 +1,5 @@
 #include "minishell.h"
 
-static void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
-{
-	t_index	idx;
-	t_index	var;
-	char	*tmp;
-
-	idx.i = 0;
-	idx.j = 0;
-	while (cmd->value[idx.i])
-	{
-		var = has_env_var(cmd->value[idx.i], shell);
-		idx.k = var.i;
-		if (idx.k != -1)
-		{
-			tmp = substitute_env_var(shell, cmd->value[idx.i], idx.k, var.j);
-			free(cmd->value[idx.i]);
-			cmd->value[idx.i] = tmp;
-			continue ;
-		}
-		idx.i++;
-	}
-}
-
 static void	quote(t_parser *parser, t_cmd *cmd, char c)
 {
 	if (c == '"' && !parser->s_quote)
@@ -85,6 +62,8 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 			return (0);
 		}
 		substitute_env_vars(shell, tmp);
+		split_tokens(tmp);
+		print_struct_debug(tmp);
 		substitute_quotes(shell, tmp);
 		if (!substitute_redirect_quotes(shell, cmd))
 		{
