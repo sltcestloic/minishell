@@ -16,6 +16,22 @@ inline static int	init_shell(t_shell **shell, char **envp)
 	return (0);
 }
 
+static int	is_valid_input(char *input)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strlen(input) == 0)
+		return (0);
+	while (input[i])
+	{
+		if (!ft_iswhitespace(input[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
@@ -30,7 +46,7 @@ int	main(int ac, char **av, char **envp)
 	input = readline("\e[0;92mminishell\e[0m$ ");
 	while (input)
 	{
-		if (ft_strlen(input) > 0)
+		if (is_valid_input(input))
 			parse_input(input, shell);
 		add_history(input);
 		free(input);
