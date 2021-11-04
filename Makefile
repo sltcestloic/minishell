@@ -30,7 +30,7 @@ CC		= gcc
 RM		= rm -f
 CFLAGS	= -Wall -Wextra -Werror -g3
 srcs/%.o: srcs/%.c ${INCS}
-	${CC} ${CFLAGS} -c $< -o $@ -I${INCS} -g
+	${CC} ${CFLAGS} -c $< -o $@ -I${INCS}
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
 	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
