@@ -32,11 +32,13 @@ static int	is_valid_input(char *input)
 	return (0);
 }
 
-int is_duplicate(char *str)
+int	is_duplicate(char *str)
 {
-	if (history_length == 0)
+	HIST_ENTRY	*entry;
+
+	entry = previous_history();
+	if (!entry)
 		return (0);
-	HIST_ENTRY *entry = history_get(history_length);
 	return (ft_strcmp(entry->line, str) == 0);
 }
 
