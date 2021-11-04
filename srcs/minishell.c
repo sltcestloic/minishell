@@ -34,7 +34,6 @@ static int	is_valid_input(char *input)
 
 int is_duplicate(char *str)
 {
-	int	ret;
 	if (history_length == 0)
 		return (0);
 	HIST_ENTRY *entry = history_get(history_length);

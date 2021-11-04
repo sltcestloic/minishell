@@ -1,30 +1,5 @@
 #include "minishell.h"
 
-int	is_redirect(char *str, int *i)
-{
-	if (str[*i] == '>')
-	{
-		(*i)++;
-		if (str[*i] == '>')
-		{
-			(*i)++;
-			return (2);
-		}
-		return (1);
-	}
-	else if (str[*i] == '<')
-	{
-		(*i)++;
-		if (str[*i] == '<')
-		{
-			(*i)++;
-			return (4);
-		}
-		return (3);
-	}
-	return (0);
-}
-
 void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 								t_redirect **redirect)
 {
@@ -32,7 +7,8 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 	{
 		if (!cmd->out)
 		{
-			cmd->out = (t_redirect *)ft_malloc(sizeof(t_redirect), &cmd->shell->to_free);
+			cmd->out = (t_redirect *)ft_malloc(
+					sizeof(t_redirect), &cmd->shell->to_free);
 			cmd->out->file_name = NULL;
 			cmd->out->next = NULL;
 			*init = 1;
@@ -43,7 +19,8 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 	{
 		if (!cmd->in)
 		{
-			cmd->in = (t_redirect *)ft_malloc(sizeof(t_redirect), &cmd->shell->to_free);
+			cmd->in = (t_redirect *)ft_malloc(
+					sizeof(t_redirect), &cmd->shell->to_free);
 			cmd->in->file_name = NULL;
 			cmd->in->next = NULL;
 			*init = 1;
@@ -76,6 +53,23 @@ void	init_redirect(t_cmd *cmd, int type)
 		ft_malloc_error(cmd->shell->to_free);
 }
 
+static int	get_name_len(char *input, t_parser parser, int *j, int *i)
+{
+	while (ft_iswhitespace(input[*i]))
+		(*i)++;
+	while (input[*i])
+	{
+		quote_cmd(&parser, input[*i]);
+		if (!parser.s_quote && !parser.d_quote && is_sep(input[*i]))
+			break ;
+		(*i)++;
+		(*j)++;
+	}
+	if (*j == 0)
+		return (-1);
+	return (1);
+}
+
 int	set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i)
 {
 	int			j;
@@ -85,17 +79,7 @@ int	set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i)
 	j = 0;
 	parser = init_parser_nml();
 	last = redirect_last(redirect);
-	while (ft_iswhitespace(input[*i]))
-		(*i)++;
-	while (input[*i])
-	{
-		quote_cmd(&parser, input[*i]);
-		if (!parser.s_quote && !parser.d_quote && is_sep(input[*i]))
-			break ;
-		(*i)++;
-		j++;
-	}
-	if (j == 0)
+	if (get_name_len(input, parser, &j, i) != 1)
 		return (-1);
 	last->file_name = ft_malloc(sizeof(char) * (j + 1), &shell->to_free);
 	if (!last->file_name)

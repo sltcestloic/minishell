@@ -25,7 +25,7 @@ int	count_args(char *input)
 	return (result);
 }
 
-void	print_struct_debug(t_cmd *cmd)
+/* void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
 	t_redirect	*r_in;
@@ -70,7 +70,7 @@ void	print_struct_debug(t_cmd *cmd)
 		tmp = tmp->next;
 		count++;
 	}
- }
+ } */
 static int	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
 {
 	init_redirect(cmd_last(cmd), parser->redirect);
@@ -94,6 +94,12 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 		ft_malloc_error(shell->to_free);
 }
 
+static void	substitution(t_shell *shell, t_cmd *cmd)
+{
+	if (substitute(shell, cmd))
+		cmd_parse(cmd, shell);
+}
+
 void	parse_input(char *input, t_shell *shell)
 {
 	t_cmd		*cmd;
@@ -112,7 +118,6 @@ void	parse_input(char *input, t_shell *shell)
 				break ;
 			if (!input[i])
 				break ;
-			continue ;
 		}
 		else if (input[i] == '|')
 			add_new_cmd(cmd, shell);
@@ -121,9 +126,5 @@ void	parse_input(char *input, t_shell *shell)
 		if (!input[i])
 			break ;
 	}
-	if (substitute(shell, cmd))
-	{
-		print_struct_debug(cmd);
-		cmd_parse(cmd, shell);
-	}
+	substitution(shell, cmd);
 }

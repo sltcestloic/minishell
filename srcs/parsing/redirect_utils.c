@@ -22,3 +22,28 @@ int	redirect_addback(t_redirect *redirect, int type, t_shell *shell)
 	tmp->next->next = NULL;
 	return (1);
 }
+
+int	is_redirect(char *str, int *i)
+{
+	if (str[*i] == '>')
+	{
+		(*i)++;
+		if (str[*i] == '>')
+		{
+			(*i)++;
+			return (2);
+		}
+		return (1);
+	}
+	else if (str[*i] == '<')
+	{
+		(*i)++;
+		if (str[*i] == '<')
+		{
+			(*i)++;
+			return (4);
+		}
+		return (3);
+	}
+	return (0);
+}

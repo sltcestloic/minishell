@@ -42,7 +42,7 @@ static void	copy_first_values(t_index *idx, int index,
 	}
 }
 
-void	split_cmd(t_cmd *cmd, int index, int spaces)
+void	split_cmd(t_cmd *cmd, int i, int spaces, t_free *fr)
 {
 	char	**new_value;
 	char	**end_value;
@@ -51,21 +51,22 @@ void	split_cmd(t_cmd *cmd, int index, int spaces)
 
 	idx = init_index();
 	last = 0;
-	new_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(cmd->value) + spaces + 1), &cmd->shell->to_free);
-	end_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(&cmd->value[index]) + 1), &cmd->shell->to_free);
-	copy_content(&cmd->value[index + 1], end_value);
-	copy_first_values(&idx, index, new_value, cmd);
-	while (cmd->value[index][idx.i])
+	new_value = (char **)ft_malloc(sizeof(char *)
+			* (ft_splitlen(cmd->value) + spaces + 1), &fr);
+	end_value = (char **)ft_malloc(sizeof(char *)
+			* (ft_splitlen(&cmd->value[i]) + 1), &fr);
+	copy_content(&cmd->value[i + 1], end_value);
+	copy_first_values(&idx, i, new_value, cmd);
+	while (cmd->value[i][idx.i])
 	{
-		if (cmd->value[index][idx.i] == ' ')
+		if (cmd->value[i][idx.i] == ' ')
 		{
-			new_value[idx.j++]
-				= ft_strrdup(cmd->value[index], last, idx.i - 1, NULL);
+			new_value[idx.j++] = ft_strrdup(cmd->value[i], last, idx.i - 1, fr);
 			last = idx.i + 1;
 		}
 		idx.i++;
 	}
-	new_value[idx.j++] = ft_strrdup(cmd->value[index], last, idx.i - 1, NULL);
+	new_value[idx.j++] = ft_strrdup(cmd->value[i], last, idx.i - 1, fr);
 	copy_content(end_value, &new_value[idx.j]);
 	cmd->value = new_value;
 }
@@ -80,7 +81,7 @@ void	split_tokens(t_cmd *cmd)
 	{
 		spaces = has_space(cmd->value[i]);
 		if (spaces > 0)
-			split_cmd(cmd, i, spaces);
+			split_cmd(cmd, i, spaces, cmd->shell->to_free);
 		i++;
 	}
 }
