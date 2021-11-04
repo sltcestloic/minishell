@@ -66,8 +66,7 @@ void	cmd_content_loop(t_cmd *cmd, char *input, int *i, t_index *idx)
 {
 	t_parser	parser;
 
-	parser.s_quote = 0;
-	parser.d_quote = 0;
+	parser = init_parser_nml();
 	while (input[*i])
 	{
 		quote_cmd(&parser, input[*i]);
@@ -80,7 +79,8 @@ void	cmd_content_loop(t_cmd *cmd, char *input, int *i, t_index *idx)
 			}
 			if (ft_iswhitespace(input[*i + 1]) || !input[*i + 1])
 			{
-				cmd->value[idx->j++] = ft_strrdup(input, idx->i, *i, NULL);
+				cmd->value[idx->j++]
+					= ft_strrdup(input, idx->i, *i, cmd->shell->to_free);
 				idx->i = *i + 1;
 				while (ft_iswhitespace(input[idx->i]))
 					idx->i++;

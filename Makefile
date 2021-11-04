@@ -28,12 +28,12 @@ NAME	= minishell
 LIBC	= ar rcs
 CC		= gcc
 RM		= rm -f
-CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -g3
 srcs/%.o: srcs/%.c ${INCS}
 	${CC} ${CFLAGS} -c $< -o $@ -I${INCS} -g
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
-	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include -fsanitize=address
+	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
 all: ${NAME}
 bonus: all
 clean:
