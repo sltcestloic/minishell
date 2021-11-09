@@ -97,7 +97,9 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 static void	substitution(t_shell *shell, t_cmd *cmd)
 {
 	if (substitute(shell, cmd))
+	{
 		cmd_parse(cmd, shell);
+	}
 }
 
 void	parse_input(char *input, t_shell *shell)

@@ -53,14 +53,15 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	set_env(envp, shell);
 	set_pwd(shell);
-	input = readline("\e[0;92mminishell\e[0m$ ");
-	while (input)
+	while (1)
 	{
+		input = readline("\e[0;92mminishell\e[0m$ ");
+		if (!input)
+			parse_input("exit", shell);
 		if (is_valid_input(input))
 			parse_input(input, shell);
 		if (!is_duplicate(input))
 			add_history(input);
 		free(input);
-		input = readline("\e[0;92mminishell\e[0m$ ");
 	}
 }
