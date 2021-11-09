@@ -61,7 +61,7 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 	tmp = cmd;
 	while (tmp)
 	{
-		if (!tmp->value)
+		if (!tmp->value && !tmp->in && !tmp->out)
 		{
 			printf("minishell: invalid command\n");
 			return (0);
