@@ -66,6 +66,11 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 			printf("minishell: invalid command\n");
 			return (0);
 		}
+		if (!tmp->value)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		substitute_env_vars(shell, tmp);
 		split_tokens(tmp);
 		substitute_quotes(shell, tmp);
