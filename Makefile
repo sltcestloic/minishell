@@ -36,7 +36,7 @@ ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
 	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include -fsanitize=address
 
-dirs:
+dirs: objs
 	@mkdir -p objs
 	@mkdir -p objs/execution
 	@mkdir -p objs/parsing
