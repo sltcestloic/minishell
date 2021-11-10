@@ -36,7 +36,7 @@ char	*var_value_noquotes(char *var, t_free *to_free)
 			ret[j++] = var[i];
 		i++;
 	}
-	if (ret[j - 1] == ' ')
+	if (j > 0 && ret[j - 1] == ' ')
 		ret[j - 1] = 0;
 	ret[j] = 0;
 	return (ret);

@@ -38,7 +38,7 @@ int	count_args(char *input)
 		printf("----------cmd #%d----------\n", count);
 		if (tmp->value)
 		{
-			for (int n = 0; tmp->value[n]; n++)
+			for (int n = 0; tmp->value[n]; n++)˙
 				printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
 		}
 		int k = 0;
@@ -90,14 +90,19 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 		else
 			*i += add_arg(cmd_last(cmd), &input[*i], shell);
 	}
-	else if (!set_cmd_content(cmd_last(cmd), input, i, shell))
-		ft_malloc_error(shell->to_free);
+	else 
+		set_cmd_content(cmd_last(cmd), input, i, shell);
 }
 
 static void	substitution(t_shell *shell, t_cmd *cmd)
 {
 	if (substitute(shell, cmd))
 	{
+		t_cmd *tmp = cmd;
+		while (tmp) {
+			printf("%d\n", ft_splitlen(tmp->value));
+			tmp = tmp->next;
+		}
 		cmd_parse(cmd, shell);
 	}
 }

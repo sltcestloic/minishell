@@ -7,6 +7,8 @@ void	cmd_bzero(t_cmd *cmd, int args)
 	i = 0;
 	cmd->value = (char **)ft_malloc(
 			sizeof(char *) * args, &cmd->shell->to_free);
+	if (!cmd->value)
+		ft_malloc_error(cmd->shell->to_free);
 	while (i < args)
 		cmd->value[i++] = 0;
 }

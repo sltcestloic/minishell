@@ -91,7 +91,7 @@ void	cmd_content_loop(t_cmd *cmd, char *input, int *i, t_index *idx)
 	}
 }
 
-int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
+void	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
 {
 	t_index		idx;
 	t_parser	parser;
@@ -103,10 +103,11 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
 	parser.d_quote = 0;
 	args = count_args(&input[*i]);
 	cmd_bzero(cmd, args + 2);
-	if (!cmd->value)
-		return (0);
-	while (input[*i] && !is_sep(input[*i]))
+	while (input[*i])
 	{
+		quote_cmd(&parser, input[*i]);
+		if (!parser.s_quote && !parser.d_quote && is_sep(input[*i]))
+			break ;
 		(*i)++;
 		idx.i++;
 	}
@@ -117,5 +118,4 @@ int	set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell)
 	cmd_content_loop(cmd, input, i, &idx);
 	if (idx.i < *i)
 		cmd->value[idx.j++] = ft_strrdup(input, idx.i, *i, shell->to_free);
-	return (1);
 }
