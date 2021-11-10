@@ -24,6 +24,8 @@ static char	*substitute_env_var(t_shell *shell, char *input,
 		end = ft_strrdup(input, i, ft_strlen(input) - 1, shell->to_free);
 		ret = ft_strjoin(ret, end, shell->to_free);
 	}
+	if (!quotes && ft_strlen(ret) == 0)
+		ret = (char *)1;
 	return (ret);
 }
 
