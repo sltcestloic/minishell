@@ -22,14 +22,15 @@ SRC		= 	minishell.c \
 			util/init.c
 
 SRCS 	= $(addprefix srcs/, ${SRC})
-OBJS	= ${SRCS:.c=.o}
+OBJS	= $(addprefix objs/, ${SRC:.c=.o})
+#OBJS	= ${SRCS:.c=.o}
 INCS	= includes
 NAME	= minishell
 LIBC	= ar rcs
 CC		= gcc
 RM		= rm -f
 CFLAGS	= -Wall -Wextra -Werror -g3
-srcs/%.o: srcs/%.c ${INCS}/minishell.h ${INCS}/parsing.h ${INCS}/exec.h 
+objs/%.o: srcs/%.c ${INCS}/minishell.h ${INCS}/parsing.h ${INCS}/exec.h 
 	${CC} ${CFLAGS} -c $< -o $@ -I${INCS}
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
