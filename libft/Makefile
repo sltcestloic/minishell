@@ -6,7 +6,7 @@
 #    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/11/03 14:24:28 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/11/10 14:58:11 by lubourre         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,8 @@ OBJS		= ${SRCS:.c=.o}
 OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
 
 INCS		= .
+HEADER		= libft.h
+Makefile	= Makefile
 NAME		= libft.a
 LIBC		= ar rc
 CC	= gcc
@@ -81,7 +83,7 @@ CFLAGS	= -Wall -Wextra -Werror
 .c.o:
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I${INCS}
 
-$(NAME): ${OBJS}
+$(NAME): ${OBJS} ${HEADER} ${MAKEFILE}
 	${LIBC} ${NAME} ${OBJS}
 
 bonus: ${OBJS_BONUS} all
