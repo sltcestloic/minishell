@@ -103,6 +103,8 @@ static void	redo_value(t_cmd *cmd)
 	int		i;
 	int 	j;
 
+	if (!cmd->value)
+		return ;
 	new_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(cmd->value) + 1), &cmd->shell->to_free);
 	i = 0;
 	j = 0;
