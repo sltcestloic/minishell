@@ -37,6 +37,11 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 	parser = init_parser_nml();
 	while (cmd->value[idx.i])
 	{
+		if (cmd->value[idx.i] == (char *)1)
+		{
+			idx.i++;
+			continue ;
+		}
 		new_value = ft_malloc(sizeof(char)
 				* (ft_strlen(cmd->value[idx.i]) + 1), &shell->to_free);
 		while (cmd->value[idx.i][idx.j])

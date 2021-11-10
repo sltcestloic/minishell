@@ -72,9 +72,11 @@ t_index	has_env_var(char *input, t_shell *shell)
 	t_index		idx;
 
 	parser = init_parser(shell);
-	idx.i = 0;
+	idx.i = -1;
 	idx.j = 0;
-	while (input[idx.i])
+	if (input == (char *)1)
+		return (idx);
+	while (input[++idx.i])
 	{
 		if (input[idx.i] == '"' && !parser->s_quote)
 			parser->d_quote = !parser->d_quote;
@@ -85,7 +87,6 @@ t_index	has_env_var(char *input, t_shell *shell)
 			idx.j = parser->d_quote || parser->s_quote;
 			return (idx);
 		}
-		idx.i++;
 	}
 	idx.i = -1;
 	return (idx);

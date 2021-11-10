@@ -79,6 +79,11 @@ void	split_tokens(t_cmd *cmd)
 	i = 0;
 	while (cmd->value[i])
 	{
+		if (cmd->value[i] == (char*)1)
+		{
+			i++;
+			continue ;
+		}
 		spaces = has_space(cmd->value[i]);
 		if (spaces > 0)
 			split_cmd(cmd, i, spaces, cmd->shell->to_free);

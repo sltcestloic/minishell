@@ -38,8 +38,11 @@ int	count_args(char *input)
 		printf("----------cmd #%d----------\n", count);
 		if (tmp->value)
 		{
-			for (int n = 0; tmp->value[n]; n++)˙
+			printf("value !\n");
+			printf("ptr%p\n", tmp->value[0]);
+			for (int n = 0; tmp->value[n]; n++)
 				printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
+			printf("cc\n");
 		}
 		int k = 0;
 		if (r_in)
@@ -94,15 +97,41 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 		set_cmd_content(cmd_last(cmd), input, i, shell);
 }
 
+static void	redo_value(t_cmd *cmd)
+{
+	char	**new_value;
+	int		i;
+	int 	j;
+
+	new_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(cmd->value) + 1), &cmd->shell->to_free);
+	i = 0;
+	j = 0;
+	while (cmd->value[i])
+	{
+		if (cmd->value[i] != (char *)1)
+			new_value[j++] = ft_strdup(cmd->value[i], cmd->shell->to_free);
+		i++;
+	}
+	new_value[j] = 0;
+	if (new_value[0])
+		cmd->value = new_value;
+	else
+		cmd->value = NULL;
+}
+
 static void	substitution(t_shell *shell, t_cmd *cmd)
 {
+	t_cmd	*tmp;
+
+	tmp = cmd;
 	if (substitute(shell, cmd))
 	{
-		t_cmd *tmp = cmd;
-		while (tmp) {
-			printf("%d\n", ft_splitlen(tmp->value));
+		while (tmp)
+		{
+			redo_value(tmp);
 			tmp = tmp->next;
 		}
+		//print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
 	}
 }
