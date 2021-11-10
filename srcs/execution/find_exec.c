@@ -80,7 +80,7 @@ int	check_built_in(char **func, t_shell *shell)
 	else if (!ft_strcmp(func[0], "unset"))
 		remove_env_elem(func, shell);
 	else if (!ft_strcmp(func[0], "exit"))
-		ft_exit(shell->to_free);
+		exit_cmd(shell, func, 1);
 	else if (!ft_strcmp(func[0], "cd"))
 		change_pwd(shell, func[1]);
 	else if (!ft_strcmp(func[0], "pwd"))
@@ -108,6 +108,7 @@ void	to_exec(t_shell *shell, char **function)
 		write(2, "minishell: ", 11);
 		write(2, function[0], ft_strlen(function[0]));
 		write(2, ": command not found\n", 20);
+		shell->last_exit_return = 127;
 	}
-	exit(-1);
+	exit(shell->last_exit_return);
 }

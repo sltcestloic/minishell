@@ -87,6 +87,7 @@ void	update_env_value(t_shell *shell, char **arg)
 			ft_putstr_fd("minishell: export: ", 2);
 			ft_putstr_fd(arg[i], 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
+			shell->last_exit_return = 1;
 		}
 		else if (item && is_equal_concatenate(arg[i]) == 1)
 			item->value = copy_value(arg[i], shell);
@@ -110,11 +111,12 @@ void	new_env_elem(char *str, t_shell *shell)
 	t_envlst	*ptr;
 	t_envlst	*save;
 
-	if (str[0] >= '0' && str[0] <= '9')
+	if ((str[0] >= '0' && str[0] <= '9') || str[0] == '=' || str[0] == '+')
 	{
 		ft_putstr_fd("minishell: export: ", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": not a valid identifier\n", 2);
+		shell->last_exit_return = 1;
 		return ;
 	}
 	save = shell->env_var;
@@ -147,15 +149,27 @@ void	remove_env_elem(char **arg, t_shell *shell)
 	int i;
 
 	i = 0;
+	
 	while (arg[i])
 	{
+		if ((arg[i][0] >= '0' && arg[i][0] <= '9') || arg[i][0] == '=' || arg[i][0] == '+')
+		{
+			ft_putstr_fd("minishell: export: ", 2);
+			ft_putstr_fd(arg[i], 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
+			shell->last_exit_return = 1;
+		}
 		ptr = shell->env_var;
+		if (!ptr)
+			return ;
 		while (ptr->next && ft_strcmp(ptr->next->name, arg[i]))
 		{
 			ptr = ptr->next;
 		}
 		if (ptr->next)
 			ptr->next = ptr->next->next;
+		else
+			shell->env_var = NULL;
 		i++;
 	}
 }
