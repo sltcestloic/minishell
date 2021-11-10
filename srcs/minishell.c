@@ -32,6 +32,16 @@ static int	is_valid_input(char *input)
 	return (0);
 }
 
+int	is_duplicate(char *str)
+{
+	HIST_ENTRY	*entry;
+
+	entry = previous_history();
+	if (!entry)
+		return (0);
+	return (ft_strcmp(entry->line, str) == 0);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
@@ -43,13 +53,15 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	set_env(envp, shell);
 	set_pwd(shell);
-	input = readline("\e[0;92mminishell\e[0m$ ");
-	while (input)
+	while (1)
 	{
+		input = readline("\e[0;92mminishell\e[0m$ ");
+		if (!input)
+			parse_input("exit", shell);
 		if (is_valid_input(input))
 			parse_input(input, shell);
-		add_history(input);
+		if (!is_duplicate(input))
+			add_history(input);
 		free(input);
-		input = readline("\e[0;92mminishell\e[0m$ ");
 	}
 }

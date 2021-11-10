@@ -22,18 +22,25 @@ SRC		= 	minishell.c \
 			util/init.c
 
 SRCS 	= $(addprefix srcs/, ${SRC})
-OBJS	= ${SRCS:.c=.o}
+OBJS	= $(addprefix objs/, ${SRC:.c=.o})
+#OBJS	= ${SRCS:.c=.o}
 INCS	= includes
 NAME	= minishell
 LIBC	= ar rcs
 CC		= gcc
 RM		= rm -f
-CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address
-srcs/%.o: srcs/%.c ${INCS}
-	${CC} ${CFLAGS} -c $< -o $@ -I${INCS} -g
+CFLAGS	= -Wall -Wextra -Werror -g3
+objs/%.o: srcs/%.c ${INCS}/minishell.h ${INCS}/parsing.h ${INCS}/exec.h dirs 
+	${CC} ${CFLAGS} -c $< -o $@ -I${INCS}
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
-	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include -fsanitize=address
+	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
+
+dirs:
+	@mkdir -p objs
+	@mkdir -p objs/execution
+	@mkdir -p objs/parsing
+	@mkdir -p objs/util
 all: ${NAME}
 bonus: all
 clean:
@@ -44,4 +51,4 @@ fclean: clean
 	${MAKE} fclean -C ./libft
 	${RM} ${NAME}
 re: fclean all
-.PHONY: all clean fclean re .c.o
+.PHONY: all clean fclean re .c.o dirs

@@ -48,6 +48,12 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 	}
 }
 
+static int	error(char *str)
+{
+	printf("%s", str);
+	return (0);
+}
+
 int	substitute(t_shell *shell, t_cmd *cmd)
 {
 	t_cmd	*tmp;
@@ -55,25 +61,23 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 	tmp = cmd;
 	while (tmp)
 	{
-		if (!tmp->value)
+		if (!tmp->value && !tmp->in && !tmp->out)
 		{
 			printf("minishell: invalid command\n");
 			return (0);
 		}
+		if (!tmp->value)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		substitute_env_vars(shell, tmp);
 		split_tokens(tmp);
-		// print_struct_debug(tmp);
 		substitute_quotes(shell, tmp);
 		if (!substitute_redirect_quotes(shell, cmd))
-		{
-			printf("minishell: invalid input: bad redirect.\n");
-			return (0);
-		}
+			return (error("minishell: invalid input: bad redirect.\n"));
 		if (cmd->quotes % 2 != 0)
-		{
-			printf("minishell: invalid input: unclosed quotes.\n");
-			return (0);
-		}
+			return (error("minishell: invalid input: unclosed quotes.\n"));
 		tmp = tmp->next;
 	}
 	return (1);
