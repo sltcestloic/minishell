@@ -46,7 +46,9 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 		}
 		if (redirect(cmd) == -1)
 			print_error(cmd->value[0], ": Error during redirection\n", shell->to_free);
-		to_exec(shell, cmd->value);
+		
+		if (cmd->value)
+			to_exec(shell, cmd->value);
 	}
 	if (out == 1)
 	{
@@ -71,7 +73,7 @@ static int	do_built_in(t_cmd *cmd, t_shell *shell)
 	else if (!ft_strcmp(cmd->value[0], "unset"))
 		remove_env_elem(cmd->value, shell);
 	else if (!ft_strcmp(cmd->value[0], "exit"))
-		exit_cmd(shell, cmd->value);
+		exit_cmd(shell, cmd->value, 0);
 	else if (!ft_strcmp(cmd->value[0], "cd"))
 		change_pwd(shell, cmd->value[1]);
 	else if (!ft_strcmp(cmd->value[0], "pwd"))
@@ -90,16 +92,20 @@ static int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
 	in = dup(0);
 	out = dup(1);
 	ret = redirect(cmd);
-	if (ret == -1)
+	printf("%p\n", cmd->value);
+	if (cmd->value)
 	{
-		print_error(cmd->value[0], ": Error during redirection\n", shell->to_free);
-		return(-1);
+		if (ret == -1)
+		{
+			print_error(cmd->value[0], ": Error during redirection\n", shell->to_free);
+			return(-1);
+		}
+		ret = do_built_in(cmd, shell);
 	}
-	ret = do_built_in(cmd, shell);
-	dup2(in, 0);
-	dup2(out, 1);
-	close(in);
-	close(out);
+		dup2(in, 0);
+		dup2(out, 1);
+		close(in);
+		close(out);
 	return (ret);
 }
 
@@ -110,6 +116,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 
 	in = 0;
 	do_heredoc(cmd, shell);
+	printf("%p\n", cmd->value);
 	while (cmd->next)
 	{
 		if (pipe(fd))
@@ -118,7 +125,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 		spawn_proc(in, fd[1], cmd, shell);
 		shell->to_close = 0;
 		if (in)
-			close(in);
+		close(in);
 		in = fd[0];
 		close(fd[1]);
 		cmd = cmd->next;

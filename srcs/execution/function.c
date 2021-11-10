@@ -65,10 +65,17 @@ void	export(t_envlst *lst)
 static int		ft_atoi_exit(char *arg, int *ret)
 {
 	int i;
+	int is_negativ;
 
+	is_negativ = 1;
 	i = 0;
 	while (arg[i] == ' ')
 		i++;
+	if (arg[i] == '-')
+	{
+		is_negativ = -1;
+		i++;
+	}
 	while (arg[i] >= '0' && arg[i] <= '9')
 	{
 		*ret = *ret * 10 + (arg[i] - '0');
@@ -78,15 +85,17 @@ static int		ft_atoi_exit(char *arg, int *ret)
 		i++;
 	if (arg[i])
 		return (-1);
+	*ret *= is_negativ;
 	return (0);
 }
 
-void	exit_cmd(t_shell *shell, char **arg)
+void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 {
 	int ret;
 
 	ret = shell->last_exit_return;
-	write(1, "exit\n", 5);
+	if (!is_pipe)
+		write(1, "exit\n", 5);
 	if (arg[1] && arg[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);

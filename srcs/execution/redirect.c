@@ -13,13 +13,14 @@ int parse_here_doc(t_redirect *heredoc, t_shell *shell)
 	{
 		write(1, "> ", 2);
 		ret = ft_get_next_line(0, &line);
+		printf("%d", ret);
 		if (ret == -1)
 		{
 			free(line);
 			free(save);
 			return (-1);
 		}
-		if (ft_strcmp(line, heredoc->file_name))
+		else if (ft_strcmp(line, heredoc->file_name))
 		{
 			to_free = save;
 			save = ft_strjoin(save, line, shell->to_free);
