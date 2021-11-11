@@ -2,9 +2,9 @@
 
 void	echo(char **str)
 {
-	int i;
-	int j;
-	int option;
+	int	i;
+	int	j;
+	int	option;
 
 	option = 0;
 	i = 1;
@@ -62,10 +62,10 @@ void	export(t_envlst *lst)
 	}
 }
 
-static int		ft_atoi_exit(char *arg, int *ret)
+static int	ft_atoi_exit(char *arg, int *ret)
 {
-	int i;
-	int is_negativ;
+	int	i;
+	int	is_negativ;
 
 	is_negativ = 1;
 	i = 0;
@@ -91,7 +91,7 @@ static int		ft_atoi_exit(char *arg, int *ret)
 
 void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 {
-	int ret;
+	int	ret;
 
 	ret = shell->last_exit_return;
 	if (!is_pipe)

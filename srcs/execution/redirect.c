@@ -1,26 +1,17 @@
 #include "minishell.h"
 
-int parse_here_doc(t_redirect *heredoc, t_shell *shell)
+int	parse_here_doc(t_redirect *heredoc, t_shell *shell, int ret)
 {
-	char *line;
-	char *save;
-	char *to_free;
-	int ret;
+	char	*line;
+	char	*save;
+	char	*to_free;
 
-	ret = 1;
 	save = NULL;
 	while (ret)
 	{
 		write(1, "> ", 2);
 		ret = ft_get_next_line(0, &line);
-		printf("%d", ret);
-		if (ret == -1)
-		{
-			free(line);
-			free(save);
-			return (-1);
-		}
-		else if (ft_strcmp(line, heredoc->file_name))
+		if (ret > 0 && ft_strcmp(line, heredoc->file_name))
 		{
 			to_free = save;
 			save = ft_strjoin(save, line, shell->to_free);
@@ -31,7 +22,7 @@ int parse_here_doc(t_redirect *heredoc, t_shell *shell)
 		else
 		{
 			free(line);
-			break;
+			break ;
 		}
 	}
 	heredoc->file_name = save;
@@ -40,7 +31,7 @@ int parse_here_doc(t_redirect *heredoc, t_shell *shell)
 
 int	here_doc(t_redirect *heredoc)
 {
-	int fd[2];
+	int	fd[2];
 
 	if (pipe(fd))
 		return (-1);
@@ -51,10 +42,9 @@ int	here_doc(t_redirect *heredoc)
 	return (0);
 }
 
-
 int	redirect_out(t_redirect *redirect)
 {
-	int fd;
+	int	fd;
 
 	if (redirect->variation)
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
@@ -70,7 +60,7 @@ int	redirect_out(t_redirect *redirect)
 
 int	redirect_in(t_redirect *redirect)
 {
-	int fd;
+	int	fd;
 
 	if (redirect->variation)
 		return (here_doc(redirect));
@@ -85,7 +75,7 @@ int	redirect_in(t_redirect *redirect)
 
 int	try_open(t_redirect *redirect)
 {	
-	int fd;
+	int	fd;
 
 	if (redirect->variation)
 		return (0);
@@ -100,7 +90,7 @@ int	try_open(t_redirect *redirect)
 
 int	creat_trunc_file(char *file_name)
 {
-	int fd;
+	int	fd;
 
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
@@ -111,7 +101,7 @@ int	creat_trunc_file(char *file_name)
 	return (0);
 }
 
-int redirect(t_cmd *cmd)
+int	redirect(t_cmd *cmd)
 {
 	while (cmd->in && cmd->in->next)
 	{

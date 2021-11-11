@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-int		size_list(t_envlst *lst)
+int	size_list(t_envlst *lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(lst)
+	while (lst)
 	{
 		i++;
 		lst = lst->next;
@@ -13,19 +13,19 @@ int		size_list(t_envlst *lst)
 	return (i);
 }
 
-char **lst_to_str(t_shell *shell)
+char	**lst_to_str(t_shell *shell)
 {
-	char **ret;
-	char *save;
-	t_envlst *lst;
-	int i;
+	char		**ret;
+	char		*save;
+	t_envlst	*lst;
+	int			i;
 
 	i = 0;
 	lst = shell->env_var;
-	ret = malloc(sizeof(char *) * size_list(lst));
+	ret = malloc(sizeof(char *) * size_list(lst) + 1);
 	if (!ret)
 		return (NULL);
-	while(lst)
+	while (lst)
 	{
 		ret[i] = ft_strdup(lst->name, shell->to_free);
 		save = ft_strjoin(lst->name, "=", shell->to_free);
@@ -33,6 +33,7 @@ char **lst_to_str(t_shell *shell)
 		lst = lst->next;
 		i++;
 	}
+	ret[i] = NULL;
 	return (ret);
 }
 

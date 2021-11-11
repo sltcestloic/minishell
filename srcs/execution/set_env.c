@@ -49,14 +49,14 @@ inline static char	*copy_value(char *str, t_shell *shell)
 
 static int	is_equal_concatenate(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '+')
 		{
-			if(str[i + 1] == '=')
+			if (str[i + 1] == '=')
 			{
 				return (2);
 			}
@@ -75,11 +75,13 @@ static int	is_equal_concatenate(char *str)
 
 void	update_env_value(t_shell *shell, char **arg)
 {
-	t_envlst *item;
-	int i;
+	t_envlst	*item;
+	t_free		*o;
+	int			i;
 
 	i = 1;
-	while(arg[i])
+	o = shell->to_free;
+	while (arg[i])
 	{
 		item = find_in_list(copy_name(arg[i], shell), shell->env_var);
 		if (is_equal_concatenate(arg[i]) == -1)
@@ -92,7 +94,7 @@ void	update_env_value(t_shell *shell, char **arg)
 		else if (item && is_equal_concatenate(arg[i]) == 1)
 			item->value = copy_value(arg[i], shell);
 		else if (item && is_equal_concatenate(arg[i]) == 2)
-			item->value = ft_strjoin(item->value, copy_value(arg[i], shell), shell->to_free);
+			item->value = ft_strjoin(item->value, copy_value(arg[i], shell), o);
 		else if (!item)
 			new_env_elem(arg[i], shell);
 		i++;
@@ -135,7 +137,6 @@ void	new_env_elem(char *str, t_shell *shell)
 	if (ptr)
 	{
 		ptr->name = copy_name(str, shell);
-		
 		ptr->value = copy_value(str, shell);
 		ptr->next = 0;
 	}
@@ -146,10 +147,9 @@ void	new_env_elem(char *str, t_shell *shell)
 void	remove_env_elem(char **arg, t_shell *shell)
 {
 	t_envlst	*ptr;
-	int i;
+	int			i;
 
 	i = 0;
-	
 	while (arg[i])
 	{
 		if ((arg[i][0] >= '0' && arg[i][0] <= '9') || arg[i][0] == '=' || arg[i][0] == '+')

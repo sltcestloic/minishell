@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 char	**find_path(t_shell *shell)
 {
 	t_envlst	*ptr;
@@ -11,7 +10,7 @@ char	**find_path(t_shell *shell)
 	if (ptr)
 	{
 		path = ft_split(ptr->value, ':', shell->to_free);
-		if(!path)
+		if (!path)
 			ft_malloc_error(shell->to_free);
 	}
 	return (path);
@@ -19,7 +18,11 @@ char	**find_path(t_shell *shell)
 
 static inline void	exec_it(char *test, char **function, t_shell *shell)
 {
-	if (execve(test, function, lst_to_str(shell)))
+	if (!function[0][0])
+	{
+		write(2, "minishell: : command not found\n", 31);
+	}
+	else if (execve(test, function, lst_to_str(shell)))
 	{
 		write(2, "minishell: ", 11);
 		perror(function[0]);
@@ -27,9 +30,9 @@ static inline void	exec_it(char *test, char **function, t_shell *shell)
 	}
 }
 
-int		find_slash(char *str)
+int	find_slash(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] && str[i] != '/')
@@ -41,23 +44,25 @@ int		find_slash(char *str)
 
 char	*make_path(char **path, char **function, t_shell *shell)
 {
-	char			*test;
-	char			*slash;
-	int				i;
-	int ret = 0;
+	char	*test;
+	char	*slash;
+	int		i;
+	int		ret;
 
 	i = 0;
+	ret = 0;
 	if (find_slash(function[0]))
 		return (function[0]);
 	while (path[i])
 	{
 		slash = ft_strjoin(path[i], "/", shell->to_free);
-		if(!slash)
+		if (!slash)
 			ft_malloc_error(shell->to_free);
 		test = ft_strjoin(slash, function[0], shell->to_free);
-		if(!test)
+		if (!test)
 			ft_malloc_error(shell->to_free);
-		if ((ret = access(test, X_OK)) == 0)
+		ret = access(test, X_OK);
+		if (ret == 0)
 			return (test);
 		i++;
 	}
@@ -74,7 +79,7 @@ int	check_built_in(char **func, t_shell *shell)
 	{
 		if (!func[1])
 			export(shell->env_var);
-		else if(func[1])
+		else if (func[1])
 			new_env_elem(func[1], shell);
 	}
 	else if (!ft_strcmp(func[0], "unset"))
@@ -92,10 +97,10 @@ int	check_built_in(char **func, t_shell *shell)
 
 void	to_exec(t_shell *shell, char **function)
 {
-	char			**path;
-	char			*test;
+	char	**path;
+	char	*test;
 
-	if(check_built_in(function, shell))
+	if (check_built_in(function, shell))
 		exit(0);
 	path = find_path(shell);
 	test = NULL;

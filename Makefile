@@ -31,12 +31,12 @@ MAKEFILE 	= Makefile
 LIBC		= ar rcs
 CC			= gcc
 RM			= rm -f
-CFLAGS		= -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -g3
 objs/%.o: srcs/%.c ${INCS}/minishell.h ${INCS}/parsing.h ${INCS}/exec.h dirs
 	${CC} ${CFLAGS} -c $< -o $@ -I${INCS}
 ${NAME}: ${OBJS} ${HEADER} ${MAKEFILE}
 	@${MAKE} bonus -C ./libft
-	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include -fsanitize=address
+	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
 
 dirs: objs
 	@mkdir -p objs
