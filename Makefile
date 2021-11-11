@@ -35,7 +35,7 @@ SRC			+=	cmd_util.c \
 				substitute_redirect.c \
 				substitute_split.c \
 				substitute_utils.c \
-				substitute.C
+				substitute.c
 
 #              UTIL             #
 
@@ -47,24 +47,29 @@ SRC			+=	ft_splitlen.c \
 SRCS 		= $(addprefix srcs/, ${SRC})
 OBJS		= $(addprefix objs/, ${SRC:.c=.o})
 
+
 HEADERS		= ${INCS_DIR}/minishell.h ${INCS_DIR}/parsing.h ${INCS_DIR}/exec.h
 MAKEFILE 	= Makefile
+
+
 LIBC		= ar rcs
-CC			= gcc
 RM			= rm -f
+
+
+CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror -g3
 
-objs/%.o: %.c ${HEADERS} dirs
+objs/%.o: %.c ${HEADERS} ${OBJS_DIR}
 	${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
 
-${NAME}: ${OBJS} ${HEADER} ${MAKEFILE}
+${NAME}: ${OBJS} ${MAKEFILE} 
 	@${MAKE} bonus -C ./libft
 	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
 
-dirs: ${OBJS_DIR}
+${OBJS_DIR}:
 	@mkdir -p ${OBJS_DIR}
 
-all: ${NAME}
+all: ${NAME} 
 
 bonus: all
 
