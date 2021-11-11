@@ -24,6 +24,8 @@ char	*var_value_noquotes(char *var, t_free *to_free)
 
 	ret = ft_malloc(sizeof(char) * (ft_strlen(var)
 				+ count_quotes(var) + 1), &to_free);
+	if (!ret)
+		ft_malloc_error(to_free);
 	i = 0;
 	j = 0;
 	while (var[i])
@@ -42,7 +44,23 @@ char	*var_value_noquotes(char *var, t_free *to_free)
 	return (ret);
 }
 
-char	*get_env_var(t_shell *shell, char *name, int quotes)
+char	*var_value_charbefore(char *var, t_free *to_free)
+{
+	char	*ret;
+	char	*tmp;
+	char	*space;
+	int		i;
+
+	i = ft_strlen(var);
+	space = ft_strdup(" ", to_free);
+	tmp = ft_strdup(var, to_free);
+	ret = ft_strjoin(space, tmp, to_free);
+	if (!space || !tmp || !ret)
+		ft_malloc_error(to_free);
+	return (ret);
+}
+
+char	*get_env_var(t_shell *shell, char *name, int quotes, int chrbfr)
 {
 	t_envlst	*lst;
 	char		*ret;
@@ -56,6 +74,8 @@ char	*get_env_var(t_shell *shell, char *name, int quotes)
 		{
 			if (quotes)
 				return (ft_strdup(lst->value, shell->to_free));
+			else if (chrbfr && lst->value[0] == ' ')
+				return (var_value_charbefore(lst->value, shell->to_free));
 			else
 				return (var_value_noquotes(lst->value, shell->to_free));
 		}
@@ -85,6 +105,7 @@ t_index	has_env_var(char *input, t_shell *shell)
 		else if (input[idx.i] == '$' && !parser->s_quote)
 		{
 			idx.j = parser->d_quote || parser->s_quote;
+			idx.k = idx.i && ft_isalnum(input[idx.i]);
 			return (idx);
 		}
 	}
