@@ -1,47 +1,68 @@
-VPATH	=	srcs:srcs/execution:srcs/parsing:srcs/util
+NAME		= minishell
 
-SRC		= 	minishell.c \
-			function.c \
-			set_env.c \
-			copy_sort_lst.c \
-			set_pwd.c \
-			find_exec.c \
-			redirect.c \
-			pipe.c \
-			cmd.c \
-			cmd_util.c \
-			env_var.c \
-			parser.c \
-			redirect_parsing.c \
-			redirect_utils.c \
-			substitute_env.c \
-			substitute.c \
-			substitute_redirect.c \
-			substitute_split.c \
-			substitute_utils.c \
-			ft_splitlen.c \
-			init.c
+VPATH		=	srcs:srcs/execution:srcs/parsing:srcs/util
+
+OBJS_DIR	=	objs
+INCS_DIR	=	includes
+
+#===============================#
+#            SOURCES            #
+#===============================#
+
+#             MAIN              #
+
+SRC			= 	minishell.c
+
+#           EXECUTION           #
+
+SRC			+=	copy_sort_lst.c \
+				find_exec.c \
+				function.c \
+				pipe.c \
+				redirect.c \
+				set_env.c \
+				set_pwd.c
+
+#            PARSING            #
+
+SRC			+=	cmd_util.c \
+				cmd.c \
+				env_var.c \
+				parser.c \
+				redirect_parsing.c \
+				redirect_utils.c \
+				substitute_env.c \
+				substitute_redirect.c \
+				substitute_split.c \
+				substitute_utils.c \
+				substitute.C
+
+#              UTIL             #
+
+SRC			+=	ft_splitlen.c \
+				init.c
+
+
 
 SRCS 		= $(addprefix srcs/, ${SRC})
 OBJS		= $(addprefix objs/, ${SRC:.c=.o})
-INCS		= includes
-NAME		= minishell
-HEADER		= ${INCS}/minishell.h ${INCS}/parsing.h ${INCS}/exec.h
+
+HEADERS		= ${INCS_DIR}/minishell.h ${INCS_DIR}/parsing.h ${INCS_DIR}/exec.h
 MAKEFILE 	= Makefile
 LIBC		= ar rcs
 CC			= gcc
 RM			= rm -f
 CFLAGS		= -Wall -Wextra -Werror -g3
 
-objs/%.o: %.c ${INCS}/minishell.h ${INCS}/parsing.h ${INCS}/exec.h dirs
-	${CC} ${CFLAGS} -c $< -o $@ -I ${INCS}
+objs/%.o: %.c ${HEADERS} dirs
+	${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
 
 ${NAME}: ${OBJS} ${HEADER} ${MAKEFILE}
 	@${MAKE} bonus -C ./libft
 	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
 
-dirs: objs
-	@mkdir -p objs
+dirs: ${OBJS_DIR}
+	@mkdir -p ${OBJS_DIR}
 
 all: ${NAME}
 
