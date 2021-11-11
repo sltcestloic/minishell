@@ -31,7 +31,7 @@ int			count_args(char *input);
 ** Environment variables
 */
 
-char		*get_env_var(t_shell *shell, char *str, int quotes);
+char		*get_env_var(t_shell *shell, char *name, int quotes, int chrbfr);
 t_index		has_env_var(char *input, t_shell *shell);
 
 /*
