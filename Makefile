@@ -11,7 +11,7 @@ NAME		=	minishell
 VPATH		=	srcs:srcs/execution:srcs/parsing:srcs/util
 
 #===============================#
-#              DIRS             #
+#             DIRS              #
 #===============================#
 
 OBJS_DIR	=	objs
@@ -23,11 +23,11 @@ INCS_DIR	=	includes
 
 #             MAIN              #
 
-SRC			= 	minishell.c
+SRCS			= 	minishell.c
 
 #           EXECUTION           #
 
-SRC			+=	copy_sort_lst.c \
+SRCS			+=	copy_sort_lst.c \
 				find_exec.c \
 				function.c \
 				pipe.c \
@@ -37,7 +37,7 @@ SRC			+=	copy_sort_lst.c \
 
 #            PARSING            #
 
-SRC			+=	cmd_util.c \
+SRCS			+=	cmd_util.c \
 				cmd.c \
 				env_var.c \
 				parser.c \
@@ -51,20 +51,23 @@ SRC			+=	cmd_util.c \
 
 #              UTIL             #
 
-SRC			+=	ft_splitlen.c \
+SRCS			+=	ft_splitlen.c \
 				init.c
 
+#===============================#
+#            OBJECTS            #
+#===============================#
 
+OBJS		=	$(addprefix objs/, ${SRCS:.c=.o})
 
-SRCS 		=	${SRC}
-OBJS		=	$(addprefix objs/, ${SRC:.c=.o})
-
+#===============================#
+#             FILES             #
+#===============================#
 
 HEADERS		=	${INCS_DIR}/minishell.h ${INCS_DIR}/parsing.h ${INCS_DIR}/exec.h
 MAKEFILE 	=	Makefile
 
 
-LIBC		=	ar rcs
 RM			=	rm -f
 
 
@@ -84,6 +87,31 @@ PURPLE		=	\x1b[35m
 CYAN		=	\x1b[36m
 WHITE		=	\x1b[37m
 
+#===============================#
+#             RULES             #
+#===============================#
+
+#          MAIN RULES           #
+
+all: ${NAME} 
+
+bonus: all
+
+re: fclean all
+
+#        CLEANING RULES         #
+
+clean:
+	${MAKE} clean -C ./libft
+	${RM} ${OBJS}
+	${RM} a.out
+
+fclean: clean
+	${MAKE} fclean -C ./libft
+	${RM} ${NAME}
+
+#       COMPILATION RULES       #
+
 ${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE} 
 	@mkdir -p ${OBJS_DIR}
 	@${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
@@ -95,19 +123,7 @@ ${NAME}: ${OBJS}
 	@${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
 	@echo "[${NAME}] ${GREEN}Compilation successful!${WHITE}"
 
-all: ${NAME} 
 
-bonus: all
-
-clean:
-	${MAKE} clean -C ./libft
-	${RM} ${OBJS}
-	${RM} a.out
-
-fclean: clean
-	${MAKE} fclean -C ./libft
-	${RM} ${NAME}
-
-re: fclean all
+#            .PHONY             #
 
 .PHONY: all clean fclean re .c.o dirs
