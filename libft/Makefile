@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/11/10 14:58:11 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/11/12 11:16:27 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,10 +84,10 @@ CFLAGS	= -Wall -Wextra -Werror
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I${INCS}
 
 $(NAME): ${OBJS} ${HEADER} ${MAKEFILE}
-	${LIBC} ${NAME} ${OBJS}
+	@${LIBC} ${NAME} ${OBJS}
 
 bonus: ${OBJS_BONUS} all
-	${LIBC} ${NAME} ${OBJS} ${OBJS_BONUS}
+	@${LIBC} ${NAME} ${OBJS} ${OBJS_BONUS}
 
 
 all: ${NAME}

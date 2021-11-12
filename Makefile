@@ -1,6 +1,18 @@
-NAME		= minishell
+#===============================#
+#          PROJECT NAME         #
+#===============================#
+
+NAME		=	minishell
+
+#===============================#
+#             VPATH             #
+#===============================#
 
 VPATH		=	srcs:srcs/execution:srcs/parsing:srcs/util
+
+#===============================#
+#              DIRS             #
+#===============================#
 
 OBJS_DIR	=	objs
 INCS_DIR	=	includes
@@ -44,28 +56,44 @@ SRC			+=	ft_splitlen.c \
 
 
 
-SRCS 		= $(addprefix srcs/, ${SRC})
-OBJS		= $(addprefix objs/, ${SRC:.c=.o})
+SRCS 		=	${SRC}
+OBJS		=	$(addprefix objs/, ${SRC:.c=.o})
 
 
-HEADERS		= ${INCS_DIR}/minishell.h ${INCS_DIR}/parsing.h ${INCS_DIR}/exec.h
-MAKEFILE 	= Makefile
+HEADERS		=	${INCS_DIR}/minishell.h ${INCS_DIR}/parsing.h ${INCS_DIR}/exec.h
+MAKEFILE 	=	Makefile
 
 
-LIBC		= ar rcs
-RM			= rm -f
+LIBC		=	ar rcs
+RM			=	rm -f
 
 
-CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -g3
+CC			=	gcc
+CFLAGS		=	-Wall -Wextra -Werror -g3
+
+#===============================#
+#            COLORS             #
+#===============================#
+
+BLACK		=	\x1b[30m
+RED			=	\x1b[31m
+GREEN		=	\x1b[32m
+YELLOW		=	\x1b[33m
+BLUE		=	\x1b[34m
+PURPLE		=	\x1b[35m
+CYAN		=	\x1b[36m
+WHITE		=	\x1b[37m
 
 ${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE} 
 	@mkdir -p ${OBJS_DIR}
-	${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
+	@${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
+	@echo "[${NAME}] Compiling ${YELLOW}$<${WHITE}"
 
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
-	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
+	@echo "[${NAME}] Creating executable..."
+	@${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
+	@echo "[${NAME}] ${GREEN}Compilation successful!${WHITE}"
 
 all: ${NAME} 
 
