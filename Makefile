@@ -23,11 +23,11 @@ INCS_DIR	=	includes
 
 #             MAIN              #
 
-SRCS			= 	minishell.c
+SRCS		= 	minishell.c
 
 #           EXECUTION           #
 
-SRCS			+=	copy_sort_lst.c \
+SRCS		+=	copy_sort_lst.c \
 				find_exec.c \
 				function.c \
 				pipe.c \
@@ -37,7 +37,7 @@ SRCS			+=	copy_sort_lst.c \
 
 #            PARSING            #
 
-SRCS			+=	cmd_util.c \
+SRCS		+=	cmd_util.c \
 				cmd.c \
 				env_var.c \
 				parser.c \
@@ -51,7 +51,7 @@ SRCS			+=	cmd_util.c \
 
 #              UTIL             #
 
-SRCS			+=	ft_splitlen.c \
+SRCS		+=	ft_splitlen.c \
 				init.c
 
 #===============================#
