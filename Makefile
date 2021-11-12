@@ -16,6 +16,9 @@ VPATH		=	srcs:srcs/execution:srcs/parsing:srcs/util
 
 OBJS_DIR	=	objs
 INCS_DIR	=	includes
+LIBFT_DIR	=	./libft/
+RL_DIR		=	/Users/$$USER/.brew/opt/readline/lib
+RL_DIR_I	=	/Users/$$USER/.brew/opt/readline/include
 
 #===============================#
 #            SOURCES            #
@@ -126,7 +129,7 @@ ${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE}
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
 	@echo "[${NAME}] Creating executable..."
-	@${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
+	@${CC} -o ${NAME} ${OBJS} -lreadline -L ${LIBFT_DIR} -lft -L ${RL_DIR} -I ${RL_DIR_I}
 	@echo "[${NAME}] ${GREEN}Compilation successful!${WHITE}"
 
 
