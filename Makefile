@@ -67,15 +67,21 @@ OBJS		=	$(addprefix objs/, ${SRCS:.c=.o})
 HEADERS		=	${INCS_DIR}/minishell.h ${INCS_DIR}/parsing.h ${INCS_DIR}/exec.h
 MAKEFILE 	=	Makefile
 
+#===============================#
+#            COMMANDS           #
+#===============================#
 
 RM			=	rm -f
 
+#===============================#
+#            COMPILER           #
+#===============================#
 
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror -g3
 
 #===============================#
-#            COLORS             #
+#             COLORS            #
 #===============================#
 
 BLACK		=	\x1b[30m
