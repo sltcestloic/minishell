@@ -59,16 +59,13 @@ RM			= rm -f
 CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror -g3
 
-objs/%.o: %.c ${HEADERS}
-	${OBJS_DIR}
+objs/%.o: %.c ${HEADERS} ${MAKEFILE} 
+	@mkdir -p ${OBJS_DIR}
 	${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
 
-${NAME}: ${OBJS} ${MAKEFILE} 
+${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
 	${CC} -o ${NAME} ${OBJS} libft/libft.a -lreadline -L /Users/$$USER/.brew/opt/readline/lib -I/Users/$$USER/.brew/opt/readline/include
-
-${OBJS_DIR}:
-	@mkdir -p ${OBJS_DIR}
 
 all: ${NAME} 
 
