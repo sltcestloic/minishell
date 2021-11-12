@@ -59,7 +59,8 @@ RM			= rm -f
 CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror -g3
 
-objs/%.o: %.c ${HEADERS} ${OBJS_DIR}
+objs/%.o: %.c ${HEADERS}
+	${OBJS_DIR}
 	${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
 
 ${NAME}: ${OBJS} ${MAKEFILE} 
