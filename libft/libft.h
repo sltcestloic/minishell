@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 19:59:28 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/03 16:38:48 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/13 14:47:46 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int				ft_get_next_line(int fd, char **line);
 */
 
 int				ft_atoi(const char *str);
-char			*ft_itoa(int n);
+char			*ft_itoa(int nbr, t_free *to_free);
 size_t			ft_intlen(long nbr);
 size_t			ft_uintlen(unsigned long long nbr, int baselen);
 char			*ft_uitoa(unsigned long long nbr);

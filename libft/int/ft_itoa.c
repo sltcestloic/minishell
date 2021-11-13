@@ -6,13 +6,13 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 15:21:02 by lbertran          #+#    #+#             */
-/*   Updated: 2021/10/26 09:09:53 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/13 14:47:37 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int nbr)
+char	*ft_itoa(int nbr, t_free *to_free)
 {
 	char	*ret;
 	int		neg;
@@ -22,7 +22,9 @@ char	*ft_itoa(int nbr)
 	nb = nbr;
 	neg = nb < 0;
 	len = ft_intlen(nb);
-	ret = malloc(sizeof(char) * (len + 1));
+	ret = ft_malloc(sizeof(char) * (len + 1), &to_free);
+	if (!ret)
+		ft_malloc_error(to_free);
 	if (!ret)
 		return (NULL);
 	ft_bzero(ret, len + 1);

@@ -39,8 +39,7 @@ void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 	t_index	var;
 	char	*tmp;
 
-	idx.i = 0;
-	idx.j = 0;
+	idx = init_index();
 	while (cmd->value[idx.i])
 	{
 		var = has_env_var(cmd->value[idx.i], shell);

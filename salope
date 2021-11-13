@@ -1,21 +1,0 @@
-0x0
-[?2004h[0;92mminishell[0m$ salut
-[?2004l0x602000003650
-0x602000003650
-[?2004h[0;92mminishell[0m$ lol
-[?2004l0x602000003830
-0x602000003830
-[?2004h[0;92mminishell[0m$ ls
-[?2004l0x602000003a10
-0x602000003a10
-Makefile
-includes
-libft
-lol
-loli
-minishell
-objs
-salope
-srcs
-test
-[?2004h[0;92mminishell[0m$ ^C[?2004l
