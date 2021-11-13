@@ -1,44 +1,50 @@
 #include "minishell.h"
 
-int	parse_here_doc(t_redirect *heredoc, int ret)
+int	parse_here_doc(t_redirect *heredoc, t_shell *shell)
 {
 	char	*line;
-	char	*save;
-	char	*to_free;
+	int		pid;
+	int		fd[2];
 
-	save = NULL;
-	while (ret)
+	pipe(fd);
+	signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (!pid)
 	{
-		write(1, "> ", 2);
-		ret = ft_get_next_line(0, &line);
-		if (ret > 0 && ft_strcmp(line, heredoc->file_name))
+		signal(SIGINT, SIG_DFL);
+		while (42)
 		{
-			to_free = save;
-			save = ft_strjoin_g(save, line);
-			save = ft_strjoin_g(save, "\n");
-			free(to_free);
+			line = readline("> ");
+			if (!line || !ft_strcmp(heredoc->file_name, line))
+				break ;
+			write(fd[1], line, ft_strlen(line));
+			write(fd[1], "\n", 1);
 			free(line);
 		}
-		else
-		{
-			free(line);
-			break ;
-		}
+		close(fd[0]);
+		close(fd[1]);
+		exit(0);
 	}
-	heredoc->file_name = save;
+	waitpid(pid, &pid, 0);
+	if (WIFSIGNALED(pid))
+	{
+		write(1, "\n", 1);
+		shell->last_exit_return = 1;
+		signal(SIGQUIT, signal_reset);
+		signal(SIGINT, signal_reset);
+		return (-1);
+	}
+	close(fd[1]);
+	heredoc->variation = fd[0];
 	return (0);
 }
 
 int	here_doc(t_redirect *heredoc)
 {
-	int	fd[2];
-
-	if (pipe(fd))
-		return (-1);
-	write(fd[1], heredoc->file_name, ft_strlen(heredoc->file_name));
-	close(fd[1]);
-	dup2(fd[0], 0);
-	close(fd[0]);
+	if (dup2(heredoc->variation, 0) == -1)
+		perror("dup2");
+	if (close(heredoc->variation) == -1)
+		perror("close");
 	return (0);
 }
 

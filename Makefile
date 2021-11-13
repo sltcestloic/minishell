@@ -83,7 +83,7 @@ RM			=	rm -f
 #===============================#
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS		=	-g3 -fsanitize=address
 
 #===============================#
 #             COLORS            #
