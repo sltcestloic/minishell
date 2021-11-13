@@ -16,8 +16,8 @@ static char	*substitute_env_var(t_shell *shell, char *input,
 	ret = NULL;
 	if (var > 0)
 		ret = ft_strrdup(input, 0, var - 1, shell->to_free);
-	i = var;
-	while (input[i] && !is_sep(input[i])
+	i = var + 1;
+	while (input[i] && !is_sep(input[i]) && input[i] != '$'
 		&& (!is_quote(input[i]) || input[i] == '?' || i == var))
 		i++;
 	var_name = ft_strrdup(input, var + 1, i - 1, shell->to_free);
@@ -53,3 +53,22 @@ void	substitute_env_vars(t_shell *shell, t_cmd *cmd)
 		idx.i++;
 	}
 }
+
+void	quote_env_var(char *input, int i, t_parser *parser)
+{
+	if (input[i] == '"')
+	{
+		if (!parser->s_quote && i > 1 && input[i - 1] != '\\')
+			parser->d_quote = !parser->d_quote;
+		else if (i == 0)
+			parser->d_quote = !parser->d_quote;
+	}
+	else if (input[i] == '\'')
+	{
+		if (!parser->d_quote && i > 1 && input[i - 1] != '\\')
+			parser->s_quote = !parser->s_quote;
+		else if (i == 0)
+			parser->s_quote = !parser->s_quote;
+	}
+}
+

@@ -41,6 +41,7 @@ char	*var_value_noquotes(char *var, t_free *to_free)
 	if (j > 0 && ret[j - 1] == ' ')
 		ret[j - 1] = 0;
 	ret[j] = 0;
+	printf("ret=%s\n", ret);
 	return (ret);
 }
 
@@ -50,10 +51,21 @@ char	*var_value_charbefore(char *var, t_free *to_free)
 	char	*tmp;
 	char	*space;
 	int		i;
+	int		j;
 
-	i = ft_strlen(var);
+	i = 0;
+	j = 0;
+	tmp = ft_malloc(sizeof(char) * (ft_strlen(var)
+				+ count_quotes(var) + 1), &to_free);
 	space = ft_strdup(" ", to_free);
-	tmp = ft_strdup(var, to_free);
+	while (var[i])
+	{
+		if (var[i] == '\'' || var[i] == '"')
+			tmp[j++] = '\\';
+		tmp[j++] = var[i];
+		i++;
+	}
+	tmp[j] = 0;
 	ret = ft_strjoin(space, tmp, to_free);
 	if (!space || !tmp || !ret)
 		ft_malloc_error(to_free);
@@ -98,11 +110,8 @@ t_index	has_env_var(char *input, t_shell *shell)
 		return (idx);
 	while (input[++idx.i])
 	{
-		if (input[idx.i] == '"' && !parser->s_quote)
-			parser->d_quote = !parser->d_quote;
-		else if (input[idx.i] == '\'' && !parser->d_quote)
-			parser->s_quote = !parser->s_quote;
-		else if (input[idx.i] == '$' && !parser->s_quote)
+		quote_env_var(input, idx.i, parser);
+		if (input[idx.i] == '$' && !parser->s_quote)
 		{
 			idx.j = parser->d_quote;
 			if (idx.i > 0)

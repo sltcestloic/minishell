@@ -68,6 +68,7 @@ void		substitute_env_vars(t_shell *shell, t_cmd *cmd);
 int			substitute_redirect_quotes(t_shell *shell, t_cmd *cmd);
 int			is_non_removable(t_parser *parser, char c);
 void		split_tokens(t_cmd *cmd);
+void		quote_env_var(char *input, int i, t_parser *parser);
 
 /*
 ** cmd
