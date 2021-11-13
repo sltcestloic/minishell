@@ -37,11 +37,7 @@ int	is_duplicate(char *str)
 	HIST_ENTRY	*entry;
 
 	entry = previous_history();
-<<<<<<< HEAD
-	if (!entry || !entry->line)
-=======
 	if (!entry || !entry->line || !str)
->>>>>>> 1a0b558d98b9ad8c98588bc8dd6734b6a5659776
 		return (0);
 	return (ft_strcmp(entry->line, str) == 0);
 }
