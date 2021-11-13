@@ -99,13 +99,19 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 
 static void	substitution(t_shell *shell, t_cmd *cmd)
 {
-	t_cmd	*tmp;
+	t_cmd		*tmp;
 
 	tmp = cmd;
 	if (substitute(shell, cmd))
 	{
 		while (tmp)
 		{
+			if ((tmp->out && !tmp->out->file_name)
+				|| (tmp->in && !tmp->in->file_name))
+			{
+				printf("minishell: invalid input: bad redirect.\n");
+				return ;
+			}
 			redo_value(tmp);
 			tmp = tmp->next;
 		}
