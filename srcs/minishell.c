@@ -42,6 +42,20 @@ int	is_duplicate(char *str)
 	return (ft_strcmp(entry->line, str) == 0);
 }
 
+void	set_term(t_shell *shell)
+{
+	tcgetattr(0, &shell->new);
+	shell->new.c_lflag &= ~ECHOCTL;
+	shell->new.c_cc[VQUIT] = 0;
+	tcsetattr(STDIN_FILENO, TCSANOW, &shell->new);
+}
+
+void	unset_term(t_shell *shell)
+{
+	tcsetattr(STDIN_FILENO, TCSANOW, &shell->old);
+	// g_heredoc = 0;
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
@@ -53,8 +67,11 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	set_env(envp, shell);
 	set_pwd(shell);
+	tcgetattr(0, &shell->old);
 	while (1)
 	{
+		signal(SIGINT, &if_sigint);
+		set_term(shell);
 		input = readline("\e[0;92mminishell\e[0m$ ");
 		if (!input)
 			parse_input("exit", shell);

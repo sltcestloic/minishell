@@ -8,7 +8,7 @@ void	print_error(char *cmd, char *msg, t_free *to_free)
 	ft_exit(to_free);
 }
 
-int	do_heredoc(t_cmd *cmd, t_shell *shell)
+int	do_heredoc(t_cmd *cmd)
 {
 	t_redirect	*i;
 
@@ -18,7 +18,7 @@ int	do_heredoc(t_cmd *cmd, t_shell *shell)
 		while (i)
 		{
 			if (cmd->in->variation)
-				parse_here_doc(i, shell, 1);
+				parse_here_doc(i, 1);
 			i = i->next;
 		}
 		cmd = cmd->next;
@@ -26,10 +26,18 @@ int	do_heredoc(t_cmd *cmd, t_shell *shell)
 	return (0);
 }
 
+void	signal_reset(int osef)
+{
+	(void)osef;
+}
+
 void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 {
 	int	pid;
 
+	unset_term(shell);
+	signal(SIGQUIT, signal_reset);
+	signal(SIGINT, signal_reset);
 	pid = fork();
 	if (!pid)
 	{
@@ -46,10 +54,19 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 		if (cmd->value)
 			to_exec(shell, cmd->value);
 	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	if (out == 1)
 	{
 		waitpid(pid, &pid, 0);
 		shell->last_exit_return = WEXITSTATUS(pid);
+		if (WIFSIGNALED(pid))
+		{
+			if (WTERMSIG(pid) == SIGQUIT)
+				printf("Quit: 3\n");
+			else
+				printf("\n");
+		}
 	}
 }
 
@@ -123,7 +140,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	int	fd[2];
 
 	in = 0;
-	do_heredoc(cmd, shell);
+	do_heredoc(cmd);
 	while (cmd->next)
 	{
 		if (pipe(fd))

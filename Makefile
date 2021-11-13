@@ -36,7 +36,8 @@ SRCS		+=	copy_sort_lst.c \
 				pipe.c \
 				redirect.c \
 				set_env.c \
-				set_pwd.c
+				set_pwd.c \
+				signal.c
 
 #            PARSING            #
 
@@ -82,7 +83,7 @@ RM			=	rm -f
 #===============================#
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -g3
+CFLAGS		=	-Wall -Wextra -Werror -g3 -fsanitize=address
 
 #===============================#
 #             COLORS            #
@@ -130,7 +131,7 @@ ${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE}
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
 	@echo "[${NAME}] Creating executable..."
-	@${CC} -o ${NAME} ${OBJS} -lreadline -L ${LIBFT_DIR} -lft -L ${RL_DIR} -I ${RL_DIR_I}
+	@${CC} -o ${NAME} ${OBJS} -lreadline -L ${LIBFT_DIR} -lft -L ${RL_DIR} -I ${RL_DIR_I} -fsanitize=address
 	@echo "[${NAME}] ${GREEN}Compilation successful!${WHITE}"
 
 

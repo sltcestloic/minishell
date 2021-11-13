@@ -51,8 +51,6 @@ char	*make_path(char **path, char **function, t_shell *shell)
 
 	i = 0;
 	ret = 0;
-	if (find_slash(function[0]))
-		return (function[0]);
 	while (path[i])
 	{
 		slash = ft_strjoin(path[i], "/", shell->to_free);
@@ -106,6 +104,8 @@ void	to_exec(t_shell *shell, char **function)
 	test = NULL;
 	if (path)
 		test = make_path(path, function, shell);
+	if (find_slash(function[0]))
+		test = function[0];
 	if (test)
 		exec_it(test, &function[0], shell);
 	else

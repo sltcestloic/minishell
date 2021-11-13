@@ -112,6 +112,7 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 			return ;
 		}
 	}
+	unset_term(shell);
 	ft_free(shell->to_free);
 	(void) shell->to_free;
 	exit((unsigned char)ret);

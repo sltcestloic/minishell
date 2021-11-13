@@ -6,7 +6,6 @@
 # include <unistd.h>
 # include "../libft/libft.h"
 # include "parsing.h"
-# include "exec.h"
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/types.h>
@@ -18,6 +17,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/param.h>
+# include "exec.h"
 
 void	display_prompt(t_shell *shell);
 

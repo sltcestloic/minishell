@@ -7,8 +7,8 @@ int	size_list(t_envlst *lst)
 	i = 0;
 	while (lst)
 	{
-		i++;
 		lst = lst->next;
+		i++;
 	}
 	return (i);
 }
@@ -22,7 +22,7 @@ char	**lst_to_str(t_shell *shell)
 
 	i = 0;
 	lst = shell->env_var;
-	ret = malloc(sizeof(char *) * size_list(lst) + 1);
+	ret = malloc(sizeof(char *) * (size_list(lst) + 1));
 	if (!ret)
 		return (NULL);
 	while (lst)
