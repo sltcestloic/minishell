@@ -41,7 +41,6 @@ char	*var_value_noquotes(char *var, t_free *to_free)
 	if (j > 0 && ret[j - 1] == ' ')
 		ret[j - 1] = 0;
 	ret[j] = 0;
-	printf("ret=%s\n", ret);
 	return (ret);
 }
 
