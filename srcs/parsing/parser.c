@@ -93,32 +93,8 @@ static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
 		else
 			*i += add_arg(cmd_last(cmd), &input[*i], shell);
 	}
-	else 
-		set_cmd_content(cmd_last(cmd), input, i, shell);
-}
-
-static void	redo_value(t_cmd *cmd)
-{
-	char	**new_value;
-	int		i;
-	int 	j;
-
-	if (!cmd->value)
-		return ;
-	new_value = (char **)ft_malloc(sizeof(char *) * (ft_splitlen(cmd->value) + 1), &cmd->shell->to_free);
-	i = 0;
-	j = 0;
-	while (cmd->value[i])
-	{
-		if (cmd->value[i] != (char *)1)
-			new_value[j++] = ft_strdup(cmd->value[i], cmd->shell->to_free);
-		i++;
-	}
-	new_value[j] = 0;
-	if (new_value[0])
-		cmd->value = new_value;
 	else
-		cmd->value = NULL;
+		set_cmd_content(cmd_last(cmd), input, i, shell);
 }
 
 static void	substitution(t_shell *shell, t_cmd *cmd)
@@ -133,7 +109,6 @@ static void	substitution(t_shell *shell, t_cmd *cmd)
 			redo_value(tmp);
 			tmp = tmp->next;
 		}
-		//print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
 	}
 }

@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-int	is_quote(char c)
-{
-	return (c == '\'' || c == '"');
-}
-
 t_parser	*init_parser(t_shell *shell)
 {
 	t_parser	*ret;

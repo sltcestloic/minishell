@@ -55,7 +55,8 @@ SRCS		+=	cmd_util.c \
 #              UTIL             #
 
 SRCS		+=	ft_splitlen.c \
-				init.c
+				init.c \
+				util.c
 
 #===============================#
 #            OBJECTS            #

@@ -21,11 +21,6 @@ void	quote_cmd(t_parser *parser, char c)
 		parser->s_quote = !parser->s_quote;
 }
 
-int	is_sep(char c)
-{
-	return (c == '>' || c == '<' || c == '|' || ft_iswhitespace(c));
-}
-
 void	cmd_addback(t_cmd *cmd, t_cmd *add)
 {
 	t_cmd	*current;
@@ -53,4 +48,29 @@ t_cmd	*cmd_last(t_cmd *cmd)
 		current = current->next;
 	}
 	return (current);
+}
+
+void	redo_value(t_cmd *cmd)
+{
+	char	**new_value;
+	int		i;
+	int		j;
+
+	if (!cmd->value)
+		return ;
+	new_value = (char **)ft_malloc(sizeof(char *)
+			* (ft_splitlen(cmd->value) + 1), &cmd->shell->to_free);
+	i = 0;
+	j = 0;
+	while (cmd->value[i])
+	{
+		if (cmd->value[i] != (char *)1)
+			new_value[j++] = ft_strdup(cmd->value[i], cmd->shell->to_free);
+		i++;
+	}
+	new_value[j] = 0;
+	if (new_value[0])
+		cmd->value = new_value;
+	else
+		cmd->value = NULL;
 }

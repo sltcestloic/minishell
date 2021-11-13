@@ -78,7 +78,7 @@ int			add_arg(t_cmd *cmd, char *input, t_shell *shell);
 void		cmd_bzero(t_cmd *cmd, int args);
 void		quote_cmd(t_parser *parser, char c);
 void		set_cmd_content(t_cmd *cmd, char *input, int *i, t_shell *shell);
-
+void		redo_value(t_cmd *cmd);
 /*
 ** Util
 */

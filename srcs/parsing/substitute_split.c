@@ -79,7 +79,7 @@ void	split_tokens(t_cmd *cmd)
 	i = 0;
 	while (cmd->value[i])
 	{
-		if (cmd->value[i] == (char*)1)
+		if (cmd->value[i] == (char *)1)
 		{
 			i++;
 			continue ;

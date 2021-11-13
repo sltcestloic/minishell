@@ -37,7 +37,7 @@ int	init_redirect_io(t_cmd *cmd, int type)
 	init = 0;
 	init_redirect_by_type(cmd, type, &init, &redirect);
 	if (!redirect)
-		return (0);
+		ft_malloc_error(cmd->shell->to_free);
 	redirect->variation = type == 2 || type == 4;
 	if (!init)
 		redirect_addback(redirect, type, cmd->shell);

@@ -105,7 +105,8 @@ t_index	has_env_var(char *input, t_shell *shell)
 		else if (input[idx.i] == '$' && !parser->s_quote)
 		{
 			idx.j = parser->d_quote || parser->s_quote;
-			idx.k = idx.i && ft_isalnum(input[idx.i]);
+			if (idx.i)
+				idx.k = ft_isalnum(input[idx.i]);
 			return (idx);
 		}
 	}
