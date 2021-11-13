@@ -18,7 +18,10 @@ int	redirect_addback(t_redirect *redirect, int type, t_shell *shell)
 	tmp->next = (t_redirect *)ft_malloc(sizeof(t_redirect), &shell->to_free);
 	if (!tmp->next)
 		ft_malloc_error(shell->to_free);
-	tmp->next->variation = type == 2 || type == 4;
+	if (type == 2 || type == 4)
+		tmp->next->variation = TRUE;
+	else
+		tmp->next->variation = FALSE;
 	tmp->next->next = NULL;
 	return (1);
 }
