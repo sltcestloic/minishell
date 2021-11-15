@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void     if_sigint(int sig)
+void     if_sigint(int osef)
 {
-    (void) sig;
+    (void)osef;
     write(1, "\n", 1);
     rl_on_new_line();
     rl_replace_line("", 0);

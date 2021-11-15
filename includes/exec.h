@@ -3,6 +3,8 @@
 
 # include <termios.h>
 
+extern int last_exit;
+
 typedef struct s_redirect
 {
 	char *file_name;
@@ -32,7 +34,6 @@ typedef struct	s_shell
 	char			*pwd;
 	char			**envp;
 	int 			to_close;
-	int				last_exit_return;
 	struct termios	old;
 	struct termios	new;
 	

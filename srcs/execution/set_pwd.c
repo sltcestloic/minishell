@@ -10,13 +10,13 @@ void	go_home(t_shell *shell)
 		if (chdir(ptr->value) == -1)
 		{
 			write(2, "minishell: cd: incorrect HOME path\n", 28);
-			shell->last_exit_return = 1;
+			last_exit = 1;
 		}
 	}
 	else
 	{
 		write(2, "minishell: cd: HOME not set\n", 28);
-		shell->last_exit_return = 1;
+		last_exit = 1;
 	}
 }
 
@@ -47,7 +47,7 @@ void	change_pwd(t_shell *shell, char *str)
 	{
 		if (chdir(str) == -1 && write(2, "minishell: cd: ", 15))
 			perror(str);
-		shell->last_exit_return = 1;
+		last_exit = 1;
 	}
 	else
 		go_home(shell);

@@ -113,7 +113,7 @@ void	to_exec(t_shell *shell, char **function)
 		write(2, "minishell: ", 11);
 		write(2, function[0], ft_strlen(function[0]));
 		write(2, ": command not found\n", 20);
-		shell->last_exit_return = 127;
+		last_exit = 127;
 	}
-	exit(shell->last_exit_return);
+	exit(last_exit);
 }

@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+int last_exit = 0;
+
 inline static int	init_shell(t_shell **shell, char **envp)
 {
 	*shell = malloc(sizeof(t_shell));
@@ -7,7 +9,6 @@ inline static int	init_shell(t_shell **shell, char **envp)
 		return (-1);
 	(*shell)->to_free = 0;
 	(*shell)->to_close = 0;
-	(*shell)->last_exit_return = 0;
 	(*shell)->env_var = 0;
 	(*shell)->pwd = ft_malloc(MAXPATHLEN, &(*shell)->to_free);
 	(*shell)->envp = envp;

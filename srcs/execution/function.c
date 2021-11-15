@@ -93,7 +93,7 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 {
 	int	ret;
 
-	ret = shell->last_exit_return;
+	ret = last_exit;
 	if (!is_pipe)
 		write(1, "exit\n", 5);
 	if (arg[1] && arg[2])

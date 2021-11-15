@@ -29,7 +29,7 @@ int	parse_here_doc(t_redirect *heredoc, t_shell *shell)
 	if (WIFSIGNALED(pid))
 	{
 		write(1, "\n", 1);
-		shell->last_exit_return = 1;
+		last_exit = 1;
 		signal(SIGQUIT, signal_reset);
 		signal(SIGINT, signal_reset);
 		return (-1);

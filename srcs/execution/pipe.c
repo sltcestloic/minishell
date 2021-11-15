@@ -60,67 +60,73 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	if (out == 1)
 	{
 		waitpid(pid, &pid, 0);
-		shell->last_exit_return = WEXITSTATUS(pid);
+		last_exit = WEXITSTATUS(pid);
 		if (WIFSIGNALED(pid))
 		{
 			if (WTERMSIG(pid) == SIGQUIT)
+			{
 				printf("Quit: 3\n");
+				last_exit = 131;
+			}
 			else
+			{
+				last_exit = 130;
 				printf("\n");
+			}
 		}
 	}
 }
 
-// static int	do_built_in(t_cmd *cmd, t_shell *shell)
-// {
-// 	if (!ft_strcmp(cmd->value[0], "echo"))
-// 		echo(cmd->value);
-// 	else if (!ft_strcmp(cmd->value[0], "env"))
-// 		env(shell->env_var);
-// 	else if (!ft_strcmp(cmd->value[0], "export"))
-// 	{
-// 		if (!cmd->value[1])
-// 			export(shell->env_var);
-// 		else if (cmd->value[1])
-// 			update_env_value(shell, cmd->value);
-// 	}
-// 	else if (!ft_strcmp(cmd->value[0], "unset"))
-// 		remove_env_elem(cmd->value, shell);
-// 	else if (!ft_strcmp(cmd->value[0], "exit"))
-// 		exit_cmd(shell, cmd->value, 0);
-// 	else if (!ft_strcmp(cmd->value[0], "cd"))
-// 		change_pwd(shell, cmd->value[1]);
-// 	else if (!ft_strcmp(cmd->value[0], "pwd"))
-// 		pwd(shell);
-// 	else
-// 		return (1);
-// 	return (0);
-// }
+static int	do_built_in(t_cmd *cmd, t_shell *shell)
+{
+	if (!ft_strcmp(cmd->value[0], "echo"))
+		echo(cmd->value);
+	else if (!ft_strcmp(cmd->value[0], "env"))
+		env(shell->env_var);
+	else if (!ft_strcmp(cmd->value[0], "export"))
+	{
+		if (!cmd->value[1])
+			export(shell->env_var);
+		else if (cmd->value[1])
+			update_env_value(shell, cmd->value);
+	}
+	else if (!ft_strcmp(cmd->value[0], "unset"))
+		remove_env_elem(cmd->value, shell);
+	else if (!ft_strcmp(cmd->value[0], "exit"))
+		exit_cmd(shell, cmd->value, 0);
+	else if (!ft_strcmp(cmd->value[0], "cd"))
+		change_pwd(shell, cmd->value[1]);
+	else if (!ft_strcmp(cmd->value[0], "pwd"))
+		pwd(shell);
+	else
+		return (1);
+	return (0);
+}
 
-// static int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
-// {
-// 	int	in;
-// 	int	out;
-// 	int	ret;
+static int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
+{
+	int	in;
+	int	out;
+	int	ret;
 
-// 	in = dup(0);
-// 	out = dup(1);
-// 	ret = redirect(cmd);
-// 	if (cmd->value)
-// 	{
-// 		if (ret == -1)
-// 		{
-// 			print_error(cmd->value[0], ": Error redirection\n", shell->to_free);
-// 			return (-1);
-// 		}
-// 		ret = do_built_in(cmd, shell);
-// 	}
-// 	dup2(in, 0);
-// 	dup2(out, 1);
-// 	close(in);
-// 	close(out);
-// 	return (ret);
-// }
+	in = dup(0);
+	out = dup(1);
+	ret = redirect(cmd);
+	if (cmd->value)
+	{
+		if (ret == -1)
+		{
+			print_error(cmd->value[0], ": Error redirection\n", shell->to_free);
+			return (-1);
+		}
+		ret = do_built_in(cmd, shell);
+	}
+	dup2(in, 0);
+	dup2(out, 1);
+	close(in);
+	close(out);
+	return (ret);
+}
 
 void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
 {
@@ -131,8 +137,8 @@ void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
 		while (wait(NULL) != -1)
 			;
 	}
-	// else if (redirect_to_built_in(cmd, shell))
-	spawn_proc(in, 1, cmd, shell);
+	else if (redirect_to_built_in(cmd, shell))
+		spawn_proc(in, 1, cmd, shell);
 }
 
 void	cmd_parse(t_cmd *cmd, t_shell *shell)
