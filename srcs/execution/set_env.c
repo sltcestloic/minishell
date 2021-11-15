@@ -152,7 +152,8 @@ void	remove_env_elem(char **arg, t_shell *shell)
 	i = 0;
 	while (arg[i])
 	{
-		if ((arg[i][0] >= '0' && arg[i][0] <= '9') || arg[i][0] == '=' || arg[i][0] == '+')
+		if ((arg[i][0] >= '0' && arg[i][0] <= '9') || arg[i][0] == '='\
+		|| arg[i][0] == '+' || arg[i][0] == '-')
 		{
 			ft_putstr_fd("minishell: export: ", 2);
 			ft_putstr_fd(arg[i], 2);
@@ -162,14 +163,13 @@ void	remove_env_elem(char **arg, t_shell *shell)
 		ptr = shell->env_var;
 		if (!ptr)
 			return ;
-		while (ptr->next && ft_strcmp(ptr->next->name, arg[i]))
+		while (ptr && ft_strcmp(ptr->name, arg[i]))
 		{
 			ptr = ptr->next;
 		}
+		if ()
 		if (ptr->next)
 			ptr->next = ptr->next->next;
-		else
-			shell->env_var = NULL;
 		i++;
 	}
 }

@@ -43,6 +43,7 @@ void	change_pwd(t_shell *shell, char *str)
 	t_envlst	*ptr;
 	t_envlst	*oldptr;
 
+	last_exit = 0;
 	if (str)
 	{
 		if (chdir(str) == -1 && write(2, "minishell: cd: ", 15))
@@ -69,5 +70,6 @@ void	change_pwd(t_shell *shell, char *str)
 
 void	pwd(t_shell *shell)
 {
+	last_exit = 0;
 	printf("%s\n", shell->pwd);
 }

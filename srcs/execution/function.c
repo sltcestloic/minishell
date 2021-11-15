@@ -8,7 +8,8 @@ void	echo(char **str)
 
 	option = 0;
 	i = 1;
-	while (str[i] && str[i][0] == '-')
+	last_exit = 0;
+	while (str[i] && (str[i][0] == '-' && str[i][1]))
 	{
 		j = 1;
 		while (str[i][j] == 'n')
@@ -30,6 +31,7 @@ void	echo(char **str)
 
 void	env(t_envlst *lst)
 {
+	last_exit = 0;
 	while (lst)
 	{
 		if (lst->value)
@@ -41,13 +43,14 @@ void	env(t_envlst *lst)
 	}
 }
 
-void	export(t_envlst *lst)
+void	export(t_envlst *lst, t_shell *shell)
 {
 	t_envlst	*sorted;
 
+	last_exit = 0;
 	if (lst)
 	{
-		sorted = copy_sorted_list(lst);
+		sorted = copy_sorted_list(lst, shell);
 		while (sorted)
 		{
 			if (sorted->name)
@@ -62,28 +65,29 @@ void	export(t_envlst *lst)
 	}
 }
 
-static int	ft_atoi_exit(char *arg, int *ret)
+static int	ft_atoi_exit(char *arg, unsigned long *ret)
 {
 	int	i;
 	int	is_negativ;
-
+	
 	is_negativ = 1;
 	i = 0;
 	while (arg[i] == ' ')
 		i++;
-	if (arg[i] == '-')
-	{
+	if (arg[i] == '-' && ++i)
 		is_negativ = -1;
-		i++;
-	}
+	else if (arg[i] == '+' && ++i)
+		is_negativ++;
 	while (arg[i] >= '0' && arg[i] <= '9')
 	{
 		*ret = *ret * 10 + (arg[i] - '0');
+		if ((*ret > LONG_MAX && is_negativ != -1) || *ret > (unsigned long)LONG_MIN)
+			return (-1);
 		i++;
 	}
 	while (arg[i] == ' ')
 		i++;
-	if (arg[i])
+	if (arg[i] || (is_negativ != 1 && *ret == 0))
 		return (-1);
 	*ret *= is_negativ;
 	return (0);
@@ -91,18 +95,20 @@ static int	ft_atoi_exit(char *arg, int *ret)
 
 void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 {
-	int	ret;
+	unsigned long	ret;
 
 	ret = last_exit;
 	if (!is_pipe)
-		write(1, "exit\n", 5);
+		write(2, "exit\n", 5);
 	if (arg[1] && arg[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		last_exit = 1;
 		return ;
 	}
 	if (arg[1])
 	{
+		ret = 0;
 		if (ft_atoi_exit(arg[1], &ret) == -1)
 		{
 			ft_putstr_fd("minishell: exit: ", 2);

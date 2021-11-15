@@ -86,7 +86,7 @@ static int	do_built_in(t_cmd *cmd, t_shell *shell)
 	else if (!ft_strcmp(cmd->value[0], "export"))
 	{
 		if (!cmd->value[1])
-			export(shell->env_var);
+			export(shell->env_var, shell);
 		else if (cmd->value[1])
 			update_env_value(shell, cmd->value);
 	}

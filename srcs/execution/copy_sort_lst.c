@@ -67,11 +67,11 @@ static inline void	sort_lst(t_envlst *sorted)
 	}
 }
 
-static inline t_envlst	*copy_elem(t_envlst *lst)
+static inline t_envlst	*copy_elem(t_envlst *lst, t_shell *shell)
 {
 	t_envlst	*new;
 
-	new = malloc(sizeof(t_envlst));
+	new = ft_malloc(sizeof(t_envlst), &shell->to_free);
 	if (!new)
 		return (0);
 	new->next = 0;
@@ -80,18 +80,18 @@ static inline t_envlst	*copy_elem(t_envlst *lst)
 	return (new);
 }
 
-t_envlst	*copy_sorted_list(t_envlst *lst)
+t_envlst	*copy_sorted_list(t_envlst *lst, t_shell * shell)
 {
 	t_envlst	*sorted;
 	t_envlst	*ptr;
 
 	if (!lst->next)
 		return (lst);
-	sorted = copy_elem(lst);
+	sorted = copy_elem(lst, shell);
 	ptr = sorted;
 	while (lst->next)
 	{
-		ptr->next = copy_elem(lst->next);
+		ptr->next = copy_elem(lst->next, shell);
 		ptr = ptr->next;
 		lst = lst->next;
 	}

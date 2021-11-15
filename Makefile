@@ -83,7 +83,7 @@ RM			=	rm -f
 #===============================#
 
 CC			=	gcc
-CFLAGS		=	-g3 -fsanitize=address
+CFLAGS		=	-g3
 
 #===============================#
 #             COLORS            #
@@ -131,7 +131,7 @@ ${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE}
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
 	@echo "[${NAME}] Creating executable..."
-	@${CC} -o ${NAME} ${OBJS} -lreadline -L ${LIBFT_DIR} -lft -L ${RL_DIR} -I ${RL_DIR_I} -fsanitize=address
+	@${CC} -o ${NAME} ${OBJS} -lreadline -L ${LIBFT_DIR} -lft -L ${RL_DIR} -I ${RL_DIR_I}
 	@echo "[${NAME}] ${GREEN}Compilation successful!${WHITE}"
 
 

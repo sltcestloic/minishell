@@ -76,7 +76,7 @@ int	check_built_in(char **func, t_shell *shell)
 	else if (!ft_strcmp(func[0], "export"))
 	{
 		if (!func[1])
-			export(shell->env_var);
+			export(shell->env_var, shell);
 		else if (func[1])
 			new_env_elem(func[1], shell);
 	}

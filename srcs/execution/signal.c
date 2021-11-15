@@ -3,6 +3,7 @@
 void     if_sigint(int osef)
 {
     (void)osef;
+    last_exit = 1;
     write(1, "\n", 1);
     rl_on_new_line();
     rl_replace_line("", 0);
