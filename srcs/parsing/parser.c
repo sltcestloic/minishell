@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/17 08:47:09 by lbertran          #+#    #+#             */
+/*   Updated: 2021/11/17 13:34:38 by lbertran         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	count_args(char *input)
@@ -25,7 +37,7 @@ int	count_args(char *input)
 	return (result);
 }
 
-void	print_struct_debug(t_cmd *cmd)
+/* void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
 	t_redirect	*r_in;
@@ -38,11 +50,8 @@ void	print_struct_debug(t_cmd *cmd)
 		printf("----------cmd #%d----------\n", count);
 		if (tmp->value)
 		{
-			printf("value !\n");
-			printf("ptr%p\n", tmp->value[0]);
 			for (int n = 0; tmp->value[n]; n++)
 				printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
-			printf("cc\n");
 		}
 		int k = 0;
 		if (r_in)
@@ -73,7 +82,7 @@ void	print_struct_debug(t_cmd *cmd)
 		tmp = tmp->next;
 		count++;
 	}
- }
+} */
 static int	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
 {
 	init_redirect(cmd_last(cmd), parser->redirect);
@@ -109,6 +118,7 @@ static void	substitution(t_shell *shell, t_cmd *cmd)
 			if ((tmp->out && !tmp->out->file_name)
 				|| (tmp->in && !tmp->in->file_name))
 			{
+				last_exit = 258;
 				printf("minishell: invalid input: bad redirect.\n");
 				return ;
 			}

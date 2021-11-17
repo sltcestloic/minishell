@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/11/13 18:13:50 by lubourre         ###   ########lyon.fr    #
+#    Updated: 2021/11/17 09:06:19 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,10 +80,24 @@ CC	= gcc
 RM	= rm -f
 CFLAGS	= -Wall -Wextra -Werror
 
-.c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I${INCS}
+#===============================#
+#             COLORS            #
+#===============================#
 
-$(NAME): ${OBJS} ${HEADER} ${MAKEFILE}
+BLACK		=	\x1b[30m
+RED			=	\x1b[31m
+GREEN		=	\x1b[32m
+YELLOW		=	\x1b[33m
+BLUE		=	\x1b[34m
+PURPLE		=	\x1b[35m
+CYAN		=	\x1b[36m
+WHITE		=	\x1b[37m
+
+%.o: %.c ${HEADER} ${MAKEFILE} 
+	@${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I${INCS}
+	@echo "[${NAME}] Compiling ${YELLOW}$<${WHITE}"
+
+$(NAME): ${OBJS}
 	@${LIBC} ${NAME} ${OBJS}
 
 bonus: ${OBJS_BONUS} all

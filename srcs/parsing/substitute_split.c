@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   substitute_split.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/17 08:46:58 by lbertran          #+#    #+#             */
+/*   Updated: 2021/11/17 09:05:03 by lbertran         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	has_space(char *str)
@@ -19,14 +31,14 @@ int	has_space(char *str)
 	return (count);
 }
 
-void	copy_content(char **src, char **dest)
+void	copy_content(char **src, char **dest, t_free *to_free)
 {
 	int	i;
 
 	i = 0;
 	while (src[i])
 	{
-		dest[i] = ft_strdup(src[i], NULL);
+		dest[i] = ft_strdup(src[i], to_free);
 		i++;
 	}
 	dest[i] = 0;
@@ -37,7 +49,8 @@ static void	copy_first_values(t_index *idx, int index,
 {
 	while (idx->j < index)
 	{
-		new_value[idx->j] = ft_strdup(cmd->value[idx->j], NULL);
+		new_value[idx->j] = ft_strdup(cmd->value[idx->j],
+				cmd->shell->to_free);
 		idx->j++;
 	}
 }
@@ -55,7 +68,7 @@ void	split_cmd(t_cmd *cmd, int i, int spaces, t_free *fr)
 			* (ft_splitlen(cmd->value) + spaces + 1), &fr);
 	end_value = (char **)ft_malloc(sizeof(char *)
 			* (ft_splitlen(&cmd->value[i]) + 1), &fr);
-	copy_content(&cmd->value[i + 1], end_value);
+	copy_content(&cmd->value[i + 1], end_value, fr);
 	copy_first_values(&idx, i, new_value, cmd);
 	while (cmd->value[i][idx.i])
 	{
@@ -67,7 +80,7 @@ void	split_cmd(t_cmd *cmd, int i, int spaces, t_free *fr)
 		idx.i++;
 	}
 	new_value[idx.j++] = ft_strrdup(cmd->value[i], last, idx.i - 1, fr);
-	copy_content(end_value, &new_value[idx.j]);
+	copy_content(end_value, &new_value[idx.j], fr);
 	cmd->value = new_value;
 }
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_var.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/17 08:46:51 by lbertran          #+#    #+#             */
+/*   Updated: 2021/11/17 09:01:44 by lbertran         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	count_quotes(char *input)
@@ -81,7 +93,7 @@ char	*get_env_var(t_shell *shell, char *name, int quotes, int chrbfr)
 		return (ft_itoa(last_exit, shell->to_free));
 	while (lst)
 	{
-		if (ft_strcmp(lst->name, name) == 0)
+		if (ft_strcmp(lst->name, name) == 0 && lst->value)
 		{
 			if (quotes)
 				return (ft_strdup(lst->value, shell->to_free));
