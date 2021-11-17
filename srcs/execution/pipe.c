@@ -50,10 +50,11 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 		if (out != 1)
 			if (dup2(out, 1))
 				close(out);
-		if (redirect(cmd) == -1)
-			print_error(cmd->value[0], ": Error redirection\n", shell->to_free);
+		redirect(cmd);
 		if (cmd->value)
 			to_exec(shell, cmd->value);
+		last_exit = 0;
+		exit(last_exit);
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -105,7 +106,9 @@ static int	do_built_in(t_cmd *cmd, t_shell *shell)
 
 static int	is_built_in(t_cmd *cmd)
 {
-	if (!ft_strcmp(cmd->value[0], "echo"))
+	if (!cmd->value)
+		return (0);
+	else if (!ft_strcmp(cmd->value[0], "echo"))
 		return (1);
 	else if (!ft_strcmp(cmd->value[0], "env"))
 		return (1);

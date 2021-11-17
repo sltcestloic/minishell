@@ -25,8 +25,10 @@ static inline void	exec_it(char *test, char **function, t_shell *shell)
 	else if (execve(test, function, lst_to_str(shell)))
 	{
 		write(2, "minishell: ", 11);
+		
 		perror(function[0]);
-		exit(-1);
+		last_exit = 127;
+		exit(last_exit);
 	}
 }
 

@@ -42,9 +42,17 @@ int	parse_here_doc(t_redirect *heredoc, t_shell *shell)
 int	here_doc(t_redirect *heredoc)
 {
 	if (dup2(heredoc->variation, 0) == -1)
+	{
 		perror("dup2");
+		last_exit = 1;
+		exit(last_exit);
+	}
 	if (close(heredoc->variation) == -1)
+	{
 		perror("close");
+		last_exit = 1;
+		exit(last_exit);
+	}
 	return (0);
 }
 
@@ -58,8 +66,13 @@ int	redirect_out(t_redirect *redirect)
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1 || dup2(fd, 1) == -1 || close(fd) == -1)
 	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redirect->file_name, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		write(2, "\n", 1);
+		last_exit = 1;
+		exit(last_exit);
 	}
 	return (0);
 }
@@ -73,8 +86,13 @@ int	redirect_in(t_redirect *redirect)
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1 || dup2(fd, 0) == -1 || close(fd) == -1)
 	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redirect->file_name, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		write(2, "\n", 1);
+		last_exit = 1;
+		exit(last_exit);
 	}
 	return (0);
 }
@@ -88,8 +106,13 @@ int	try_open(t_redirect *redirect)
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1)
 	{
-		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redirect->file_name, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		write(2, "\n", 1);
+		last_exit = 1;
+		exit(last_exit);
 	}
 	return (0);
 }
@@ -102,7 +125,8 @@ int	creat_trunc_file(char *file_name)
 	if (fd == -1)
 	{
 		ft_putstr_fd(strerror(errno), 1);
-		return (-1);
+		last_exit = 1;
+		exit(last_exit);
 	}
 	return (0);
 }

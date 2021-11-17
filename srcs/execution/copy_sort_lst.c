@@ -71,7 +71,7 @@ static inline t_envlst	*copy_elem(t_envlst *lst, t_shell *shell)
 {
 	t_envlst	*new;
 
-	new = ft_malloc(sizeof(t_envlst), &shell->to_free);
+	new = (t_envlst *)ft_malloc(sizeof(t_envlst), &shell->to_free);
 	if (!new)
 		return (0);
 	new->next = 0;
