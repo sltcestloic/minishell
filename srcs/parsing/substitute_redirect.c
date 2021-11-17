@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   substitute_redirect.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/17 08:46:57 by lbertran          #+#    #+#             */
+/*   Updated: 2021/11/17 08:46:58 by lbertran         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	quote(t_parser *parser, t_redirect *redirect, char c)

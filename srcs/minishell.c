@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/17 08:48:23 by lbertran          #+#    #+#             */
+/*   Updated: 2021/11/17 08:48:25 by lbertran         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int last_exit = 0;
+int	last_exit = 0;
 
 inline static int	init_shell(t_shell **shell, char **envp)
 {
@@ -33,7 +45,7 @@ static int	is_valid_input(char *input)
 	return (0);
 }
 
-int	is_duplicate(char *str)
+static int	is_duplicate(char *str)
 {
 	HIST_ENTRY	*entry;
 
