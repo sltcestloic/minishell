@@ -167,7 +167,7 @@ void	remove_env_elem(char **arg, t_shell *shell)
 		{
 			ptr = ptr->next;
 		}
-		if ()
+		//if ()
 		if (ptr->next)
 			ptr->next = ptr->next->next;
 		i++;

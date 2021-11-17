@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:09 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:47:10 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/17 09:06:04 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,8 @@ int	count_args(char *input)
 		printf("----------cmd #%d----------\n", count);
 		if (tmp->value)
 		{
-			printf("value !\n");
-			printf("ptr%p\n", tmp->value[0]);
 			for (int n = 0; tmp->value[n]; n++)
 				printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
-			printf("cc\n");
 		}
 		int k = 0;
 		if (r_in)

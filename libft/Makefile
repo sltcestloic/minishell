@@ -6,7 +6,7 @@
 #    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/11/17 08:45:09 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/11/17 09:06:19 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,9 +101,7 @@ $(NAME): ${OBJS}
 	@${LIBC} ${NAME} ${OBJS}
 
 bonus: ${OBJS_BONUS} all
-	@echo "[${NAME}] Creating library..."
 	@${LIBC} ${NAME} ${OBJS} ${OBJS_BONUS}
-	@echo "[${NAME}] ${GREEN}Compilation successful!${WHITE}"
 
 
 all: ${NAME}
