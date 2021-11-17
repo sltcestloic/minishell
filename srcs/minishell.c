@@ -54,7 +54,6 @@ void	set_term(t_shell *shell)
 void	unset_term(t_shell *shell)
 {
 	tcsetattr(STDIN_FILENO, TCSANOW, &shell->old);
-	// g_heredoc = 0;
 }
 
 int	main(int ac, char **av, char **envp)
@@ -62,6 +61,11 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	t_shell	*shell;
 
+	if (!isatty(0) || !isatty(1) || !isatty(2))
+	{
+		write(2, "ERROR YOU CAN'T MESS WITH ME !\n", 32);
+		return (-1);
+	}	
 	if (init_shell(&shell, envp) == -1)
 		return (-1);
 	(void)ac;

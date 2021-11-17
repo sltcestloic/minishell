@@ -163,13 +163,16 @@ void	remove_env_elem(char **arg, t_shell *shell)
 		ptr = shell->env_var;
 		if (!ptr)
 			return ;
-		while (ptr && ft_strcmp(ptr->name, arg[i]))
+		if (!ft_strcmp(ptr->name, arg[i]))
+			shell->env_var = ptr->next;
+		while (ptr->next)
 		{
+			if (!ft_strcmp(ptr->next->name, arg[i]))
+			{
+				ptr->next = ptr->next->next;
+			}
 			ptr = ptr->next;
 		}
-		if ()
-		if (ptr->next)
-			ptr->next = ptr->next->next;
 		i++;
 	}
 }

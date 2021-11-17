@@ -103,6 +103,26 @@ static int	do_built_in(t_cmd *cmd, t_shell *shell)
 	return (0);
 }
 
+static int	is_built_in(t_cmd *cmd)
+{
+	if (!ft_strcmp(cmd->value[0], "echo"))
+		return (1);
+	else if (!ft_strcmp(cmd->value[0], "env"))
+		return (1);
+	else if (!ft_strcmp(cmd->value[0], "export"))
+		return (1);
+	else if (!ft_strcmp(cmd->value[0], "unset"))
+		return (1);
+	else if (!ft_strcmp(cmd->value[0], "exit"))
+		return (1);
+	else if (!ft_strcmp(cmd->value[0], "cd"))
+		return (1);
+	else if (!ft_strcmp(cmd->value[0], "pwd"))
+		return (1);
+	else
+		return (0);
+}
+
 static int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
 {
 	int	in;
@@ -117,6 +137,8 @@ static int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
 		if (ret == -1)
 		{
 			print_error(cmd->value[0], ": Error redirection\n", shell->to_free);
+			close(in);
+			close(out);
 			return (-1);
 		}
 		ret = do_built_in(cmd, shell);
@@ -137,7 +159,9 @@ void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
 		while (wait(NULL) != -1)
 			;
 	}
-	else if (redirect_to_built_in(cmd, shell))
+	else if (is_built_in(cmd))
+		redirect_to_built_in(cmd, shell);
+	else
 		spawn_proc(in, 1, cmd, shell);
 }
 
