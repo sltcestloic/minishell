@@ -1,35 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
+/*   Updated: 2021/11/18 18:37:07 by lubourre         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	print_error(char *cmd, char *msg, t_free *to_free)
+void	print_error(char *cmd, char *msg, int exit_value)
 {
-	write(2, "minishell: ", 11);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
-	write(2, &msg, ft_strlen(msg));
-	ft_exit(to_free);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
+	exit(last_exit = exit_value);
 }
 
-int	do_heredoc(t_cmd *cmd, t_shell *shell)
+void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 {
-	t_redirect	*i;
-
-	while (cmd)
-	{
-		i = cmd->in;
-		while (i)
-		{
-			if (cmd->in->variation)
-				if (parse_here_doc(i, shell))
-					return (-1);
-			i = i->next;
-		}
-		cmd = cmd->next;
-	}
-	return (0);
-}
-
-void	signal_reset(int osef)
-{
-	(void)osef;
+	if (shell->to_close)
+		close(shell->to_close);
+	if (in)
+		if (dup2(in, 0))
+			close(in);
+	if (out != 1)
+		if (dup2(out, 1))
+			close(out);
+	redirect(cmd);
+	if (cmd->value)
+		to_exec(shell, cmd->value);
+	last_exit = 0;
+	exit(last_exit);
 }
 
 void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
@@ -41,126 +47,27 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	signal(SIGINT, signal_reset);
 	pid = fork();
 	if (!pid)
-	{
-		if (shell->to_close)
-			close(shell->to_close);
-		if (in)
-			if (dup2(in, 0))
-				close(in);
-		if (out != 1)
-			if (dup2(out, 1))
-				close(out);
-		redirect(cmd);
-		if (cmd->value)
-			to_exec(shell, cmd->value);
-		last_exit = 0;
-		exit(last_exit);
-	}
+		fork_exec(in, out, cmd, shell);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	if (out == 1)
 	{
 		waitpid(pid, &pid, 0);
 		last_exit = WEXITSTATUS(pid);
-		if (WIFSIGNALED(pid))
-		{
-			if (WTERMSIG(pid) == SIGQUIT)
-			{
-				printf("Quit: 3\n");
-				last_exit = 131;
-			}
-			else
-			{
-				last_exit = 130;
-				printf("\n");
-			}
-		}
+		signal_handle(pid);
 	}
 }
 
-static int	do_built_in(t_cmd *cmd, t_shell *shell)
+static void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
 {
-	if (!ft_strcmp(cmd->value[0], "echo"))
-		echo(cmd->value);
-	else if (!ft_strcmp(cmd->value[0], "env"))
-		env(shell->env_var);
-	else if (!ft_strcmp(cmd->value[0], "export"))
-	{
-		if (!cmd->value[1])
-			export(shell->env_var, shell);
-		else if (cmd->value[1])
-			update_env_value(shell, cmd->value);
-	}
-	else if (!ft_strcmp(cmd->value[0], "unset"))
-		remove_env_elem(cmd->value, shell);
-	else if (!ft_strcmp(cmd->value[0], "exit"))
-		exit_cmd(shell, cmd->value, 0);
-	else if (!ft_strcmp(cmd->value[0], "cd"))
-		change_pwd(shell, cmd->value[1]);
-	else if (!ft_strcmp(cmd->value[0], "pwd"))
-		pwd(shell);
-	else
-		return (1);
-	return (0);
-}
+	int	pid;
 
-static int	is_built_in(t_cmd *cmd)
-{
-	if (!cmd->value)
-		return (0);
-	else if (!ft_strcmp(cmd->value[0], "echo"))
-		return (1);
-	else if (!ft_strcmp(cmd->value[0], "env"))
-		return (1);
-	else if (!ft_strcmp(cmd->value[0], "export"))
-		return (1);
-	else if (!ft_strcmp(cmd->value[0], "unset"))
-		return (1);
-	else if (!ft_strcmp(cmd->value[0], "exit"))
-		return (1);
-	else if (!ft_strcmp(cmd->value[0], "cd"))
-		return (1);
-	else if (!ft_strcmp(cmd->value[0], "pwd"))
-		return (1);
-	else
-		return (0);
-}
-
-static int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
-{
-	int	in;
-	int	out;
-	int	ret;
-
-	in = dup(0);
-	out = dup(1);
-	ret = redirect(cmd);
-	if (cmd->value)
-	{
-		if (ret == -1)
-		{
-			print_error(cmd->value[0], ": Error redirection\n", shell->to_free);
-			close(in);
-			close(out);
-			return (-1);
-		}
-		ret = do_built_in(cmd, shell);
-	}
-	dup2(in, 0);
-	dup2(out, 1);
-	close(in);
-	close(out);
-	return (ret);
-}
-
-void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
-{
 	if (in)
 	{
 		spawn_proc(in, 1, cmd, shell);
 		close(in);
-		while (wait(NULL) != -1)
-			;
+		while (waitpid(-1, &pid, 0) != -1)
+			signal_handle(pid);
 	}
 	else if (is_built_in(cmd))
 		redirect_to_built_in(cmd, shell);
@@ -178,8 +85,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 		return ;
 	while (cmd->next)
 	{
-		if (pipe(fd))
-			print_error(cmd->value[0], ": Error during pipe\n", shell->to_free);
+		pipe(fd);
 		shell->to_close = fd[0];
 		spawn_proc(in, fd[1], cmd, shell);
 		shell->to_close = 0;

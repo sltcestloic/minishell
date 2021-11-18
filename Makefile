@@ -37,6 +37,10 @@ SRCS		+=	copy_sort_lst.c \
 				redirect.c \
 				set_env.c \
 				set_pwd.c \
+				lst_utilities.c \
+				env_utilities.c \
+				heredoc.c \
+				built_in.c \
 				signal.c
 
 #            PARSING            #
@@ -83,7 +87,7 @@ RM			=	rm -f
 #===============================#
 
 CC			=	gcc
-CFLAGS		=	-g3 -fsanitize=address
+CFLAGS		=	-g3
 
 #===============================#
 #             COLORS            #
@@ -131,7 +135,7 @@ ${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE}
 ${NAME}: ${OBJS}
 	@${MAKE} bonus -C ./libft
 	@echo "[${NAME}] Creating executable..."
-	@${CC} -o ${NAME} ${OBJS} -lreadline -L ${LIBFT_DIR} -lft -L ${RL_DIR} -I ${RL_DIR_I} -fsanitize=address
+	@${CC} -o ${NAME} ${OBJS} -lreadline -L ${LIBFT_DIR} -lft -L ${RL_DIR} -I ${RL_DIR_I}
 	@echo "[${NAME}] ${GREEN}Compilation successful!${WHITE}"
 
 

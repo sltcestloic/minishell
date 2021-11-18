@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   function.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/18 16:43:59 by lubourre          #+#    #+#             */
+/*   Updated: 2021/11/18 18:30:36 by lubourre         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	echo(char **str)
@@ -68,28 +80,28 @@ void	export(t_envlst *lst, t_shell *shell)
 static int	ft_atoi_exit(char *arg, unsigned long *ret)
 {
 	int	i;
-	int	is_negativ;
-	
-	is_negativ = 1;
+	int	nega;
+
+	nega = 1;
 	i = 0;
 	while (arg[i] == ' ')
 		i++;
 	if (arg[i] == '-' && ++i)
-		is_negativ = -1;
+		nega = -1;
 	else if (arg[i] == '+' && ++i)
-		is_negativ++;
+		nega++;
 	while (arg[i] >= '0' && arg[i] <= '9')
 	{
 		*ret = *ret * 10 + (arg[i] - '0');
-		if ((*ret > LONG_MAX && is_negativ != -1) || *ret > (unsigned long)LONG_MIN)
+		if ((*ret > LONG_MAX && nega != -1) || *ret > (unsigned long)LONG_MIN)
 			return (-1);
 		i++;
 	}
 	while (arg[i] == ' ')
 		i++;
-	if (arg[i] || (is_negativ != 1 && *ret == 0))
+	if (arg[i] || (nega != 1 && *ret == 0))
 		return (-1);
-	*ret *= is_negativ;
+	*ret *= nega;
 	return (0);
 }
 
@@ -110,22 +122,10 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 	{
 		ret = 0;
 		if (ft_atoi_exit(arg[1], &ret) == -1)
-		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(arg[1], 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			exit(255);
-			return ;
-		}
+			print_error(arg[1], ": numeric argument required", 255);
 	}
 	unset_term(shell);
 	ft_free(shell->to_free);
 	(void) shell->to_free;
 	exit((unsigned char)ret);
-}
-
-void	ft_exit(t_free *to_free)
-{
-	ft_free(to_free);
-	exit(0);
 }

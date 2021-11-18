@@ -1,47 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_exec.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/18 13:35:58 by lubourre          #+#    #+#             */
+/*   Updated: 2021/11/18 18:28:08 by lubourre         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-char	**find_path(t_shell *shell)
-{
-	t_envlst	*ptr;
-	char		**path;
-
-	ptr = find_in_list("PATH", shell->env_var);
-	path = 0;
-	if (ptr)
-	{
-		path = ft_split(ptr->value, ':', shell->to_free);
-		if (!path)
-			ft_malloc_error(shell->to_free);
-	}
-	return (path);
-}
 
 static inline void	exec_it(char *test, char **function, t_shell *shell)
 {
 	if (!function[0][0])
-	{
-		write(2, "minishell: : command not found\n", 31);
-	}
+		print_error("\0", ": command not found", 127);
 	else if (execve(test, function, lst_to_str(shell)))
 	{
-		write(2, "minishell: ", 11);
-		
+		ft_putstr_fd("minishell: ", 2);
 		perror(function[0]);
 		last_exit = 127;
-		exit(last_exit);
+		exit (127);
 	}
 }
 
-int	find_slash(char *str)
+int	is_abs_path(char *str)
 {
-	int	i;
+	int			i;
+	struct stat	buff;
 
 	i = 0;
 	while (str[i] && str[i] != '/')
 		i++;
-	if (str[i])
-		return (1);
-	return (0);
+	if (!str[i] && str[0] != '.')
+		return (0);
+	if (stat(str, &buff) == -1)
+		print_error(str, ": Permission denied", 127);
+	if (S_ISDIR(buff.st_mode))
+		print_error(str, ": is a directory", 126);
+	i = open(str, O_RDONLY);
+	if (i == -1 || access(str, X_OK) != 0)
+	{
+		if (i != -1)
+			close (i);
+		print_error(str, ": No such file or directory", 126);
+	}
+	close(i);
+	return (1);
 }
 
 char	*make_path(char **path, char **function, t_shell *shell)
@@ -69,7 +75,7 @@ char	*make_path(char **path, char **function, t_shell *shell)
 	return (NULL);
 }
 
-int	check_built_in(char **func, t_shell *shell)
+void	check_built_in(char **func, t_shell *shell)
 {
 	if (!ft_strcmp(func[0], "echo"))
 		echo(func);
@@ -91,8 +97,8 @@ int	check_built_in(char **func, t_shell *shell)
 	else if (!ft_strcmp(func[0], "pwd"))
 		pwd(shell);
 	else
-		return (0);
-	return (1);
+		return ;
+	exit(last_exit = 0);
 }
 
 void	to_exec(t_shell *shell, char **function)
@@ -100,22 +106,17 @@ void	to_exec(t_shell *shell, char **function)
 	char	**path;
 	char	*test;
 
-	if (check_built_in(function, shell))
-		exit(0);
+	check_built_in(function, shell);
 	path = find_path(shell);
 	test = NULL;
 	if (path)
 		test = make_path(path, function, shell);
-	if (find_slash(function[0]))
+	else
+		print_error(function[0], ": No such file or directory", 127);
+	if (is_abs_path(function[0]))
 		test = function[0];
 	if (test)
 		exec_it(test, &function[0], shell);
 	else
-	{
-		write(2, "minishell: ", 11);
-		write(2, function[0], ft_strlen(function[0]));
-		write(2, ": command not found\n", 20);
-		last_exit = 127;
-	}
-	exit(last_exit);
+		print_error(function[0], ": command not found", 127);
 }

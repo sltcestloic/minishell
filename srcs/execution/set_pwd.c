@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_pwd.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/18 17:56:28 by lubourre          #+#    #+#             */
+/*   Updated: 2021/11/18 17:59:44 by lubourre         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	go_home(t_shell *shell)
@@ -52,12 +64,8 @@ void	change_pwd(t_shell *shell, char *str)
 	}
 	else
 		go_home(shell);
-	ptr = shell->env_var;
-	while (ptr && ft_strcmp(ptr->name, "PWD"))
-		ptr = ptr->next;
-	oldptr = shell->env_var;
-	while (oldptr && ft_strcmp(oldptr->name, "OLDPWD"))
-		oldptr = oldptr->next;
+	ptr = find_in_list("PWD", shell->env_var);
+	oldptr = find_in_list("OLDPWD", shell->env_var);
 	if (oldptr)
 		oldptr->value = ptr->value;
 	if (ptr)

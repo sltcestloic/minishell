@@ -1,62 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/18 17:18:05 by lubourre          #+#    #+#             */
+/*   Updated: 2021/11/18 18:31:22 by lubourre         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	parse_here_doc(t_redirect *heredoc, t_shell *shell)
-{
-	char	*line;
-	int		pid;
-	int		fd[2];
-
-	pipe(fd);
-	signal(SIGINT, SIG_IGN);
-	pid = fork();
-	if (!pid)
-	{
-		signal(SIGINT, SIG_DFL);
-		while (42)
-		{
-			line = readline("> ");
-			if (!line || !ft_strcmp(heredoc->file_name, line))
-				break ;
-			write(fd[1], line, ft_strlen(line));
-			write(fd[1], "\n", 1);
-			free(line);
-		}
-		close(fd[0]);
-		close(fd[1]);
-		exit(0);
-	}
-	waitpid(pid, &pid, 0);
-	if (WIFSIGNALED(pid))
-	{
-		write(1, "\n", 1);
-		last_exit = 1;
-		signal(SIGQUIT, signal_reset);
-		signal(SIGINT, signal_reset);
-		return (-1);
-	}
-	close(fd[1]);
-	heredoc->variation = fd[0];
-	return (0);
-}
-
-int	here_doc(t_redirect *heredoc)
-{
-	if (dup2(heredoc->variation, 0) == -1)
-	{
-		perror("dup2");
-		last_exit = 1;
-		exit(last_exit);
-	}
-	if (close(heredoc->variation) == -1)
-	{
-		perror("close");
-		last_exit = 1;
-		exit(last_exit);
-	}
-	return (0);
-}
-
-int	redirect_out(t_redirect *redirect)
+void	redirect_out(t_redirect *redirect)
 {
 	int	fd;
 
@@ -74,15 +30,17 @@ int	redirect_out(t_redirect *redirect)
 		last_exit = 1;
 		exit(last_exit);
 	}
-	return (0);
 }
 
-int	redirect_in(t_redirect *redirect)
+void	redirect_in(t_redirect *redirect)
 {
 	int	fd;
 
 	if (redirect->variation)
-		return (here_doc(redirect));
+	{
+		here_doc(redirect);
+		return ;
+	}
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1 || dup2(fd, 0) == -1 || close(fd) == -1)
 	{
@@ -94,15 +52,14 @@ int	redirect_in(t_redirect *redirect)
 		last_exit = 1;
 		exit(last_exit);
 	}
-	return (0);
 }
 
-int	try_open(t_redirect *redirect)
+void	try_open(t_redirect *redirect)
 {	
 	int	fd;
 
 	if (redirect->variation)
-		return (0);
+		return ;
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1)
 	{
@@ -114,7 +71,6 @@ int	try_open(t_redirect *redirect)
 		last_exit = 1;
 		exit(last_exit);
 	}
-	return (0);
 }
 
 int	creat_trunc_file(char *file_name)
@@ -124,32 +80,31 @@ int	creat_trunc_file(char *file_name)
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		ft_putstr_fd(strerror(errno), 1);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(file_name, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		write(2, "\n", 1);
 		last_exit = 1;
 		exit(last_exit);
 	}
 	return (0);
 }
 
-int	redirect(t_cmd *cmd)
+void	redirect(t_cmd *cmd)
 {
 	while (cmd->in && cmd->in->next)
 	{
-		if (try_open(cmd->in))
-			return (-1);
+		try_open(cmd->in);
 		cmd->in = cmd->in->next;
 	}
 	if (cmd->in)
-		if (redirect_in(cmd->in))
-			return (-1);
+		redirect_in(cmd->in);
 	while (cmd->out && cmd->out->next)
 	{
-		if (creat_trunc_file(cmd->out->file_name))
-			return (-1);
+		creat_trunc_file(cmd->out->file_name);
 		cmd->out = cmd->out->next;
 	}
 	if (cmd->out)
-		if (redirect_out(cmd->out))
-			return (-1);
-	return (0);
+		redirect_out(cmd->out);
 }

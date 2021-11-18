@@ -1,51 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/18 17:21:55 by lubourre          #+#    #+#             */
+/*   Updated: 2021/11/18 18:33:20 by lubourre         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-inline static char	*copy_name(char *str, t_shell *shell)
-{
-	register int	i;
-	char			*ptr;
-
-	i = 0;
-	while ((str[i] != '+' || str[i] != '=') && str[i])
-		i++;
-	ptr = ft_malloc(i + 1, &shell->to_free);
-	if (!ptr)
-		return (ptr);
-	i = -1;
-	while (str[++i] != '=' && str[i] != '+' && str[i])
-		ptr[i] = str[i];
-	ptr[i] = 0;
-	return (ptr);
-}
-
-inline static char	*copy_value(char *str, t_shell *shell)
-{
-	register int	i;
-	register int	j;
-	char			*ptr;
-
-	i = 0;
-	j = 0;
-	while (str[i] != '=' && str[i])
-		i++;
-	while (str[i + j])
-		j++;
-	if (j == 0)
-		return (NULL);
-	i++;
-	ptr = ft_malloc(j + 1, &shell->to_free);
-	if (ptr)
-	{
-		j = 0;
-		while (str[i + j])
-		{
-			ptr[j] = str[i + j];
-			j++;
-		}
-		ptr[j] = 0;
-	}
-	return (ptr);
-}
 
 static int	is_equal_concatenate(char *str)
 {
@@ -101,17 +66,9 @@ void	update_env_value(t_shell *shell, char **arg)
 	}
 }
 
-t_envlst	*find_in_list(char *str, t_envlst *ptr)
-{
-	while (ptr && ft_strcmp(ptr->name, str))
-		ptr = ptr->next;
-	return (ptr);
-}
-
 void	new_env_elem(char *str, t_shell *shell)
 {
 	t_envlst	*ptr;
-	t_envlst	*save;
 
 	if ((str[0] >= '0' && str[0] <= '9') || str[0] == '=' || str[0] == '+')
 	{
@@ -121,19 +78,7 @@ void	new_env_elem(char *str, t_shell *shell)
 		last_exit = 1;
 		return ;
 	}
-	save = shell->env_var;
-	if (save)
-	{
-		while (save->next)
-			save = save->next;
-		ptr = (t_envlst *)ft_malloc(sizeof(t_envlst), &(shell->to_free));
-		save->next = ptr;
-	}
-	else
-	{
-		ptr = (t_envlst *)ft_malloc(sizeof(t_envlst), &(shell->to_free));
-		shell->env_var = ptr;
-	}
+	ptr = (t_envlst *)ft_malloc(sizeof(t_envlst), &(shell->to_free));
 	if (ptr)
 	{
 		ptr->name = copy_name(str, shell);
@@ -142,6 +87,10 @@ void	new_env_elem(char *str, t_shell *shell)
 	}
 	if (!ptr || !ptr->name)
 		ft_exit(shell->to_free);
+	if (shell->env_var)
+		last_lst_elem(shell->env_var)->next = ptr;
+	else
+		shell->env_var = ptr;
 }
 
 void	remove_env_elem(char **arg, t_shell *shell)
@@ -161,16 +110,12 @@ void	remove_env_elem(char **arg, t_shell *shell)
 			last_exit = 1;
 		}
 		ptr = shell->env_var;
-		if (!ptr)
-			return ;
-		if (!ft_strcmp(ptr->name, arg[i]))
+		if (ptr && !ft_strcmp(ptr->name, arg[i]))
 			shell->env_var = ptr->next;
-		while (ptr->next)
+		while (ptr && ptr->next)
 		{
 			if (!ft_strcmp(ptr->next->name, arg[i]))
-			{
 				ptr->next = ptr->next->next;
-			}
 			ptr = ptr->next;
 		}
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:48:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:57:23 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/18 17:50:21 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		write(2, "ERROR YOU CAN'T MESS WITH ME !\n", 32);
 		return (-1);
-	}	
+	}
 	if (init_shell(&shell, envp) == -1)
 		return (-1);
 	(void)ac;

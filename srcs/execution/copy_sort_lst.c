@@ -1,17 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   copy_sort_lst.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/18 13:34:55 by lubourre          #+#    #+#             */
+/*   Updated: 2021/11/18 18:26:37 by lubourre         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-int	size_list(t_envlst *lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}
 
 char	**lst_to_str(t_shell *shell)
 {
@@ -22,7 +21,8 @@ char	**lst_to_str(t_shell *shell)
 
 	i = 0;
 	lst = shell->env_var;
-	ret = (char **)ft_malloc(sizeof(char *) * (size_list(lst) + 1), &shell->to_free);
+	ret = (char **)ft_malloc(sizeof(char *) * \
+	(size_list(lst) + 1), &shell->to_free);
 	if (!ret)
 		return (NULL);
 	while (lst)
@@ -80,7 +80,7 @@ static inline t_envlst	*copy_elem(t_envlst *lst, t_shell *shell)
 	return (new);
 }
 
-t_envlst	*copy_sorted_list(t_envlst *lst, t_shell * shell)
+t_envlst	*copy_sorted_list(t_envlst *lst, t_shell *shell)
 {
 	t_envlst	*sorted;
 	t_envlst	*ptr;
