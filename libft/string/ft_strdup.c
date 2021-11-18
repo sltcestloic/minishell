@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 14:37:10 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/03 14:29:16 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/18 09:26:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_strdup(const char *src, t_free *to_free)
 char	*ft_strdup_g(const char *src)
 {
 	char	*dest;
-	
+
 	dest = malloc(sizeof(char) * ft_strlen(src) + 1);
 	if (!dest)
 		return (NULL);

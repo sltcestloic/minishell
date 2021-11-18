@@ -6,7 +6,7 @@
 #    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/11/17 09:06:19 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/11/18 09:27:32 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,6 @@ SRCS		=	char/ft_isalnum.c \
 				print/ft_putnbr_fd.c \
 				print/ft_putstr_fd.c \
 				string/ft_split.c \
-				string/ft_split_nofree.c \
 				string/ft_strcat.c \
 				string/ft_strchr.c \
 				string/ft_strcmp.c \

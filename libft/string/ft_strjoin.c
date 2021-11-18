@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:26:41 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/03 14:29:20 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/18 09:27:10 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*ft_strjoin_g(const char *s1, const char *s2)
 	size_t	j;
 	size_t	len;
 	char	*ret;
-	
+
 	i = 0;
 	j = 0;
 	if (!s2)
