@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:26:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:30:44 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 11:55:21 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ char	**find_path(t_shell *shell)
 	char		**path;
 
 	ptr = find_in_list("PATH", shell->env_var);
-	path = 0;
-	if (ptr)
+	path = NULL;
+	if (ptr && ptr->value && ptr->value[0])
 	{
 		path = ft_split(ptr->value, ':', shell->to_free);
 		if (!path)
