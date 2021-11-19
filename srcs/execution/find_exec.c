@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 13:35:58 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 13:37:00 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:14:35 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	is_abs_path(char *str, t_shell *shell)
 
 int	check_access(char *str, char **denied)
 {
-	int ret;
+	int	ret;
 
 	ret = open(str, O_RDONLY);
 	if (ret == -1)
@@ -76,7 +76,8 @@ char	*make_path(char **path, char **function, t_shell *shell)
 	int		i;
 	int		ret;
 
-	i = (ret = 0);
+	i = 0;
+	ret = 0;
 	denied = NULL;
 	while (path[i])
 	{
@@ -94,32 +95,6 @@ char	*make_path(char **path, char **function, t_shell *shell)
 	if (ret == -1)
 		print_error(denied, ": Permision denied", 126);
 	return (NULL);
-}
-
-void	check_built_in(char **func, t_shell *shell)
-{
-	if (!ft_strcmp(func[0], "echo"))
-		echo(func);
-	else if (!ft_strcmp(func[0], "env"))
-		env(shell->env_var);
-	else if (!ft_strcmp(func[0], "export"))
-	{
-		if (!func[1])
-			export(shell->env_var, shell);
-		else if (func[1])
-			new_env_elem(func[1], shell);
-	}
-	else if (!ft_strcmp(func[0], "unset"))
-		remove_env_elem(func, shell);
-	else if (!ft_strcmp(func[0], "exit"))
-		exit_cmd(shell, func, 1);
-	else if (!ft_strcmp(func[0], "cd"))
-		change_pwd(shell, func[1]);
-	else if (!ft_strcmp(func[0], "pwd"))
-		pwd(shell);
-	else
-		return ;
-	exit(last_exit = 0);
 }
 
 void	to_exec(t_shell *shell, char **function)

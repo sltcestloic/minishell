@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:01:27 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:20:28 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 {
 	int	pid;
-	int already_sig;
+	int	already_sig;
 
 	already_sig = 0;
 	unset_term(shell);
@@ -65,7 +65,6 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 
 static void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
 {
-	int	pid;
 	if (in)
 	{
 		spawn_proc(in, 1, cmd, shell);
@@ -83,7 +82,7 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 	int	fd[2];
 
 	in = 0;
-	if (do_heredoc(cmd, shell) == -1)
+	if (do_heredoc(cmd) == -1)
 		return ;
 	while (cmd->next)
 	{

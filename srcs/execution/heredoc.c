@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:31:28 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:36:04 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:19:59 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	fork_here_doc(t_redirect *heredoc, int *fd)
 	exit(0);
 }
 
-int	parse_here_doc(t_redirect *heredoc, t_shell *shell)
+int	parse_here_doc(t_redirect *heredoc)
 {
 	int		pid;
 	int		fd[2];
@@ -71,7 +71,7 @@ void	here_doc(t_redirect *heredoc)
 	}
 }
 
-int	do_heredoc(t_cmd *cmd, t_shell *shell)
+int	do_heredoc(t_cmd *cmd)
 {
 	t_redirect	*i;
 
@@ -81,7 +81,7 @@ int	do_heredoc(t_cmd *cmd, t_shell *shell)
 		while (i)
 		{
 			if (cmd->in->variation)
-				if (parse_here_doc(i, shell))
+				if (parse_here_doc(i))
 					return (-1);
 			i = i->next;
 		}

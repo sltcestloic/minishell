@@ -6,12 +6,11 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:37:18 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:37:59 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:21:06 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	do_built_in(t_cmd *cmd, t_shell *shell)
 {
@@ -69,6 +68,7 @@ int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
 
 	in = dup(0);
 	out = dup(1);
+	ret = 0;
 	redirect(cmd);
 	if (cmd->value)
 		ret = do_built_in(cmd, shell);
@@ -77,4 +77,30 @@ int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
 	close(in);
 	close(out);
 	return (ret);
+}
+
+void	check_built_in(char **func, t_shell *shell)
+{
+	if (!ft_strcmp(func[0], "echo"))
+		echo(func);
+	else if (!ft_strcmp(func[0], "env"))
+		env(shell->env_var);
+	else if (!ft_strcmp(func[0], "export"))
+	{
+		if (!func[1])
+			export(shell->env_var, shell);
+		else if (func[1])
+			new_env_elem(func[1], shell);
+	}
+	else if (!ft_strcmp(func[0], "unset"))
+		remove_env_elem(func, shell);
+	else if (!ft_strcmp(func[0], "exit"))
+		exit_cmd(shell, func, 1);
+	else if (!ft_strcmp(func[0], "cd"))
+		change_pwd(shell, func[1]);
+	else if (!ft_strcmp(func[0], "pwd"))
+		pwd(shell);
+	else
+		return ;
+	exit(last_exit = 0);
 }

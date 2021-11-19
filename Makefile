@@ -87,7 +87,7 @@ RM			=	rm -f
 #===============================#
 
 CC			=	gcc
-CFLAGS		=	-g3
+CFLAGS		=	-Wall -Wextra -Werror
 
 #===============================#
 #             COLORS            #
