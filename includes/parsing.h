@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/19 14:43:45 by lbertran          #+#    #+#             */
+/*   Updated: 2021/11/19 14:43:58 by lbertran         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 # include "exec.h"
@@ -51,7 +63,8 @@ int			is_redirect(char *str, int *i);
 t_redirect	*redirect_last(t_redirect *redirect);
 int			redirect_addback(t_redirect *redirect, int type, t_shell *shell);
 void		init_redirect(t_cmd *cmd, int type);
-int			set_file_name(t_shell *shell, t_redirect *redirect, char *input, int *i);
+int			set_file_name(t_shell *shell, t_redirect *redirect, \
+				char *input, int *i);
 
 /*
 ** Debug
