@@ -55,3 +55,4 @@ Module.symvers
 
 # Minishell
 minishell
+leaks_loop.sh
