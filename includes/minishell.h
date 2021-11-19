@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:55:52 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/19 14:55:53 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:57:41 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@
 # include <sys/wait.h>
 # include <sys/param.h>
 # include "exec.h"
-
-void	display_prompt(t_shell *shell);
 
 /*
 ** Utils
