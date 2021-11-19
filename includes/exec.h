@@ -1,16 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/19 14:54:38 by lbertran          #+#    #+#             */
+/*   Updated: 2021/11/19 14:55:47 by lbertran         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXEC_H
 # define EXEC_H
 
 # include <termios.h>
 
-extern int g_last_exit;
+extern int	g_last_exit;
 
 typedef struct s_redirect
 {
-	char *file_name;
-	struct s_redirect *next;
-	int variation;
-	int	quotes;
+	char				*file_name;
+	struct s_redirect	*next;
+	int					variation;
+	int					quotes;
 }	t_redirect;
 
 typedef struct s_fdsys
@@ -26,18 +38,17 @@ typedef struct s_envlst
 	struct s_envlst	*next;
 }	t_envlst;
 
-typedef struct	s_shell
+typedef struct s_shell
 {
 	t_fdsys			fdsys;
 	t_free			*to_free;
-	t_envlst 		*env_var;
+	t_envlst		*env_var;
 	char			*pwd;
 	char			**envp;
-	int 			to_close;
+	int				to_close;
 	struct termios	old;
 	struct termios	new;
-	
-}	t_shell;
+}				t_shell;
 
 typedef struct s_cmd
 {
@@ -65,7 +76,7 @@ void		change_pwd(t_shell *shell, char *str);
 void		set_env(char **envp, t_shell *shell);
 int			init_fd(t_shell *shell);
 
-t_envlst	*copy_sorted_list(t_envlst *lst, t_shell * shell);
+t_envlst	*copy_sorted_list(t_envlst *lst, t_shell *shell);
 t_envlst	*find_in_list(char *str, t_envlst *ptr);
 t_envlst	*last_lst_elem(t_envlst *lst);
 int			size_list(t_envlst *lst);
