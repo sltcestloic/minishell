@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:18:05 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:31:22 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	redirect_out(t_redirect *redirect)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 }
 
@@ -49,8 +49,8 @@ void	redirect_in(t_redirect *redirect)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 }
 
@@ -68,8 +68,8 @@ void	try_open(t_redirect *redirect)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 }
 
@@ -85,8 +85,8 @@ int	creat_trunc_file(char *file_name)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 	return (0);
 }

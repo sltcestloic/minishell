@@ -32,5 +32,7 @@ void	cmd_free(t_cmd *cmd);
 int		cmd_last_type(t_cmd *cmd);
 t_cmd	*cmd_last(t_cmd *cmd);
 void	print_cmd(t_cmd *cmd);
+void	set_term(t_shell *shell);
+void	unset_term(t_shell *shell);
 
 #endif

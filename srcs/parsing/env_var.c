@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:51 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 09:01:44 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*get_env_var(t_shell *shell, char *name, int quotes, int chrbfr)
 
 	lst = shell->env_var;
 	if (ft_strcmp(name, "?") == 0)
-		return (ft_itoa(last_exit, shell->to_free));
+		return (ft_itoa(g_last_exit, shell->to_free));
 	while (lst)
 	{
 		if (ft_strcmp(lst->name, name) == 0 && lst->value)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:56:28 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 17:59:44 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	go_home(t_shell *shell)
 		if (chdir(ptr->value) == -1)
 		{
 			write(2, "minishell: cd: incorrect HOME path\n", 28);
-			last_exit = 1;
+			g_last_exit = 1;
 		}
 	}
 	else
 	{
 		write(2, "minishell: cd: HOME not set\n", 28);
-		last_exit = 1;
+		g_last_exit = 1;
 	}
 }
 
@@ -55,12 +55,12 @@ void	change_pwd(t_shell *shell, char *str)
 	t_envlst	*ptr;
 	t_envlst	*oldptr;
 
-	last_exit = 0;
+	g_last_exit = 0;
 	if (str)
 	{
 		if (chdir(str) == -1 && write(2, "minishell: cd: ", 15))
 			perror(str);
-		last_exit = 1;
+		g_last_exit = 1;
 	}
 	else
 		go_home(shell);
@@ -78,6 +78,6 @@ void	change_pwd(t_shell *shell, char *str)
 
 void	pwd(t_shell *shell)
 {
-	last_exit = 0;
+	g_last_exit = 0;
 	printf("%s\n", shell->pwd);
 }

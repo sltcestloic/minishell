@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:02 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 13:37:22 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 
 static int	error(char *str)
 {
-	last_exit = 258;
+	g_last_exit = 258;
 	printf("%s", str);
 	return (0);
 }

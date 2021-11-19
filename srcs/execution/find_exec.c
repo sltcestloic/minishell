@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 13:35:58 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:14:35 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static inline void	exec_it(char *test, char **function, t_shell *shell)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		perror(function[0]);
-		last_exit = 127;
+		g_last_exit = 127;
 		exit (127);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:09 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 13:34:38 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static void	substitution(t_shell *shell, t_cmd *cmd)
 			if ((tmp->out && !tmp->out->file_name)
 				|| (tmp->in && !tmp->in->file_name))
 			{
-				last_exit = 258;
+				g_last_exit = 258;
 				printf("minishell: invalid input: bad redirect.\n");
 				return ;
 			}

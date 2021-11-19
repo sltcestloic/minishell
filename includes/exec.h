@@ -3,7 +3,7 @@
 
 # include <termios.h>
 
-extern int last_exit;
+extern int g_last_exit;
 
 typedef struct s_redirect
 {
