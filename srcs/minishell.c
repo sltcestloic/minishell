@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:48:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/19 14:42:13 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:47:50 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,6 @@ static int	is_valid_input(char *input)
 	return (0);
 }
 
-static int	is_duplicate(char *str)
-{
-	HIST_ENTRY	*entry;
-
-	entry = previous_history();
-	if (!entry || !entry->line || !str)
-		return (0);
-	return (ft_strcmp(entry->line, str) == 0);
-}
-
 int	atty_check(void)
 {
 	if (!isatty(0) || !isatty(1) || !isatty(2))
@@ -88,8 +78,7 @@ int	main(int ac, char **av, char **envp)
 			parse_input("exit", shell);
 		if (is_valid_input(input))
 			parse_input(input, shell);
-		if (!is_duplicate(input))
-			add_history(input);
+		add_history(input);
 		free(input);
 	}
 }
