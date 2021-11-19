@@ -50,17 +50,19 @@ typedef struct s_cmd
 }	t_cmd;
 
 void		ft_exit(t_free *to_free);
+
 void		echo(char **str);
 void		env(t_envlst *env_lst);
 void		export(t_envlst *env_lst, t_shell *shell);
-void		set_env(char **envp, t_shell *shell);
 void		new_env_elem(char *str, t_shell *shell);
 void		remove_env_elem(char **arg, t_shell *shell);
-t_envlst	*find_in_list(char *str, t_envlst *ptr);
-t_envlst	*copy_sorted_list(t_envlst *lst, t_shell * shell);
+
 void		set_pwd(t_shell *shell);
 void		change_pwd(t_shell *shell, char *str);
 void		pwd(t_shell *shell);
+
+void		set_env(char **envp, t_shell *shell);
+t_envlst	*copy_sorted_list(t_envlst *lst, t_shell * shell);
 void		exit_cmd(t_shell *shell, char **arg, int is_pipe);
 void		to_exec(t_shell *shell, char **function);
 void		redirect(t_cmd *cmd);
@@ -83,7 +85,7 @@ char		**find_path(t_shell *shell);
 int			size_list(t_envlst *lst);
 char		*copy_name(char *str, t_shell *shell);
 char		*copy_value(char *str, t_shell *shell);
-void		signal_handle(int pid);
+int			signal_handle(int pid);
 int			is_built_in(t_cmd *cmd);
 int			redirect_to_built_in(t_cmd *cmd, t_shell *shell);
 

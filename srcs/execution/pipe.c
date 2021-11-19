@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:37:07 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:01:27 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 {
 	int	pid;
+	int already_sig;
 
+	already_sig = 0;
 	unset_term(shell);
 	signal(SIGQUIT, signal_reset);
 	signal(SIGINT, signal_reset);
@@ -54,20 +56,20 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	{
 		waitpid(pid, &pid, 0);
 		last_exit = WEXITSTATUS(pid);
-		signal_handle(pid);
+		already_sig = signal_handle(pid);
+		while (waitpid(-1, &pid, 0) != -1)
+			if (!already_sig)
+				already_sig = signal_handle(pid);
 	}
 }
 
 static void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
 {
 	int	pid;
-
 	if (in)
 	{
 		spawn_proc(in, 1, cmd, shell);
 		close(in);
-		while (waitpid(-1, &pid, 0) != -1)
-			signal_handle(pid);
 	}
 	else if (is_built_in(cmd))
 		redirect_to_built_in(cmd, shell);
