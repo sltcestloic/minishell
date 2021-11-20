@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:02 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:18:52 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 	tmp = cmd;
 	while (tmp)
 	{
-		if (!tmp->value && !tmp->in && !tmp->out)
+		if (!tmp->value && !tmp->redirect)
 			return (error("minishell: invalid command\n"));
 		if (!tmp->value)
 		{

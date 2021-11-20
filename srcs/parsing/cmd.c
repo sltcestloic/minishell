@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:48 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:46:50 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:19:23 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	add_new_cmd(t_cmd *cmd, t_shell *shell)
 
 	new_cmd = (t_cmd *)ft_malloc(sizeof(t_cmd), &shell->to_free);
 	new_cmd->next = NULL;
-	new_cmd->in = NULL;
-	new_cmd->out = NULL;
+	new_cmd->redirect = NULL;
 	new_cmd->value = NULL;
 	new_cmd->shell = shell;
 	if (!new_cmd)

@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:57 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:46:58 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:19:11 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,8 @@ static int	do_substitute(t_shell *shell, t_redirect *redirect)
 
 int	substitute_redirect_quotes(t_shell *shell, t_cmd *cmd)
 {
-	if (cmd->in)
-		if (!do_substitute(shell, cmd->in))
-			return (0);
-	if (cmd->out)
-		if (!do_substitute(shell, cmd->out))
+	if (cmd->redirect)
+		if (!do_substitute(shell, cmd->redirect))
 			return (0);
 	return (1);
 }
