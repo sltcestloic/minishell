@@ -6,19 +6,20 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:53 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/20 16:15:13 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:30:24 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
-								t_redirect **redirect)
+void	init_redirect_by_type(t_cmd *cmd, int type, int *init)
 {
 	if (!cmd->redirect)
 	{
 		cmd->redirect = (t_redirect *)ft_malloc(
 					sizeof(t_redirect), &cmd->shell->to_free);
+		if (!cmd->redirect)
+			ft_malloc_error(cmd->shell->to_free);
 		cmd->redirect->file_name = NULL;
 		cmd->redirect->next = NULL;
 		cmd->redirect->type = type;
@@ -28,15 +29,12 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 
 int	init_redirect_io(t_cmd *cmd, int type)
 {
-	t_redirect	*redirect;
 	int			init;
 
 	init = 0;
-	init_redirect_by_type(cmd, type, &init, &redirect);
-	if (!redirect)
-		ft_malloc_error(cmd->shell->to_free);
+	init_redirect_by_type(cmd, type, &init);
 	if (!init)
-		redirect_addback(redirect, type, cmd->shell);
+		redirect_addback(cmd->redirect, type, cmd->shell);
 	return (1);
 }
 

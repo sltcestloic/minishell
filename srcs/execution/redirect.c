@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:18:05 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:25:40 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	redirect_out(t_redirect *redirect)
 {
 	int	fd;
 
-	if (redirect->variation)
+	if (redirect->type == APPEND || redirect->type == HEREDOC)
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -36,7 +36,7 @@ void	redirect_in(t_redirect *redirect)
 {
 	int	fd;
 
-	if (redirect->variation)
+	if (redirect->type == APPEND || redirect->type == HEREDOC)
 	{
 		here_doc(redirect);
 		return ;
@@ -58,7 +58,7 @@ void	try_open(t_redirect *redirect)
 {	
 	int	fd;
 
-	if (redirect->variation)
+	if (redirect->type == APPEND || redirect->type == HEREDOC)
 		return ;
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1)
@@ -93,18 +93,22 @@ int	creat_trunc_file(char *file_name)
 
 void	redirect(t_cmd *cmd)
 {
-	while (cmd->in && cmd->in->next)
+	while (cmd->redirect && cmd->redirect->next)
 	{
-		try_open(cmd->in);
-		cmd->in = cmd->in->next;
+		if (cmd->redirect->type == REDIRECT_IN)
+		{
+			try_open(cmd->redirect);
+		}
+		else if (cmd->redirect->type == REDIRECT_OUT)
+			creat_trunc_file(cmd->redirect->file_name);
+		cmd->redirect = cmd->redirect->next;
+
 	}
-	if (cmd->in)
-		redirect_in(cmd->in);
-	while (cmd->out && cmd->out->next)
+	if (cmd->redirect)
 	{
-		creat_trunc_file(cmd->out->file_name);
-		cmd->out = cmd->out->next;
+		if (cmd->redirect->type == REDIRECT_IN)
+			redirect_in(cmd->redirect);
+		else if (cmd->redirect->type == REDIRECT_OUT)
+			redirect_out(cmd->redirect);
 	}
-	if (cmd->out)
-		redirect_out(cmd->out);
 }
