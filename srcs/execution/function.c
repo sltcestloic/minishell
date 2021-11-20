@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:43:59 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:30:36 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	echo(char **str)
 
 	option = 0;
 	i = 1;
-	last_exit = 0;
+	g_last_exit = 0;
 	while (str[i] && (str[i][0] == '-' && str[i][1]))
 	{
 		j = 1;
@@ -43,7 +43,7 @@ void	echo(char **str)
 
 void	env(t_envlst *lst)
 {
-	last_exit = 0;
+	g_last_exit = 0;
 	while (lst)
 	{
 		if (lst->value)
@@ -59,7 +59,7 @@ void	export(t_envlst *lst, t_shell *shell)
 {
 	t_envlst	*sorted;
 
-	last_exit = 0;
+	g_last_exit = 0;
 	if (lst)
 	{
 		sorted = copy_sorted_list(lst, shell);
@@ -109,13 +109,13 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 {
 	unsigned long	ret;
 
-	ret = last_exit;
+	ret = g_last_exit;
 	if (!is_pipe)
 		write(2, "exit\n", 5);
 	if (arg[1] && arg[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		last_exit = 1;
+		g_last_exit = 1;
 		return ;
 	}
 	if (arg[1])

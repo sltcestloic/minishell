@@ -6,13 +6,13 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:48:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/19 14:33:59 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 17:03:25 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	last_exit = 0;
+int	g_last_exit = 0;
 
 inline static int	init_shell(t_shell **shell, char **envp)
 {
@@ -45,17 +45,14 @@ static int	is_valid_input(char *input)
 	return (0);
 }
 
-void	set_term(t_shell *shell)
+int	atty_check(void)
 {
-	tcgetattr(0, &shell->new);
-	shell->new.c_lflag &= ~ECHOCTL;
-	shell->new.c_cc[VQUIT] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &shell->new);
-}
-
-void	unset_term(t_shell *shell)
-{
-	tcsetattr(STDIN_FILENO, TCSANOW, &shell->old);
+	if (!isatty(0) || !isatty(1) || !isatty(2))
+	{
+		write(2, "ERROR YOU CAN'T MESS WITH ME !\n", 32);
+		return (0);
+	}
+	return (1);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -63,11 +60,8 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	t_shell	*shell;
 
-	if (!isatty(0) || !isatty(1) || !isatty(2))
-	{
-		write(2, "ERROR YOU CAN'T MESS WITH ME !\n", 32);
+	if (!atty_check())
 		return (-1);
-	}
 	if (init_shell(&shell, envp) == -1)
 		return (-1);
 	(void)ac;

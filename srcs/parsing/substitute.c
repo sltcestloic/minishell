@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:02 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 13:37:22 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:18:52 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	substitute_quotes(t_shell *shell, t_cmd *cmd)
 
 static int	error(char *str)
 {
-	last_exit = 258;
+	g_last_exit = 258;
 	printf("%s", str);
 	return (0);
 }
@@ -79,7 +79,7 @@ int	substitute(t_shell *shell, t_cmd *cmd)
 	tmp = cmd;
 	while (tmp)
 	{
-		if (!tmp->value && !tmp->in && !tmp->out)
+		if (!tmp->value && !tmp->redirect)
 			return (error("minishell: invalid command\n"));
 		if (!tmp->value)
 		{

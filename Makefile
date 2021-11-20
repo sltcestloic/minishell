@@ -141,4 +141,4 @@ ${NAME}: ${OBJS}
 
 #            .PHONY             #
 
-.PHONY: all clean fclean re .c.o dirs
+.PHONY: all clean fclean re .c.o

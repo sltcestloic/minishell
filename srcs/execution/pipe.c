@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:20:28 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_error(char *cmd, char *msg, int exit_value)
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
-	exit(last_exit = exit_value);
+	exit(g_last_exit = exit_value);
 }
 
 void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
@@ -34,8 +34,8 @@ void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 	redirect(cmd);
 	if (cmd->value)
 		to_exec(shell, cmd->value);
-	last_exit = 0;
-	exit(last_exit);
+	g_last_exit = 0;
+	exit(g_last_exit);
 }
 
 void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
@@ -55,7 +55,7 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	if (out == 1)
 	{
 		waitpid(pid, &pid, 0);
-		last_exit = WEXITSTATUS(pid);
+		g_last_exit = WEXITSTATUS(pid);
 		already_sig = signal_handle(pid);
 		while (waitpid(-1, &pid, 0) != -1)
 			if (!already_sig)

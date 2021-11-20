@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:45:53 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:45:55 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:40:25 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,17 @@ int	is_quote(char c)
 int	is_sep(char c)
 {
 	return (c == '>' || c == '<' || c == '|' || ft_iswhitespace(c));
+}
+
+void	set_term(t_shell *shell)
+{
+	tcgetattr(0, &shell->new);
+	shell->new.c_lflag &= ~ECHOCTL;
+	shell->new.c_cc[VQUIT] = 0;
+	tcsetattr(STDIN_FILENO, TCSANOW, &shell->new);
+}
+
+void	unset_term(t_shell *shell)
+{
+	tcsetattr(STDIN_FILENO, TCSANOW, &shell->old);
 }

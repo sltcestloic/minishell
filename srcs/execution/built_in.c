@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:37:18 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:21:06 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,5 @@ void	check_built_in(char **func, t_shell *shell)
 		pwd(shell);
 	else
 		return ;
-	exit(last_exit = 0);
+	exit(g_last_exit = 0);
 }

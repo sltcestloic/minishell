@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:31:28 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:19:59 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:26:45 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,29 @@ int	parse_here_doc(t_redirect *heredoc)
 	if (WIFSIGNALED(pid))
 	{
 		write(1, "\n", 1);
-		last_exit = 1;
+		g_last_exit = 1;
 		signal(SIGQUIT, signal_reset);
 		signal(SIGINT, signal_reset);
 		return (-1);
 	}
 	close(fd[1]);
-	heredoc->variation = fd[0];
+	heredoc->type = fd[0];
 	return (0);
 }
 
 void	here_doc(t_redirect *heredoc)
 {
-	if (dup2(heredoc->variation, 0) == -1)
+	if (dup2(heredoc->type, 0) == -1)
 	{
 		perror("dup2");
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
-	if (close(heredoc->variation) == -1)
+	if (close(heredoc->type) == -1)
 	{
 		perror("close");
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 }
 
@@ -77,10 +77,10 @@ int	do_heredoc(t_cmd *cmd)
 
 	while (cmd)
 	{
-		i = cmd->in;
+		i = cmd->redirect;
 		while (i)
 		{
-			if (cmd->in->variation)
+			if (cmd->redirect->type == HEREDOC)
 				if (parse_here_doc(i))
 					return (-1);
 			i = i->next;

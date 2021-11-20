@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:21:55 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:33:20 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	update_env_value(t_shell *shell, char **arg)
 			ft_putstr_fd("minishell: export: ", 2);
 			ft_putstr_fd(arg[i], 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
-			last_exit = 1;
+			g_last_exit = 1;
 		}
 		else if (item && is_equal_concatenate(arg[i]) == 1)
 			item->value = copy_value(arg[i], shell);
@@ -75,7 +75,7 @@ void	new_env_elem(char *str, t_shell *shell)
 		ft_putstr_fd("minishell: export: ", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": not a valid identifier\n", 2);
-		last_exit = 1;
+		g_last_exit = 1;
 		return ;
 	}
 	ptr = (t_envlst *)ft_malloc(sizeof(t_envlst), &(shell->to_free));
@@ -107,7 +107,7 @@ void	remove_env_elem(char **arg, t_shell *shell)
 			ft_putstr_fd("minishell: export: ", 2);
 			ft_putstr_fd(arg[i], 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
-			last_exit = 1;
+			g_last_exit = 1;
 		}
 		ptr = shell->env_var;
 		if (ptr && !ft_strcmp(ptr->name, arg[i]))

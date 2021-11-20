@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:18:05 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:31:22 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 17:03:10 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	redirect_out(t_redirect *redirect)
 {
 	int	fd;
 
-	if (redirect->variation)
+	if (redirect->type == APPEND || redirect->type == HEREDOC)
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -27,8 +27,8 @@ void	redirect_out(t_redirect *redirect)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 }
 
@@ -36,7 +36,7 @@ void	redirect_in(t_redirect *redirect)
 {
 	int	fd;
 
-	if (redirect->variation)
+	if (redirect->type == APPEND || redirect->type == HEREDOC)
 	{
 		here_doc(redirect);
 		return ;
@@ -49,8 +49,8 @@ void	redirect_in(t_redirect *redirect)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 }
 
@@ -58,7 +58,7 @@ void	try_open(t_redirect *redirect)
 {	
 	int	fd;
 
-	if (redirect->variation)
+	if (redirect->type == APPEND || redirect->type == HEREDOC)
 		return ;
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1)
@@ -68,8 +68,8 @@ void	try_open(t_redirect *redirect)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 }
 
@@ -85,26 +85,37 @@ int	creat_trunc_file(char *file_name)
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		write(2, "\n", 1);
-		last_exit = 1;
-		exit(last_exit);
+		g_last_exit = 1;
+		exit(g_last_exit);
 	}
 	return (0);
 }
 
 void	redirect(t_cmd *cmd)
 {
-	while (cmd->in && cmd->in->next)
+	t_redirect *in;
+	t_redirect *out;
+
+	in = NULL;
+	out = NULL;
+	while (cmd->redirect)
 	{
-		try_open(cmd->in);
-		cmd->in = cmd->in->next;
+		if (cmd->redirect->type == REDIRECT_IN)
+		{
+			if (in)
+				try_open(in);
+			in = cmd->redirect;
+		}
+		else if (cmd->redirect->type == REDIRECT_OUT)
+		{
+			if (out)
+				creat_trunc_file(out->file_name);
+			out = cmd->redirect;
+		}
+		cmd->redirect = cmd->redirect->next;
 	}
-	if (cmd->in)
-		redirect_in(cmd->in);
-	while (cmd->out && cmd->out->next)
-	{
-		creat_trunc_file(cmd->out->file_name);
-		cmd->out = cmd->out->next;
-	}
-	if (cmd->out)
-		redirect_out(cmd->out);
+	if (in)
+		redirect_in(in);
+	else if (out)
+		redirect_out(out);
 }

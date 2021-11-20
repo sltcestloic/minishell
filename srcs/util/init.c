@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:45:51 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:45:52 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:19:32 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ t_cmd	*init_cmd(t_shell *shell)
 	if (!ret)
 		ft_malloc_error(shell->to_free);
 	ret->next = NULL;
-	ret->in = NULL;
-	ret->out = NULL;
+	ret->redirect = NULL;
 	ret->value = NULL;
 	ret->quotes = 0;
 	ret->shell = shell;

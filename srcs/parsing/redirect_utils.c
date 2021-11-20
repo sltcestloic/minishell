@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:55 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:46:56 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:31:19 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ int	redirect_addback(t_redirect *redirect, int type, t_shell *shell)
 	tmp->next = (t_redirect *)ft_malloc(sizeof(t_redirect), &shell->to_free);
 	if (!tmp->next)
 		ft_malloc_error(shell->to_free);
-	if (type == 2 || type == 4)
-		tmp->next->variation = TRUE;
-	else
-		tmp->next->variation = FALSE;
+	tmp->next->type = type;
 	tmp->next->next = NULL;
 	return (1);
 }
@@ -46,9 +43,9 @@ int	is_redirect(char *str, int *i)
 		if (str[*i] == '>')
 		{
 			(*i)++;
-			return (2);
+			return (APPEND);
 		}
-		return (1);
+		return (REDIRECT_OUT);
 	}
 	else if (str[*i] == '<')
 	{
@@ -56,9 +53,9 @@ int	is_redirect(char *str, int *i)
 		if (str[*i] == '<')
 		{
 			(*i)++;
-			return (4);
+			return (HEREDOC);
 		}
-		return (3);
+		return (REDIRECT_IN);
 	}
 	return (0);
 }

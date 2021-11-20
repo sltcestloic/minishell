@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:09 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 13:34:38 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:16:14 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,7 @@ int	count_args(char *input)
 static int	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
 {
 	init_redirect(cmd_last(cmd), parser->redirect);
-	if (parser->redirect < 3)
-		return (set_file_name(cmd->shell, cmd_last(cmd)->out, input, i));
-	else
-		return (set_file_name(cmd->shell, cmd_last(cmd)->in, input, i));
+	return (set_file_name(cmd->shell, cmd_last(cmd)->redirect, input, i));
 }
 
 static void	handle_cmd(char *input, t_cmd *cmd, int *i, t_shell *shell)
@@ -115,10 +112,9 @@ static void	substitution(t_shell *shell, t_cmd *cmd)
 	{
 		while (tmp)
 		{
-			if ((tmp->out && !tmp->out->file_name)
-				|| (tmp->in && !tmp->in->file_name))
+			if (tmp->redirect && !tmp->redirect->file_name)
 			{
-				last_exit = 258;
+				g_last_exit = 258;
 				printf("minishell: invalid input: bad redirect.\n");
 				return ;
 			}
