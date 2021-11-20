@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:54:38 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/19 14:55:47 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:14:25 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_redirect
 {
 	char				*file_name;
 	struct s_redirect	*next;
-	int					variation;
+	int					type;
 	int					quotes;
 }	t_redirect;
 
@@ -54,8 +54,7 @@ typedef struct s_cmd
 {
 	char			**value;
 	struct s_cmd	*next;
-	t_redirect		*in;
-	t_redirect		*out;
+	t_redirect		*redirect;
 	int				quotes;
 	t_shell			*shell;
 }	t_cmd;

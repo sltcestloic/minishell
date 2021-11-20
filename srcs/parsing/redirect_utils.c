@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:55 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:46:56 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:15:33 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@ int	redirect_addback(t_redirect *redirect, int type, t_shell *shell)
 	tmp->next = (t_redirect *)ft_malloc(sizeof(t_redirect), &shell->to_free);
 	if (!tmp->next)
 		ft_malloc_error(shell->to_free);
-	if (type == 2 || type == 4)
-		tmp->next->variation = TRUE;
-	else
-		tmp->next->variation = FALSE;
 	tmp->next->next = NULL;
 	return (1);
 }

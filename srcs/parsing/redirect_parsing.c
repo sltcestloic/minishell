@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:53 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/17 08:46:54 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:15:13 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,15 @@
 void	init_redirect_by_type(t_cmd *cmd, int type, int *init,
 								t_redirect **redirect)
 {
-	if (type < 3)
+	if (!cmd->redirect)
 	{
-		if (!cmd->out)
-		{
-			cmd->out = (t_redirect *)ft_malloc(
+		cmd->redirect = (t_redirect *)ft_malloc(
 					sizeof(t_redirect), &cmd->shell->to_free);
-			cmd->out->file_name = NULL;
-			cmd->out->next = NULL;
-			*init = 1;
-		}
-		*redirect = cmd->out;
+		cmd->redirect->file_name = NULL;
+		cmd->redirect->next = NULL;
+		cmd->redirect->type = type;
+		*init = 1;
 	}
-	else
-	{
-		if (!cmd->in)
-		{
-			cmd->in = (t_redirect *)ft_malloc(
-					sizeof(t_redirect), &cmd->shell->to_free);
-			cmd->in->file_name = NULL;
-			cmd->in->next = NULL;
-			*init = 1;
-		}
-		*redirect = cmd->in;
-	}
-	(*redirect)->variation = 0;
 }
 
 int	init_redirect_io(t_cmd *cmd, int type)
@@ -51,8 +35,6 @@ int	init_redirect_io(t_cmd *cmd, int type)
 	init_redirect_by_type(cmd, type, &init, &redirect);
 	if (!redirect)
 		ft_malloc_error(cmd->shell->to_free);
-	if (type == 2 || type == 4)
-		redirect->variation = 1;
 	if (!init)
 		redirect_addback(redirect, type, cmd->shell);
 	return (1);
