@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:18:05 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/20 17:03:10 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 18:03:41 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void	redirect_out(t_redirect *redirect)
 {
-	int	fd;
+	int			fd;
 
-	if (redirect->type == APPEND || redirect->type == HEREDOC)
+	if (!redirect)
+		return ;
+	if (redirect->type == APPEND)
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -36,7 +38,9 @@ void	redirect_in(t_redirect *redirect)
 {
 	int	fd;
 
-	if (redirect->type == APPEND || redirect->type == HEREDOC)
+	if (!redirect)
+		return ;
+	if (redirect->type == HEREDOC)
 	{
 		here_doc(redirect);
 		return ;
@@ -58,7 +62,7 @@ void	try_open(t_redirect *redirect)
 {	
 	int	fd;
 
-	if (redirect->type == APPEND || redirect->type == HEREDOC)
+	if (redirect->type == HEREDOC)
 		return ;
 	fd = open(redirect->file_name, O_RDWR, 0644);
 	if (fd == -1)
@@ -91,31 +95,28 @@ int	creat_trunc_file(char *file_name)
 	return (0);
 }
 
-void	redirect(t_cmd *cmd)
+void	redirect(t_cmd *cmd, t_redirect	*in, t_redirect	*out)
 {
-	t_redirect *in;
-	t_redirect *out;
+	int			last;
 
-	in = NULL;
-	out = NULL;
 	while (cmd->redirect)
 	{
-		if (cmd->redirect->type == REDIRECT_IN)
+		if (cmd->redirect->type == REDIRECT_IN || cmd->redirect->type == HEREDOC)
 		{
 			if (in)
 				try_open(in);
 			in = cmd->redirect;
+			last = 0;
 		}
-		else if (cmd->redirect->type == REDIRECT_OUT)
+		else if (cmd->redirect->type == REDIRECT_OUT || cmd->redirect->type == APPEND)
 		{
 			if (out)
 				creat_trunc_file(out->file_name);
 			out = cmd->redirect;
+			last = 1;
 		}
 		cmd->redirect = cmd->redirect->next;
 	}
-	if (in)
-		redirect_in(in);
-	else if (out)
-		redirect_out(out);
+	last && redirect_in(in) && redirect_out(out)
+		|| redirect_out(out) && redirect_out(out);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:31:28 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/20 16:26:45 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 17:45:52 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,19 @@ int	parse_here_doc(t_redirect *heredoc)
 		return (-1);
 	}
 	close(fd[1]);
-	heredoc->type = fd[0];
+	heredoc->quotes = fd[0];
 	return (0);
 }
 
 void	here_doc(t_redirect *heredoc)
 {
-	if (dup2(heredoc->type, 0) == -1)
+	if (dup2(heredoc->quotes, 0) == -1)
 	{
 		perror("dup2");
 		g_last_exit = 1;
 		exit(g_last_exit);
 	}
-	if (close(heredoc->type) == -1)
+	if (close(heredoc->quotes) == -1)
 	{
 		perror("close");
 		g_last_exit = 1;
