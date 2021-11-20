@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:18:05 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/20 16:33:25 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:35:15 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	redirect(t_cmd *cmd)
 		else if (cmd->redirect->type == REDIRECT_OUT)
 			creat_trunc_file(cmd->redirect->file_name);
 		cmd->redirect = cmd->redirect->next;
-
 	}
 	if (cmd->redirect)
 	{

@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:53 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/20 16:30:24 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/20 16:35:06 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	init_redirect_by_type(t_cmd *cmd, int type, int *init)
 	if (!cmd->redirect)
 	{
 		cmd->redirect = (t_redirect *)ft_malloc(
-					sizeof(t_redirect), &cmd->shell->to_free);
+				sizeof(t_redirect), &cmd->shell->to_free);
 		if (!cmd->redirect)
 			ft_malloc_error(cmd->shell->to_free);
 		cmd->redirect->file_name = NULL;
