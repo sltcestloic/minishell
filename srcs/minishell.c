@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:48:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/20 17:03:25 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 13:55:31 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	main(int ac, char **av, char **envp)
 		set_term(shell);
 		input = readline("\e[0;92mminishell\e[0m$ ");
 		if (!input)
-			parse_input("exit", shell);
+			exit_cmd(shell, NULL, 0);
 		if (is_valid_input(input))
 			parse_input(input, shell);
 		add_history(input);
