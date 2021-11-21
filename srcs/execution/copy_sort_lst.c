@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_sort_lst.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 13:34:55 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:26:37 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 14:01:33 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ char	**lst_to_str(t_shell *shell)
 		return (NULL);
 	while (lst)
 	{
-		ret[i] = ft_strdup(lst->name, shell->to_free);
-		save = ft_strjoin(lst->name, "=", shell->to_free);
-		ret[i] = ft_strjoin(save, lst->value, shell->to_free);
+		if (lst->value)
+		{
+			ret[i] = ft_strdup(lst->name, shell->to_free);
+			save = ft_strjoin(lst->name, "=", shell->to_free);
+			ret[i] = ft_strjoin(save, lst->value, shell->to_free);
+			i++;
+		}
 		lst = lst->next;
-		i++;
 	}
 	ret[i] = NULL;
 	return (ret);

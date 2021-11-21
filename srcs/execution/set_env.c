@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:21:55 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 14:03:36 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	remove_env_elem(char **arg, t_shell *shell)
 		if ((arg[i][0] >= '0' && arg[i][0] <= '9') || arg[i][0] == '='\
 		|| arg[i][0] == '+' || arg[i][0] == '-')
 		{
-			ft_putstr_fd("minishell: export: ", 2);
+			ft_putstr_fd("minishell: unset: ", 2);
 			ft_putstr_fd(arg[i], 2);
 			ft_putstr_fd(": not a valid identifier\n", 2);
 			g_last_exit = 1;
