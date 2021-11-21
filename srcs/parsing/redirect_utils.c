@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:55 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/20 16:31:19 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 13:21:12 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	is_redirect(char *str, int *i)
 			(*i)++;
 			return (APPEND);
 		}
-		return (REDIRECT_OUT);
+		return (R_OUT);
 	}
 	else if (str[*i] == '<')
 	{
@@ -55,7 +55,7 @@ int	is_redirect(char *str, int *i)
 			(*i)++;
 			return (HEREDOC);
 		}
-		return (REDIRECT_IN);
+		return (R_IN);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:54:38 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/20 16:14:25 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 13:19:12 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_envlst	*last_lst_elem(t_envlst *lst);
 int			size_list(t_envlst *lst);
 
 void		to_exec(t_shell *shell, char **function);
-void		redirect(t_cmd *cmd);
+void		redirect(t_cmd *cmd, t_redirect *in, t_redirect *out);
 void		cmd_parse(t_cmd *cmd, t_shell *shell);
 char		**lst_to_str(t_shell *shell);
 

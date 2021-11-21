@@ -6,15 +6,15 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:43:45 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/20 16:19:59 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 13:20:59 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 # include "exec.h"
-# define REDIRECT_OUT 1
-# define REDIRECT_IN 3
+# define R_OUT 1
+# define R_IN 3
 # define APPEND 2
 # define HEREDOC 4
 

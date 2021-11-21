@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:18:05 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/20 18:03:41 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 13:20:53 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,20 +95,20 @@ int	creat_trunc_file(char *file_name)
 	return (0);
 }
 
-void	redirect(t_cmd *cmd, t_redirect	*in, t_redirect	*out)
+void	redirect(t_cmd *cmd, t_redirect *in, t_redirect *out)
 {
 	int			last;
 
 	while (cmd->redirect)
 	{
-		if (cmd->redirect->type == REDIRECT_IN || cmd->redirect->type == HEREDOC)
+		if (cmd->redirect->type == R_IN || cmd->redirect->type == HEREDOC)
 		{
 			if (in)
 				try_open(in);
 			in = cmd->redirect;
 			last = 0;
 		}
-		else if (cmd->redirect->type == REDIRECT_OUT || cmd->redirect->type == APPEND)
+		else if (cmd->redirect->type == R_OUT || cmd->redirect->type == APPEND)
 		{
 			if (out)
 				creat_trunc_file(out->file_name);
@@ -117,6 +117,9 @@ void	redirect(t_cmd *cmd, t_redirect	*in, t_redirect	*out)
 		}
 		cmd->redirect = cmd->redirect->next;
 	}
-	last && redirect_in(in) && redirect_out(out)
-		|| redirect_out(out) && redirect_out(out);
+	if (last)
+		redirect_in(in);
+	redirect_out(out);
+	if (!last)
+		redirect_in(in);
 }

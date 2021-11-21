@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 13:19:28 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 	if (out != 1)
 		if (dup2(out, 1))
 			close(out);
-	redirect(cmd);
+	redirect(cmd, NULL, NULL);
 	if (cmd->value)
 		to_exec(shell, cmd->value);
 	g_last_exit = 0;

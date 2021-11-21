@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:37:18 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/21 13:19:43 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
 	in = dup(0);
 	out = dup(1);
 	ret = 0;
-	redirect(cmd);
+	redirect(cmd, NULL, NULL);
 	if (cmd->value)
 		ret = do_built_in(cmd, shell);
 	dup2(in, 0);
