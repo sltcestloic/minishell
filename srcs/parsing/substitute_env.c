@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:21 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/23 12:51:39 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 14:19:24 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static char	*substitute_env_var(t_shell *shell, char *input,
 	if (var > 0)
 		ret = ft_strrdup(input, 0, var - 1, shell->to_free);
 	i = var + 1;
-	while (input[i] && is_var_char(input[i]) && input[i] != '$'
-		&& (!is_quote(input[i]) || input[i] == '?' || i == var))
+	while (input[i] && (is_var_char(input[i])
+		|| (input[i] == '?' && i == var + 1)))
 		i++;
 	var_name = ft_strrdup(input, var + 1, i - 1, shell->to_free);
 	new_var = get_env_var(shell, var_name, idx.j, idx.k);
