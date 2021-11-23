@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:09 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/23 12:58:45 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 13:02:10 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ static void	substitution(t_shell *shell, t_cmd *cmd)
 			redo_value(tmp);
 			tmp = tmp->next;
 		}
-		print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
 	}
 }
