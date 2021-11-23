@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:09 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/23 12:07:13 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 12:58:45 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	count_args(char *input)
 	return (result);
 }
 
-void	print_struct_debug(t_cmd *cmd)
+/* void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
 	t_redirect	*redirect;
@@ -67,7 +67,7 @@ void	print_struct_debug(t_cmd *cmd)
 		tmp = tmp->next;
 		count++;
 	}
-}
+} */
 static int	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
 {
 	init_redirect(cmd_last(cmd), parser->redirect);
