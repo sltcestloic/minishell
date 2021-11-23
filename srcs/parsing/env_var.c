@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:51 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/19 14:37:55 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 12:50:14 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,9 @@ t_index	has_env_var(char *input, t_shell *shell)
 	while (input[++idx.i])
 	{
 		quote_env_var(input, idx.i, parser);
-		if (input[idx.i] == '$' && !parser->s_quote)
+		if (input[idx.i] == '$'  && input[idx.i + 1]
+			&& (ft_isalnum(input[idx.i + 1]) || input[idx.i + 1] == '?')
+			&& !parser->s_quote)
 		{
 			idx.j = parser->d_quote;
 			if (idx.i > 0)

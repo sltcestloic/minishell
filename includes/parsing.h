@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:43:45 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/21 13:20:59 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 12:51:20 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ void		redo_value(t_cmd *cmd);
 
 int			is_sep(char c);
 int			is_quote(char c);
+int			is_var_char(char c);
 
 #endif
