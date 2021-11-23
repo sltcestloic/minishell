@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:46:51 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/23 12:50:14 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 12:58:16 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*get_env_var(t_shell *shell, char *name, int quotes, int chrbfr)
 	{
 		if (ft_strcmp(lst->name, name) == 0 && lst->value)
 		{
-			if (quotes)
+			if (quotes || ft_strcmp(name, "PATH") == 0)
 				return (ft_strdup(lst->value, shell->to_free));
 			else if (chrbfr && lst->value[0] == ' ')
 				return (var_value_charbefore(lst->value, shell->to_free));
