@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:43:59 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/23 12:01:40 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 13:09:59 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,17 +117,17 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 	}
 	if (!arg)
 		exit(g_last_exit);
-	if (arg[1] && arg[2])
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		g_last_exit = 1;
-		return ;
-	}
 	if (arg[1])
 	{
 		ret = 0;
 		if (ft_atoi_exit(arg[1], &ret) == -1)
 			print_error(arg[1], ": numeric argument required", 255);
+		else if (arg[2])
+		{
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+			g_last_exit = 1;
+			return ;
+		}
 	}
 	unset_term(shell);
 	ft_free(shell->to_free);
