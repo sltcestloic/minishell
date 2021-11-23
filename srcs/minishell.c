@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:48:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/21 13:55:31 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 12:09:28 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ static int	is_valid_input(char *input)
 	return (0);
 }
 
-int	atty_check(void)
+static int	atty_check(int ac, char **av)
 {
+	(void)ac;
+	(void)av;
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 	{
 		write(2, "ERROR YOU CAN'T MESS WITH ME !\n", 32);
@@ -60,12 +62,10 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	t_shell	*shell;
 
-	if (!atty_check())
+	if (!atty_check(ac, av))
 		return (-1);
 	if (init_shell(&shell, envp) == -1)
 		return (-1);
-	(void)ac;
-	(void)av;
 	set_env(envp, shell);
 	set_pwd(shell);
 	tcgetattr(0, &shell->old);
@@ -77,8 +77,10 @@ int	main(int ac, char **av, char **envp)
 		if (!input)
 			exit_cmd(shell, NULL, 0);
 		if (is_valid_input(input))
+		{
 			parse_input(input, shell);
-		add_history(input);
+			add_history(input);
+		}
 		free(input);
 	}
 }

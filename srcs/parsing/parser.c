@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:47:09 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/20 16:16:14 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 12:07:13 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,14 @@ int	count_args(char *input)
 	return (result);
 }
 
-/* void	print_struct_debug(t_cmd *cmd)
+void	print_struct_debug(t_cmd *cmd)
 {
 	t_cmd *tmp = cmd;
-	t_redirect	*r_in;
-	t_redirect	*r_out;
+	t_redirect	*redirect;
 	int count = 0;
 	while (tmp)
 	{
-		r_in = tmp->in;
-		r_out = tmp->out;
+		redirect = tmp->redirect;
 		printf("----------cmd #%d----------\n", count);
 		if (tmp->value)
 		{
@@ -54,35 +52,22 @@ int	count_args(char *input)
 				printf("cmd->value[%d] = |%s|\n", n, tmp->value[n]);
 		}
 		int k = 0;
-		if (r_in)
+		if (redirect)
 		{
-			printf(" redirect in:\n");
-			while (r_in)
+			printf(" redirects:\n");
+			while (redirect)
 			{
-				printf("  (%p) redirect #%d:\n", r_in, k);
-				printf("   cmd->in->file_name = %s\n", r_in->file_name);
-				printf("   cmd->in->variation = %d\n", r_in->variation);
+				printf("  (%p) redirect #%d:\n", redirect, k);
+				printf("   cmd->redirect->file_name = |%s|\n", redirect->file_name);
+				printf("   cmd->redirect->type = %d\n", redirect->type);
 				k++;
-				r_in = r_in->next;
-			}
-		}
-		if (r_out)
-		{
-			printf(" redirect out:\n");
-			k = 0;	
-			while (r_out)
-			{
-				printf("  (%p) redirect #%d:\n", r_out, k);
-				printf("   cmd->out->file_name = %s\n", r_out->file_name);
-				printf("   cmd->out->variation = %d\n", r_out->variation);
-				k++;
-				r_out = r_out->next;
+				redirect = redirect->next;
 			}
 		}
 		tmp = tmp->next;
 		count++;
 	}
-} */
+}
 static int	handle_redirect(char *input, t_parser *parser, t_cmd *cmd, int *i)
 {
 	init_redirect(cmd_last(cmd), parser->redirect);
@@ -121,6 +106,7 @@ static void	substitution(t_shell *shell, t_cmd *cmd)
 			redo_value(tmp);
 			tmp = tmp->next;
 		}
+		print_struct_debug(cmd);
 		cmd_parse(cmd, shell);
 	}
 }
