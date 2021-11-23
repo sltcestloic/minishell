@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:45:53 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/23 12:51:10 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 14:26:12 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ void	unset_term(t_shell *shell)
 
 int	is_var_char(char c)
 {
-	return (ft_isalnum(c) || c == '_' || c == '?');
+	return (ft_isalnum(c) || c == '_');
 }
