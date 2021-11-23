@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:43:59 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/21 13:56:13 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/23 12:01:40 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,10 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 
 	ret = g_last_exit;
 	if (!is_pipe)
+	{
+		unset_term(shell);
 		write(2, "exit\n", 5);
+	}
 	if (!arg)
 		exit(g_last_exit);
 	if (arg[1] && arg[2])
@@ -128,6 +131,5 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 	}
 	unset_term(shell);
 	ft_free(shell->to_free);
-	(void) shell->to_free;
 	exit((unsigned char)ret);
 }
