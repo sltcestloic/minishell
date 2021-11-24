@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:43:59 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/23 13:09:59 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/24 11:55:54 by owlly            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,8 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 
 	ret = g_last_exit;
 	if (!is_pipe)
-	{
-		unset_term(shell);
 		write(2, "exit\n", 5);
-	}
-	if (!arg)
-		exit(g_last_exit);
-	if (arg[1])
+	if (arg && arg[1])
 	{
 		ret = 0;
 		if (ft_atoi_exit(arg[1], &ret) == -1)

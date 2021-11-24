@@ -6,7 +6,7 @@
 /*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/24 10:59:41 by owlly            ###   ########lyon.fr   */
+/*   Updated: 2021/11/24 12:02:40 by owlly            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,7 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 
 static void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
 {
-	if (in)
-	{
-		spawn_proc(in, 1, cmd, shell);
-		close(in);
-	}
-	else if (is_built_in(cmd))
+	if (is_built_in(cmd))
 		redirect_to_built_in(cmd, shell);
 	else
 		spawn_proc(in, 1, cmd, shell);
