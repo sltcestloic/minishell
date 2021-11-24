@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:31:28 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/20 17:45:52 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/24 11:09:50 by owlly            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	do_heredoc(t_cmd *cmd)
 		i = cmd->redirect;
 		while (i)
 		{
-			if (cmd->redirect->type == HEREDOC)
+			if (i->type == HEREDOC)
 				if (parse_here_doc(i))
 					return (-1);
 			i = i->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/21 13:19:28 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/24 10:59:41 by owlly            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 	signal(SIGQUIT, SIG_IGN);
 	if (out == 1)
 	{
+		if (in)
+			close(in);
 		waitpid(pid, &pid, 0);
 		g_last_exit = WEXITSTATUS(pid);
 		already_sig = signal_handle(pid);
