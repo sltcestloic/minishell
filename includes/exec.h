@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:54:38 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/21 13:19:12 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/24 15:20:51 by owlly            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,9 @@ typedef struct s_cmd
 	t_shell			*shell;
 }	t_cmd;
 
-void		ft_exit(t_free *to_free);
-
 void		echo(char **str);
 void		env(t_envlst *env_lst);
-void		export(t_envlst *env_lst, t_shell *shell);
+void		export_cmd(t_envlst *env_lst, t_shell *shell);
 void		update_env_value(t_shell *shell, char **arg);
 void		new_env_elem(char *str, t_shell *shell);
 void		remove_env_elem(char **arg, t_shell *shell);
@@ -104,5 +102,11 @@ void		print_error(char *cmd, char *msg, int exit_value);
 int			is_built_in(t_cmd *cmd);
 int			redirect_to_built_in(t_cmd *cmd, t_shell *shell);
 void		check_built_in(char **func, t_shell *shell);
+
+void		print_error(char *cmd, char *msg, int exit_value);
+int			dup_close(int new_fd, int old_fd);
+int			err_pipe(int fd);
+int			err_proc(int fd1, int fd2, int fd3);
+void		ft_exit(t_free *to_free);
 
 #endif

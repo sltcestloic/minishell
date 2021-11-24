@@ -41,6 +41,7 @@ SRCS		+=	copy_sort_lst.c \
 				env_utilities.c \
 				heredoc.c \
 				built_in.c \
+				error_utils.c \
 				signal.c
 
 #            PARSING            #

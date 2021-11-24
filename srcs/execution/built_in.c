@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:37:18 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/21 13:19:43 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/24 15:22:03 by owlly            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	do_built_in(t_cmd *cmd, t_shell *shell)
 	else if (!ft_strcmp(cmd->value[0], "export"))
 	{
 		if (!cmd->value[1])
-			export(shell->env_var, shell);
+			export_cmd(shell->env_var, shell);
 		else if (cmd->value[1])
 			update_env_value(shell, cmd->value);
 	}
@@ -88,7 +88,7 @@ void	check_built_in(char **func, t_shell *shell)
 	else if (!ft_strcmp(func[0], "export"))
 	{
 		if (!func[1])
-			export(shell->env_var, shell);
+			export_cmd(shell->env_var, shell);
 		else if (func[1])
 			new_env_elem(func[1], shell);
 	}

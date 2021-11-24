@@ -6,7 +6,7 @@
 /*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:43:59 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/24 11:55:54 by owlly            ###   ########lyon.fr   */
+/*   Updated: 2021/11/24 15:22:10 by owlly            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	env(t_envlst *lst)
 	}
 }
 
-void	export(t_envlst *lst, t_shell *shell)
+void	export_cmd(t_envlst *lst, t_shell *shell)
 {
 	t_envlst	*sorted;
 

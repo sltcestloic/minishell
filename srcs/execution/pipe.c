@@ -6,31 +6,21 @@
 /*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/24 12:02:40 by owlly            ###   ########lyon.fr   */
+/*   Updated: 2021/11/24 15:16:36 by owlly            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_error(char *cmd, char *msg, int exit_value)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(msg, 2);
-	ft_putstr_fd("\n", 2);
-	exit(g_last_exit = exit_value);
-}
 
 void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 {
 	if (shell->to_close)
 		close(shell->to_close);
-	if (in)
-		if (dup2(in, 0))
-			close(in);
-	if (out != 1)
-		if (dup2(out, 1))
-			close(out);
+	if (in && dup_close(in, 0))
+		exit(-1);
+	if (out != 1 && dup_close(out, 1))
+		exit(-1);
 	redirect(cmd, NULL, NULL);
 	if (cmd->value)
 		to_exec(shell, cmd->value);
@@ -38,7 +28,22 @@ void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 	exit(g_last_exit);
 }
 
-void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
+void wait_child(int in, int pid)
+{
+	int already_sig;
+
+	already_sig = 0;
+	if (in)
+		close(in);
+	waitpid(pid, &pid, 0);
+	g_last_exit = WEXITSTATUS(pid);
+	already_sig = signal_handle(pid);
+	while (waitpid(-1, &pid, 0) != -1)
+		if (!already_sig)
+			already_sig = signal_handle(pid);
+}
+
+int	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 {
 	int	pid;
 	int	already_sig;
@@ -52,17 +57,11 @@ void	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 		fork_exec(in, out, cmd, shell);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+	if (pid == -1)
+		return (-1);
 	if (out == 1)
-	{
-		if (in)
-			close(in);
-		waitpid(pid, &pid, 0);
-		g_last_exit = WEXITSTATUS(pid);
-		already_sig = signal_handle(pid);
-		while (waitpid(-1, &pid, 0) != -1)
-			if (!already_sig)
-				already_sig = signal_handle(pid);
-	}
+		wait_child(in, pid);
+	return (0);
 }
 
 static void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
@@ -83,9 +82,11 @@ void	cmd_parse(t_cmd *cmd, t_shell *shell)
 		return ;
 	while (cmd->next)
 	{
-		pipe(fd);
+		if (pipe(fd) == -1 && err_pipe(in))
+			return ;
 		shell->to_close = fd[0];
-		spawn_proc(in, fd[1], cmd, shell);
+		if (spawn_proc(in, fd[1], cmd, shell) && err_proc(in, fd[0], fd[1]))
+			return ;
 		shell->to_close = 0;
 		if (in)
 			close(in);
