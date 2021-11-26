@@ -6,12 +6,11 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/26 15:32:58 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/26 17:00:04 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 {
@@ -28,9 +27,9 @@ void	fork_exec(int in, int out, t_cmd *cmd, t_shell *shell)
 	exit(g_last_exit);
 }
 
-void wait_child(int in, int pid)
+void	wait_child(int in, int pid)
 {
-	int already_sig;
+	int	already_sig;
 
 	already_sig = 0;
 	if (in)

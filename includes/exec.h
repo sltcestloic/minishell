@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:54:38 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/26 15:32:49 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/26 16:17:57 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char		*copy_value(char *str, t_shell *shell);
 void		print_error(char *cmd, char *msg, int exit_value);
 
 int			is_built_in(t_cmd *cmd);
-int			redirect_to_built_in(t_cmd *cmd, t_shell *shell);
+void		redirect_to_built_in(t_cmd *cmd, t_shell *shell);
 void		check_built_in(char **func, t_shell *shell);
 
 void		print_error(char *cmd, char *msg, int exit_value);

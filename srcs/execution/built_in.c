@@ -6,13 +6,13 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:37:18 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/26 15:33:16 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/26 16:24:34 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	do_built_in(t_cmd *cmd, t_shell *shell)
+void	do_built_in(t_cmd *cmd, t_shell *shell)
 {
 	if (!ft_strcmp(cmd->value[0], "echo"))
 		echo(cmd->value);
@@ -33,9 +33,6 @@ int	do_built_in(t_cmd *cmd, t_shell *shell)
 		change_pwd(shell, cmd->value[1]);
 	else if (!ft_strcmp(cmd->value[0], "pwd"))
 		pwd(shell);
-	else
-		return (1);
-	return (0);
 }
 
 int	is_built_in(t_cmd *cmd)
@@ -60,23 +57,30 @@ int	is_built_in(t_cmd *cmd)
 		return (0);
 }
 
-int	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
+void	redirect_to_built_in(t_cmd *cmd, t_shell *shell)
 {
 	int	in;
 	int	out;
-	int	ret;
 
 	in = dup(0);
 	out = dup(1);
-	ret = 0;
+	if (in == -1 || out == -1)
+	{
+		perror("minishell: dup");
+		ft_free(shell->to_free);
+		exit(-1);
+	}
 	redirect(cmd, NULL, NULL);
 	if (cmd->value)
-		ret = do_built_in(cmd, shell);
-	dup2(in, 0);
-	dup2(out, 1);
+		do_built_in(cmd, shell);
+	if (dup2(in, 0) == -1 || dup2(out, 1) == -1)
+	{
+		perror("minishell: dup2");
+		ft_free(shell->to_free);
+		exit(-1);
+	}
 	close(in);
 	close(out);
-	return (ret);
 }
 
 void	check_built_in(char **func, t_shell *shell)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 15:14:12 by owlly             #+#    #+#             */
-/*   Updated: 2021/11/24 15:27:19 by owlly            ###   ########lyon.fr   */
+/*   Updated: 2021/11/26 17:00:17 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_error(char *cmd, char *msg, int exit_value)
 	exit(g_last_exit = exit_value);
 }
 
-int		dup_close(int new_fd, int old_fd)
+int	dup_close(int new_fd, int old_fd)
 {
 	if (dup2(new_fd, old_fd) == -1)
 	{
