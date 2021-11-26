@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:49:19 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/24 15:16:36 by owlly            ###   ########lyon.fr   */
+/*   Updated: 2021/11/26 15:32:58 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	spawn_proc(int in, int out, t_cmd *cmd, t_shell *shell)
 
 static void	last_cmd(int in, t_cmd *cmd, t_shell *shell)
 {
-	if (is_built_in(cmd))
+	if (is_built_in(cmd) && !in)
 		redirect_to_built_in(cmd, shell);
 	else
 		spawn_proc(in, 1, cmd, shell);
