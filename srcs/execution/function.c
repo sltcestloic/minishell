@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: owlly <owlly@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:43:59 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/24 15:22:10 by owlly            ###   ########lyon.fr   */
+/*   Updated: 2021/11/26 14:54:56 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,10 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 	{
 		ret = 0;
 		if (ft_atoi_exit(arg[1], &ret) == -1)
-			print_error(arg[1], ": numeric argument required", 255);
+		{
+			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+			g_last_exit = 255;
+		}
 		else if (arg[2])
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
