@@ -134,6 +134,7 @@ OBJS		=	$(addprefix objs/, ${SRCS:.c=.o})
 #===============================#
 
 HEADERS		=	${INCS_DIR}/minishell.h ${INCS_DIR}/parsing.h ${INCS_DIR}/exec.h
+LIBFT_HEADER	=	${LIBFT_DIR}libft.h
 MAKEFILE 	=	Makefile
 
 #===============================#
