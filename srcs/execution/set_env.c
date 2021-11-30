@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:21:55 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/30 12:04:53 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:36:41 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,11 @@ void	new_env_elem(char *str, t_shell *shell)
 		return ;
 	}
 	ptr = (t_envlst *)ft_malloc(sizeof(t_envlst), &(shell->to_free));
-	if (ptr)
-	{
-		ptr->name = copy_name(str, shell);
-		ptr->value = copy_value(str, shell);
-		ptr->next = 0;
-	}
-	if (!ptr || !ptr->name)
-		ft_exit(shell->to_free);
+	if (!ptr)
+		ft_malloc_error(shell->to_free);
+	ptr->name = copy_name(str, shell);
+	ptr->value = copy_value(str, shell);
+	ptr->next = 0;
 	if (shell->env_var)
 		last_lst_elem(shell->env_var)->next = ptr;
 	else

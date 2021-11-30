@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utilities.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:33:27 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/30 12:04:34 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:37:04 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*copy_name(char *str, t_shell *shell)
 		i++;
 	ptr = ft_malloc(i + 1, &shell->to_free);
 	if (!ptr)
-		return (ptr);
+		ft_malloc_error(shell->to_free);
 	i = -1;
 	while (str[++i] != '=' && str[i] != '+' && str[i])
 		ptr[i] = str[i];
@@ -46,16 +46,15 @@ char	*copy_value(char *str, t_shell *shell)
 		return (NULL);
 	i++;
 	ptr = ft_malloc(j + 1, &shell->to_free);
-	if (ptr)
+	if (!ptr)
+		ft_malloc_error(shell->to_free);
+	j = 0;
+	while (str[i + j])
 	{
-		j = 0;
-		while (str[i + j])
-		{
-			ptr[j] = str[i + j];
-			j++;
-		}
-		ptr[j] = 0;
+		ptr[j] = str[i + j];
+		j++;
 	}
+	ptr[j] = 0;
 	return (ptr);
 }
 
