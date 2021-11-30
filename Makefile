@@ -17,7 +17,6 @@ VPATH		=	srcs:srcs/execution:srcs/parsing:srcs/util
 OBJS_DIR	=	objs
 INCS_DIR	=	includes
 LIBFT_DIR	=	./libft/
-LIBFT		=	${LIBFT_DIR}/libft.a
 RL_DIR		=	/Users/$$USER/.brew/opt/readline/lib
 RL_DIR_I	=	/Users/$$USER/.brew/opt/readline/include
 
@@ -129,7 +128,7 @@ fclean: clean
 
 #       COMPILATION RULES       #
 
-${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE} ${LIBFT}
+${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE} 
 	@mkdir -p ${OBJS_DIR}
 	@${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
 	@echo "[${NAME}] Compiling ${YELLOW}$<${WHITE}"
