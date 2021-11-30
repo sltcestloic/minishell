@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 16:43:59 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/26 14:54:56 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 11:07:51 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	exit_cmd(t_shell *shell, char **arg, int is_pipe)
 		{
 			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 			g_last_exit = 255;
+			ret = 255;
 		}
 		else if (arg[2])
 		{
