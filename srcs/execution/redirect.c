@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:18:05 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/26 15:02:31 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 11:24:11 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	redirect_out(t_redirect *redirect)
 
 	if (!redirect)
 		return ;
-	dprintf(2, "redirect = %d\n", redirect->type);
 	if (redirect->type == APPEND)
 		fd = open(redirect->file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else

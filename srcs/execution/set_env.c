@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:21:55 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/21 14:03:36 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 11:18:12 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	new_env_elem(char *str, t_shell *shell)
 {
 	t_envlst	*ptr;
 
+	//TODO check le nom de la variable
 	if ((str[0] >= '0' && str[0] <= '9') || str[0] == '=' || str[0] == '+')
 	{
 		ft_putstr_fd("minishell: export: ", 2);
@@ -101,6 +102,7 @@ void	remove_env_elem(char **arg, t_shell *shell)
 	i = 0;
 	while (arg[i])
 	{
+		//TODO pareil
 		if ((arg[i][0] >= '0' && arg[i][0] <= '9') || arg[i][0] == '='\
 		|| arg[i][0] == '+' || arg[i][0] == '-')
 		{
