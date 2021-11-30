@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 09:25:58 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/18 09:26:06 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:25:18 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void	ft_free(t_free *to_free)
 	ptr = to_free;
 	while (to_free)
 	{
-		free(ptr->data);
+		if (ptr->data)
+			free(ptr->data);
 		ptr = ptr->next;
 		free(to_free);
 		to_free = ptr;
