@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 08:48:23 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/23 12:09:28 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:33:17 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,15 @@
 
 int	g_last_exit = 0;
 
-inline static int	init_shell(t_shell **shell, char **envp)
+inline static int	init_shell(t_shell *shell, char **envp)
 {
-	*shell = malloc(sizeof(t_shell));
-	if (!*shell)
-		return (-1);
-	(*shell)->to_free = 0;
-	(*shell)->to_close = 0;
-	(*shell)->env_var = 0;
-	(*shell)->pwd = ft_malloc(MAXPATHLEN, &(*shell)->to_free);
-	(*shell)->envp = envp;
-	if ((*shell)->pwd == 0)
-		return (-1);
+	shell->to_free = 0;
+	shell->to_close = 0;
+	shell->env_var = 0;
+	shell->pwd = ft_malloc(MAXPATHLEN, &shell->to_free);
+	shell->envp = envp;
+	if (!shell->pwd)
+		ft_malloc_error(shell->to_free);
 	return (0);
 }
 
@@ -60,25 +57,25 @@ static int	atty_check(int ac, char **av)
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
-	t_shell	*shell;
+	t_shell	shell;
 
 	if (!atty_check(ac, av))
 		return (-1);
 	if (init_shell(&shell, envp) == -1)
 		return (-1);
-	set_env(envp, shell);
-	set_pwd(shell);
-	tcgetattr(0, &shell->old);
+	set_env(envp, &shell);
+	set_pwd(&shell);
+	tcgetattr(0, &shell.old);
 	while (1)
 	{
 		signal(SIGINT, &if_sigint);
-		set_term(shell);
+		set_term(&shell);
 		input = readline("\e[0;92mminishell\e[0m$ ");
 		if (!input)
-			exit_cmd(shell, NULL, 0);
+			exit_cmd(&shell, NULL, 0);
 		if (is_valid_input(input))
 		{
-			parse_input(input, shell);
+			parse_input(input, &shell);
 			add_history(input);
 		}
 		free(input);
