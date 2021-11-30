@@ -192,7 +192,7 @@ ${OBJS_DIR}/%.o: %.c ${HEADERS} ${MAKEFILE}
 	@${CC} ${CFLAGS} -c $< -o $@ -I ${INCS_DIR}
 	@echo "[${NAME}] Compiling ${YELLOW}$<${WHITE}"
 
-${NAME}: ${OBJS} ${LIBFT_SRCS} ${LIBFT_DIR}libft.a
+${NAME}: ${OBJS} ${LIBFT_SRCS}
 	@${MAKE} -C ./libft
 	@echo "[${NAME}] Creating executable..."
 	@${CC} -o ${NAME} ${OBJS} -lreadline -L ${LIBFT_DIR} -lft -L ${RL_DIR} -I ${RL_DIR_I}
