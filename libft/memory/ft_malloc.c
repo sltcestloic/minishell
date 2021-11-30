@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 09:25:58 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/30 12:25:18 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:45:34 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ char	*ft_malloc(int size, t_free **to_free)
 	t_free	*elem;
 
 	ptr = malloc(size);
+	printf("malloc %p\n", ptr);
 	if (!ptr)
 		ft_malloc_error(*to_free);
 	*ptr = 0;
 	elem = malloc(sizeof(t_free));
+	printf("malloc %p\n", elem);
 	if (!elem)
 	{
 		if (ptr)
