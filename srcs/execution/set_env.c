@@ -6,7 +6,7 @@
 /*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:21:55 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/30 12:36:41 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:42:54 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	new_env_elem(char *str, t_shell *shell)
 		return ;
 	}
 	ptr = (t_envlst *)ft_malloc(sizeof(t_envlst), &(shell->to_free));
+	printf("malloc %p %s\n", ptr, str);
 	if (!ptr)
 		ft_malloc_error(shell->to_free);
 	ptr->name = copy_name(str, shell);
