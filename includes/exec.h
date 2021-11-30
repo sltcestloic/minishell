@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 14:54:38 by lbertran          #+#    #+#             */
-/*   Updated: 2021/11/26 16:17:57 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 11:57:39 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void		set_pwd(t_shell *shell);
 void		change_pwd(t_shell *shell, char *str);
 void		set_env(char **envp, t_shell *shell);
 int			init_fd(t_shell *shell);
+int			check_alphanum_export_unset(char *str, int is_exp);
 
 t_envlst	*copy_sorted_list(t_envlst *lst, t_shell *shell);
 t_envlst	*find_in_list(char *str, t_envlst *ptr);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:21:55 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/30 11:18:12 by lbertran         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:04:53 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void	new_env_elem(char *str, t_shell *shell)
 {
 	t_envlst	*ptr;
 
-	//TODO check le nom de la variable
-	if ((str[0] >= '0' && str[0] <= '9') || str[0] == '=' || str[0] == '+')
+	if ((str[0] >= '0' && str[0] <= '9') || str[0] == '='\
+	|| str[0] == '+' || check_alphanum_export_unset(str, 1))
 	{
 		ft_putstr_fd("minishell: export: ", 2);
 		ft_putstr_fd(str, 2);
@@ -102,9 +102,8 @@ void	remove_env_elem(char **arg, t_shell *shell)
 	i = 0;
 	while (arg[i])
 	{
-		//TODO pareil
 		if ((arg[i][0] >= '0' && arg[i][0] <= '9') || arg[i][0] == '='\
-		|| arg[i][0] == '+' || arg[i][0] == '-')
+		|| arg[i][0] == '+' || check_alphanum_export_unset(arg[i], 0))
 		{
 			ft_putstr_fd("minishell: unset: ", 2);
 			ft_putstr_fd(arg[i], 2);

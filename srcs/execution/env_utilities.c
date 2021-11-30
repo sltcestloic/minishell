@@ -6,7 +6,7 @@
 /*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 18:33:27 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/18 18:33:48 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 12:04:34 by lubourre         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,18 @@ char	*copy_value(char *str, t_shell *shell)
 		ptr[j] = 0;
 	}
 	return (ptr);
+}
+
+int	check_alphanum_export_unset(char *str, int is_exp)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && ((str[i] != '=' && str[i] != '+') || !is_exp))
+	{
+		if (!is_var_char(str[i]))
+			return (1);
+		i++;
+	}
+	return (0);
 }
