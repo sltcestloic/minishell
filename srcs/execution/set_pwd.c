@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lubourre <lubourre@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 17:56:28 by lubourre          #+#    #+#             */
-/*   Updated: 2021/11/26 15:41:47 by lubourre         ###   ########lyon.fr   */
+/*   Updated: 2021/11/30 13:18:49 by lbertran         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	set_pwd(t_shell *shell)
 	while (ptr && ft_strcmp(ptr->name, "PWD"))
 		ptr = ptr->next;
 	if (ptr)
+	{
+		ptr->value = ft_malloc(MAXPATHLEN, &shell->to_free);
 		getcwd(ptr->value, MAXPATHLEN);
+	}
 	getcwd(shell->pwd, MAXPATHLEN);
 }
 
