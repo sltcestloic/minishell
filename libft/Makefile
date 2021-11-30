@@ -6,7 +6,7 @@
 #    By: lbertran <lbertran@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/18 16:40:32 by lbertran          #+#    #+#              #
-#    Updated: 2021/11/18 09:27:32 by lbertran         ###   ########lyon.fr    #
+#    Updated: 2021/11/30 11:00:55 by lbertran         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,9 +55,8 @@ SRCS		=	char/ft_isalnum.c \
 				string/ft_strnstr.c \
 				string/ft_strrchr.c \
 				string/ft_strtrim.c \
-				string/ft_substr.c
-
-SRCS_BONUS	=	list/ft_lstadd_back.c \
+				string/ft_substr.c \
+				list/ft_lstadd_back.c \
 				list/ft_lstadd_front.c \
 				list/ft_lstclear.c \
 				list/ft_lstdelone.c \
@@ -68,7 +67,6 @@ SRCS_BONUS	=	list/ft_lstadd_back.c \
 				list/ft_lstsize.c
 
 OBJS		= ${SRCS:.c=.o}
-OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
 
 INCS		= .
 HEADER		= libft.h
@@ -99,15 +97,11 @@ WHITE		=	\x1b[37m
 $(NAME): ${OBJS}
 	@${LIBC} ${NAME} ${OBJS}
 
-bonus: ${OBJS_BONUS} all
-	@${LIBC} ${NAME} ${OBJS} ${OBJS_BONUS}
-
 
 all: ${NAME}
 
 clean:
 	${RM} ${OBJS}
-	${RM} ${OBJS_BONUS}
 	${RM} a.out
 
 fclean: clean
@@ -115,4 +109,4 @@ fclean: clean
 
 re: fclean all
 	
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
